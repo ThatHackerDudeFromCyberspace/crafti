@@ -136,7 +136,7 @@ void BlockListTask::logic()
 
         key_held_down = true;
     }
-    else if(keyPressed(KEY_NSPIRE_2) || keyPressed(KEY_NSPIRE_DOWN))
+    else if(keyPressed(KEY_NSPIRE_2) || keyPressed(KEY_NSPIRE_DOWN) || keyPressed(KEY_NSPIRE_S))
     {
         current_selection += fields_x;
         if(current_selection >= user_selectable_count)
@@ -144,7 +144,7 @@ void BlockListTask::logic()
 
         key_held_down = true;
     }
-    else if(keyPressed(KEY_NSPIRE_8) || keyPressed(KEY_NSPIRE_UP))
+    else if(keyPressed(KEY_NSPIRE_8) || keyPressed(KEY_NSPIRE_UP) || keyPressed(KEY_NSPIRE_W))
     {
         if(current_selection >= fields_x)
             current_selection -= fields_x;
@@ -157,7 +157,7 @@ void BlockListTask::logic()
 
         key_held_down = true;
     }
-    else if(keyPressed(KEY_NSPIRE_4) || keyPressed(KEY_NSPIRE_LEFT))
+    else if(keyPressed(KEY_NSPIRE_4) || keyPressed(KEY_NSPIRE_LEFT) || keyPressed(KEY_NSPIRE_A))
     {
         if(current_selection % fields_x == 0)
         {
@@ -170,7 +170,7 @@ void BlockListTask::logic()
 
         key_held_down = true;
     }
-    else if(keyPressed(KEY_NSPIRE_6) || keyPressed(KEY_NSPIRE_RIGHT))
+    else if(keyPressed(KEY_NSPIRE_6) || keyPressed(KEY_NSPIRE_RIGHT) || keyPressed(KEY_NSPIRE_D))
     {
         if(current_selection % fields_x != fields_x-1 && current_selection < user_selectable_count - 1)
             current_selection++;
@@ -179,19 +179,19 @@ void BlockListTask::logic()
 
         key_held_down = true;
     }
-    else if(keyPressed(KEY_NSPIRE_1)) //Switch inventory slot
+    else if(keyPressed(KEY_NSPIRE_1) || keyPressed(KEY_NSPIRE_Z)) //Switch inventory slot
     {
         current_inventory.previousSlot();
 
         key_held_down = true;
     }
-    else if(keyPressed(KEY_NSPIRE_3))
+    else if(keyPressed(KEY_NSPIRE_3) || keyPressed(KEY_NSPIRE_C))
     {
         current_inventory.nextSlot();
 
         key_held_down = true;
     }
-    else if(keyPressed(KEY_NSPIRE_5) || keyPressed(KEY_NSPIRE_CLICK))
+    else if(keyPressed(KEY_NSPIRE_5) || keyPressed(KEY_NSPIRE_CLICK) || keyPressed(KEY_NSPIRE_SPACE))
     {
         current_inventory.currentSlot() = user_selectable[current_selection];
 
