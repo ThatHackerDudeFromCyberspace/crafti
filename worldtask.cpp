@@ -51,11 +51,7 @@ GLFix WorldTask::speed()
 void WorldTask::logic()
 {
     GLFix dx = 0, dz = 0;
-#ifndef DEBUG
-    if(keyPressed(KEY_NSPIRE_8)) //Forward
-#else
-    if(keyPressed(KEY_NSPIRE_8) || keyPressed(KEY_NSPIRE_W))
-#endif
+    if(keyPressed(KEY_NSPIRE_8) || keyPressed(KEY_NSPIRE_W)) //Forward
     {
         GLFix dx1, dz1;
         getForward(&dx1, &dz1);
@@ -63,12 +59,7 @@ void WorldTask::logic()
         dx += dx1;
         dz += dz1;
     }
-    
-#ifndef DEBUG
-    else if(keyPressed(KEY_NSPIRE_2)) //Backwards
-#else
-    else if(keyPressed(KEY_NSPIRE_2) || keyPressed(KEY_NSPIRE_S))
-#endif
+    else if(keyPressed(KEY_NSPIRE_2) || keyPressed(KEY_NSPIRE_S)) //Backwards
     {
         GLFix dx1, dz1;
         getForward(&dx1, &dz1);
@@ -76,13 +67,7 @@ void WorldTask::logic()
         dx -= dx1;
         dz -= dz1;
     }
-
-    
-#ifndef DEBUG
-    if(keyPressed(KEY_NSPIRE_4)) //Left
-#else
-    if(keyPressed(KEY_NSPIRE_4) || keyPressed(KEY_NSPIRE_A))
-#endif
+    if(keyPressed(KEY_NSPIRE_4) || keyPressed(KEY_NSPIRE_A)) //Left
     {
         GLFix dx1, dz1;
         getRight(&dx1, &dz1);
@@ -90,11 +75,7 @@ void WorldTask::logic()
         dx -= dx1;
         dz -= dz1;
     }
-#ifndef DEBUG
-    else if(keyPressed(KEY_NSPIRE_6)) //Right
-#else
-    else if(keyPressed(KEY_NSPIRE_6) || keyPressed(KEY_NSPIRE_D))
-#endif
+    else if(keyPressed(KEY_NSPIRE_6) || keyPressed(KEY_NSPIRE_D)) //Right
     {
         GLFix dx1, dz1;
         getRight(&dx1, &dz1);
@@ -102,7 +83,7 @@ void WorldTask::logic()
         dx += dx1;
         dz += dz1;
     }
-
+    
     if(!world.intersect(aabb))
     {
         AABB aabb_moved = aabb;
@@ -152,11 +133,7 @@ void WorldTask::logic()
             can_jump = true;
     }
 
-#ifndef DEBUG
-    if(keyPressed(KEY_NSPIRE_5) && can_jump) //Jump
-#else
-    if((keyPressed(KEY_NSPIRE_5) || keyPressed(KEY_NSPIRE_SPACE)) && can_jump)
-#endif
+    if((keyPressed(KEY_NSPIRE_5) || keyPressed(KEY_NSPIRE_SPACE)) && can_jump) //Jump
     {
         vy = 50;
         can_jump = false;
@@ -253,11 +230,7 @@ void WorldTask::logic()
     do_test = !do_test;
 
     if(key_held_down)        
-#ifndef DEBUG
-    key_held_down = keyPressed(KEY_NSPIRE_ESC) || keyPressed(KEY_NSPIRE_7) || keyPressed(KEY_NSPIRE_9) || keyPressed(KEY_NSPIRE_1) || keyPressed(KEY_NSPIRE_3) || keyPressed(KEY_NSPIRE_PERIOD) || keyPressed(KEY_NSPIRE_MINUS) || keyPressed(KEY_NSPIRE_PLUS) || keyPressed(KEY_NSPIRE_MENU);
-#else
     key_held_down = keyPressed(KEY_NSPIRE_ESC) || keyPressed(KEY_NSPIRE_7) || keyPressed(KEY_NSPIRE_9) || keyPressed(KEY_NSPIRE_1) || keyPressed(KEY_NSPIRE_3) || keyPressed(KEY_NSPIRE_PERIOD) || keyPressed(KEY_NSPIRE_MINUS) || keyPressed(KEY_NSPIRE_PLUS) || keyPressed(KEY_NSPIRE_MENU) || keyPressed(KEY_NSPIRE_Q) || keyPressed(KEY_NSPIRE_E) || keyPressed(KEY_NSPIRE_Q) || keyPressed(KEY_NSPIRE_W) || keyPressed(KEY_NSPIRE_A) || keyPressed(KEY_NSPIRE_S) || keyPressed(KEY_NSPIRE_D) || keyPressed(KEY_NSPIRE_Z) || keyPressed(KEY_NSPIRE_X) || keyPressed(KEY_NSPIRE_C);
-#endif
 
     else if(keyPressed(KEY_NSPIRE_ESC) || keyPressed(KEY_NSPIRE_HOME)) //Save & Exit
     {
@@ -265,11 +238,7 @@ void WorldTask::logic()
         Task::running = false;
         return;
     }
-#ifndef DEBUG
-    else if(keyPressed(KEY_NSPIRE_7)) //Put block down
-#else
-    else if(keyPressed(KEY_NSPIRE_7) || keyPressed(KEY_NSPIRE_Q))
-#endif
+    else if(keyPressed(KEY_NSPIRE_7) || keyPressed(KEY_NSPIRE_Q)) //Put block down
     {
         key_held_down = true;
 
@@ -342,11 +311,7 @@ void WorldTask::logic()
                 world.changeBlock(pos.x, pos.y, pos.z, current_block);
         }
     }
-#ifndef DEBUG
-    else if(keyPressed(KEY_NSPIRE_9)) //Remove block
-#else
-    else if(keyPressed(KEY_NSPIRE_9) || keyPressed(KEY_NSPIRE_E))
-#endif
+    else if(keyPressed(KEY_NSPIRE_9) || keyPressed(KEY_NSPIRE_E)) //Remove block
     {
         if(selection_side != AABB::NONE && world.getBlock(selection_pos.x, selection_pos.y, selection_pos.z) != BLOCK_BEDROCK)
         {
@@ -356,31 +321,19 @@ void WorldTask::logic()
 
         key_held_down = true;
     }
-#ifndef DEBUG
-    else if(keyPressed(KEY_NSPIRE_1)) //Switch inventory slot
-#else
-    else if(keyPressed(KEY_NSPIRE_Z))
-#endif
+    else if(keyPressed(KEY_NSPIRE_Z)) //Switch inventory slot
     {
         current_inventory.previousSlot();
 
         key_held_down = true;
     }
-#ifndef DEBUG
-    else if(keyPressed(KEY_NSPIRE_3))
-#else
     else if(keyPressed(KEY_NSPIRE_3) || keyPressed(KEY_NSPIRE_C))
-#endif
     {
         current_inventory.nextSlot();
 
         key_held_down = true;
     }
-#ifndef DEBUG
-    else if(keyPressed(KEY_NSPIRE_PERIOD)) //Open list of blocks (or take screenshot with Ctrl + .)
-#else
-    else if(keyPressed(KEY_NSPIRE_PERIOD) || keyPressed(KEY_NSPIRE_X))
-#endif
+    else if(keyPressed(KEY_NSPIRE_PERIOD) || keyPressed(KEY_NSPIRE_X)) //Open list of blocks (or take screenshot with Ctrl + .)
     {
         if(keyPressed(KEY_NSPIRE_CTRL))
         {
