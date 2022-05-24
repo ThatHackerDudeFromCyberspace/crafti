@@ -56,25 +56,7 @@ static const BLOCK_WDATA user_selectable[] = {
     BLOCK_REDSTONE_LAMP,
     BLOCK_REDSTONE_SWITCH,
     BLOCK_PRESSURE_PLATE,
-    BLOCK_REDSTONE_WIRE,
-    BLOCK_REDSTONE_TORCH,
-    getBLOCKWDATA(BLOCK_WOOL, 0),
-    getBLOCKWDATA(BLOCK_WOOL, 1),
-    getBLOCKWDATA(BLOCK_WOOL, 2),
-    getBLOCKWDATA(BLOCK_WOOL, 3),
-    getBLOCKWDATA(BLOCK_WOOL, 4),
-    getBLOCKWDATA(BLOCK_WOOL, 5),
-    getBLOCKWDATA(BLOCK_WOOL, 6),
-    getBLOCKWDATA(BLOCK_WOOL, 7),
-    getBLOCKWDATA(BLOCK_WOOL, 8),
-    getBLOCKWDATA(BLOCK_WOOL, 9),
-    getBLOCKWDATA(BLOCK_WOOL, 10),
-    getBLOCKWDATA(BLOCK_WOOL, 11),
-    getBLOCKWDATA(BLOCK_WOOL, 12),
-    getBLOCKWDATA(BLOCK_WOOL, 13),
-    getBLOCKWDATA(BLOCK_WOOL, 14),
-    getBLOCKWDATA(BLOCK_WOOL, 15),
-    BLOCK_CACTUS
+    BLOCK_REDSTONE_WIRE
 };
 
 //The values have to stay somewhere
@@ -189,33 +171,34 @@ void BlockListTask::moveScreenOffset()
 void BlockListTask::logic()
 {
     if (key_held_down)
-        key_held_down = keyPressed(KEY_NSPIRE_ESC) || keyPressed(KEY_NSPIRE_PERIOD) || keyPressed(KEY_NSPIRE_2) || keyPressed(KEY_NSPIRE_8) || keyPressed(KEY_NSPIRE_4) || keyPressed(KEY_NSPIRE_6) || keyPressed(KEY_NSPIRE_1) || keyPressed(KEY_NSPIRE_3) || keyPressed(KEY_NSPIRE_5) || keyPressed(KEY_NSPIRE_UP) || keyPressed(KEY_NSPIRE_DOWN) || keyPressed(KEY_NSPIRE_LEFT) || keyPressed(KEY_NSPIRE_RIGHT) || keyPressed(KEY_NSPIRE_CLICK) || keyPressed(KEY_NSPIRE_ENTER) || keyPressed(KEY_NSPIRE_W) || keyPressed(KEY_NSPIRE_A) || keyPressed(KEY_NSPIRE_S) || keyPressed(KEY_NSPIRE_D) || keyPressed(KEY_NSPIRE_Z) || keyPressed(KEY_NSPIRE_C);
+        key_held_down = keyPressed(KEY_NSPIRE_ESC) || keyPressed(KEY_NSPIRE_PERIOD) || keyPressed(KEY_NSPIRE_2) || keyPressed(KEY_NSPIRE_8) || keyPressed(KEY_NSPIRE_4) || keyPressed(KEY_NSPIRE_6) || keyPressed(KEY_NSPIRE_1) || keyPressed(KEY_NSPIRE_3) || keyPressed(KEY_NSPIRE_5) || keyPressed(KEY_NSPIRE_UP) || keyPressed(KEY_NSPIRE_DOWN) || keyPressed(KEY_NSPIRE_LEFT) || keyPressed(KEY_NSPIRE_RIGHT) || keyPressed(KEY_NSPIRE_CLICK);
     else if (keyPressed(KEY_NSPIRE_ESC) || keyPressed(KEY_NSPIRE_PERIOD))
     {
         world_task.makeCurrent();
 
         key_held_down = true;
     }
-    else if (keyPressed(KEY_NSPIRE_2) || keyPressed(KEY_NSPIRE_DOWN) || keyPressed(KEY_NSPIRE_S))
+    else if(keyPressed(KEY_NSPIRE_2) || keyPressed(KEY_NSPIRE_DOWN) || keyPressed(KEY_NSPIRE_S))
     {
+        const int rows = ((user_selectable_count + fields_x - 1) / fields_x);
         // Increment current cell by row size and overflow
         current_selection += fields_x;
-
-        if (current_selection >= user_selectable_count && !(current_selection - fields_x > user_selectable_count - fields_x))
-            current_selection = user_selectable_count - 1;
-        
         if (current_selection >= user_selectable_count)
-            current_selection %= fields_x;
-        
+        {
+            if (current_selection > rows * fields_x)
+                current_selection %= fields_x;
+            else
+                current_selection = user_selectable_count - 1;
+        }
+
         moveScreenOffset();
 
         key_held_down = true;
     }
-    else if (keyPressed(KEY_NSPIRE_8) || keyPressed(KEY_NSPIRE_UP) || keyPressed(KEY_NSPIRE_W))
+    else if(keyPressed(KEY_NSPIRE_8) || keyPressed(KEY_NSPIRE_UP) || keyPressed(KEY_NSPIRE_W))
     {
         // (Here, there is a fast path, and a slow path for if the inventory size is not full)
         // Decrement current cell  by row size and underflow
-        
         if (current_selection >= fields_x)
             current_selection -= fields_x;
         else
@@ -223,14 +206,14 @@ void BlockListTask::logic()
             // Floor off extra cells in last row and add current x (??)
             current_selection = ((user_selectable_count - 1) / fields_x) * fields_x + (current_selection % fields_x);
             if (current_selection >= user_selectable_count)
-                current_selection -= fields_x;
+                current_selection = user_selectable_count - 1;
         }
 
         moveScreenOffset();
 
         key_held_down = true;
     }
-    else if (keyPressed(KEY_NSPIRE_4) || keyPressed(KEY_NSPIRE_LEFT) || keyPressed(KEY_NSPIRE_A))
+    else if(keyPressed(KEY_NSPIRE_4) || keyPressed(KEY_NSPIRE_LEFT) || keyPressed(KEY_NSPIRE_A))
     {
         // If cell x is at 0, then send cursor to other side
         if (current_selection % fields_x == 0)
@@ -246,7 +229,7 @@ void BlockListTask::logic()
 
         key_held_down = true;
     }
-    else if (keyPressed(KEY_NSPIRE_6) || keyPressed(KEY_NSPIRE_RIGHT) || keyPressed(KEY_NSPIRE_D))
+    else if(keyPressed(KEY_NSPIRE_6) || keyPressed(KEY_NSPIRE_RIGHT) || keyPressed(KEY_NSPIRE_D))
     {
         // If cell x is at the end of the row, move the cell back to the beginning of the row
         if (current_selection % fields_x == fields_x - 1 || current_selection >= user_selectable_count - 1)
@@ -257,19 +240,19 @@ void BlockListTask::logic()
 
         key_held_down = true;
     }
-    else if (keyPressed(KEY_NSPIRE_1) || keyPressed(KEY_NSPIRE_Z)) //Switch inventory slot
+    else if(keyPressed(KEY_NSPIRE_1) || keyPressed(KEY_NSPIRE_Z)) //Switch inventory slot
     {
         current_inventory.previousSlot();
 
         key_held_down = true;
     }
-    else if (keyPressed(KEY_NSPIRE_3) || keyPressed(KEY_NSPIRE_C))
+    else if(keyPressed(KEY_NSPIRE_3) || keyPressed(KEY_NSPIRE_C))
     {
         current_inventory.nextSlot();
 
         key_held_down = true;
     }
-    else if (keyPressed(KEY_NSPIRE_5) || keyPressed(KEY_NSPIRE_CLICK) || keyPressed(KEY_NSPIRE_ENTER))
+    else if(keyPressed(KEY_NSPIRE_5) || keyPressed(KEY_NSPIRE_CLICK) || keyPressed(KEY_NSPIRE_SPACE))
     {
         current_inventory.currentSlot() = user_selectable[current_selection];
 
