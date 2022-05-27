@@ -22,7 +22,7 @@ public:
 
 protected:
     static constexpr GLFix cactus_height = BLOCK_SIZE;
-    static constexpr GLFix cactus_width = BLOCK_SIZE / 16 * 15;
+    static constexpr GLFix cactus_width = BLOCK_SIZE / 16 * 14;
 
 };
 
