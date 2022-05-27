@@ -40,9 +40,10 @@ constexpr BLOCK BLOCK_IRON = 26;
 constexpr BLOCK BLOCK_GOLD = 27;
 constexpr BLOCK BLOCK_DIAMOND = 28;
 constexpr BLOCK BLOCK_NETHERRACK = 29;
+constexpr BLOCK BLOCK_CACTUS = 30; // Technically a special block but it is only using a custom renderer and not leveraging on any of the other "special block features"
 
 // Regular blocks end here
-constexpr BLOCK BLOCK_NORMAL_LAST = BLOCK_NETHERRACK;
+constexpr BLOCK BLOCK_NORMAL_LAST = BLOCK_CACTUS;
 
 //Special blocks begin here
 constexpr int BLOCK_SPECIAL_START = 127;
