@@ -121,7 +121,7 @@ AABB CactusRenderer::getAABB(const BLOCK_WDATA block, GLFix x, GLFix y, GLFix z)
     // Get block side
     BLOCK_SIDE side = static_cast<BLOCK_SIDE>(getBLOCKDATA(block) & BLOCK_SIDE_BITS);
     const GLFix cactus_offset = (GLFix(BLOCK_SIZE) - cactus_width) * GLFix(0.5f);
-    
+
     // Calculate the cactus's size
     const GLFix cactus_size = cactus_width;
 
@@ -148,7 +148,7 @@ AABB CactusRenderer::getAABB(const BLOCK_WDATA block, GLFix x, GLFix y, GLFix z)
 
 void CactusRenderer::drawPreview(const BLOCK_WDATA /*block*/, TEXTURE &dest, int x, int y)
 {
-    TextureAtlasEntry &tex = terrain_atlas[12][8].resized;
+    TextureAtlasEntry &tex = terrain_atlas[6][4].resized;
     BlockRenderer::drawTextureAtlasEntry(*terrain_resized, tex, dest, x, y);
 }
 
