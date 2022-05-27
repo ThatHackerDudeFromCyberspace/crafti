@@ -13,10 +13,6 @@ void CactusRenderer::renderSpecialBlock(const BLOCK_WDATA block, GLFix x, GLFix 
 
     TextureAtlasEntry cactus_sid = terrain_atlas[6][4].current;
 
-
-    // Calculate the cake's size
-    const GLFix cactus_width = cactus_width;
-
     //////
     // GL CODE
     //////
@@ -61,7 +57,7 @@ AABB CactusRenderer::getAABB(const BLOCK_WDATA block, GLFix x, GLFix y, GLFix z)
 {
     const GLFix cactus_offset = (GLFix(BLOCK_SIZE) - cactus_width) * GLFix(0.5f);
 
-    return {x + cactus_offset, y, z + cactus_offset + cactus_width, x + cactus_offset + cactus_width, y + BLOCK_SIZE, z + cactus_offset + cactus_width};
+    return {x + cactus_offset, y, z + cactus_offset, x + cactus_offset + cactus_width, y + BLOCK_SIZE, z + cactus_offset + cactus_width};
 }
 
 void CactusRenderer::drawPreview(const BLOCK_WDATA /*block*/, TEXTURE &dest, int x, int y)
