@@ -10,7 +10,7 @@ public:
     virtual void geometryNormalBlock(const BLOCK_WDATA, const int local_x, const int local_y, const int local_z, const BLOCK_SIDE side, Chunk &c) override;
     virtual bool isOpaque(const BLOCK_WDATA /*block*/) override { return false; }
     virtual bool isObstacle(const BLOCK_WDATA /*block*/) override { return true; }
-    virtual bool isOriented(const BLOCK_WDATA /*block*/) override { return true; } // Oriented
+    virtual bool isOriented(const BLOCK_WDATA /*block*/) override { return false; } // Oriented
     virtual bool isFullyOriented(const BLOCK_WDATA /*block*/) override { return false; } // Torch-like orientation
 
     virtual bool isBlockShaped(const BLOCK_WDATA /*block*/) override { return false; }
@@ -21,7 +21,6 @@ public:
     virtual const char* getName(const BLOCK_WDATA) override;
 
 protected:
-    static constexpr GLFix cactus_height = BLOCK_SIZE;
     static constexpr GLFix cactus_width = BLOCK_SIZE / 16 * 15;
 };
 
