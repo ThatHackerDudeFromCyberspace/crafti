@@ -15,6 +15,8 @@ public:
     virtual const char* getName(const BLOCK_WDATA) override;
 
 protected:
+    const TerrainAtlasEntry &getWoolTexture(const BLOCK_WDATA block);
+
     enum COLOUR {
         WHITE_WOOL=0, // white
         ORANGE_WOOL=1, // orange
