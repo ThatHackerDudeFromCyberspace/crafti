@@ -40,17 +40,16 @@ constexpr BLOCK BLOCK_IRON = 26;
 constexpr BLOCK BLOCK_GOLD = 27;
 constexpr BLOCK BLOCK_DIAMOND = 28;
 constexpr BLOCK BLOCK_NETHERRACK = 29;
-constexpr BLOCK BLOCK_CACTUS = 30; // Technically a special block but it is only using a custom renderer and not leveraging on any of the other "special block features"
 
 // Regular blocks end here
-constexpr BLOCK BLOCK_NORMAL_LAST = BLOCK_CACTUS;
+constexpr BLOCK BLOCK_NORMAL_LAST = BLOCK_NETHERRACK;
 
 //Special blocks begin here
 constexpr int BLOCK_SPECIAL_START = 127;
 constexpr BLOCK BLOCK_TORCH = 127; //Data: Direction (BLOCK_SIDE)
 constexpr BLOCK BLOCK_FLOWER = 128; //Data: Flower type
 constexpr BLOCK BLOCK_SPIDERWEB = 129;
-constexpr BLOCK BLOCK_CAKE = 130;
+constexpr BLOCK BLOCK_CAKE = 130; // Data: Amount eaten
 constexpr BLOCK BLOCK_MUSHROOM = 131; //Data: Mushroom type
 constexpr BLOCK BLOCK_DOOR = 132; //Data: (top: 1<<3) | BLOCK_SIDE
 constexpr BLOCK BLOCK_WATER = 133; //Data: range
@@ -62,7 +61,9 @@ constexpr BLOCK BLOCK_REDSTONE_WIRE = 138; //Data: (active: 1<<6, visited: 1<<5)
 constexpr BLOCK BLOCK_REDSTONE_TORCH = 139; //Data: See BLOCK_TORCH
 constexpr BLOCK BLOCK_PRESSURE_PLATE = 140; //Data: How many ticks kept active
 constexpr BLOCK BLOCK_WOOL = 141; // Data: Colour
-constexpr BLOCK BLOCK_SPECIAL_LAST = BLOCK_WOOL;
+constexpr BLOCK BLOCK_SLAB = 142;
+constexpr BLOCK BLOCK_SPECIAL_LAST = BLOCK_SLAB;
+
 
 constexpr uint8_t RANGE_WATER = 5;
 constexpr uint8_t RANGE_LAVA = 3;
