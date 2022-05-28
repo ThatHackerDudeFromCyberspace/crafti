@@ -68,10 +68,10 @@ const TerrainAtlasEntry &CarpetRenderer::destructionTexture(const BLOCK_WDATA bl
     return getCarpetTexture(block);
 }
 
-void CarpetRenderer::tick(const BLOCK_WDATA block, int local_x, int local_y, int local_z, Chunk &c) {
+void CarpetRenderer::tick(const BLOCK_WDATA /*block*/, int local_x, int local_y, int local_z, Chunk &c) {
     if (getBLOCK(c.getGlobalBlockRelative(local_x, local_y - 1, local_z)) == getBLOCK(BLOCK_AIR)) {
         // If there is no supporting block, remove the carpet
-        c.changeLocalBlock(local_x, local_y, local_z, getBLOCK(BLOCK_AIR));
+        c.setGlobalBlockRelative(local_x, local_y, local_z, getBLOCK(BLOCK_AIR));
     }
 }
 
