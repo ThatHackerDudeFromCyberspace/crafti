@@ -72,7 +72,7 @@ void CarpetRenderer::renderSpecialBlock(const BLOCK_WDATA block, GLFix x, GLFix 
     const TextureAtlasEntry &carpet_top = getCarpetTexture(block).current;
     TextureAtlasEntry carpet_sid = getCarpetTexture(block).current;
 
-    carpet_sid.top = carpet_sid.top + (carpet_sid.bottom - carpet_sid.top) * 1 / 16;
+    carpet_sid.top = carpet_sid.top + (carpet_sid.bottom - carpet_sid.top) * (1 / 16);
 
 
     //////
