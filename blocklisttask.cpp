@@ -81,7 +81,8 @@ static const BLOCK_WDATA user_selectable[] = {
     getBLOCKWDATA(BLOCK_SLAB, 4),
     getBLOCKWDATA(BLOCK_SLAB, 5),
     getBLOCKWDATA(BLOCK_SLAB, 6),
-    getBLOCKWDATA(BLOCK_SLAB, 7)
+    getBLOCKWDATA(BLOCK_SLAB, 7),
+    BLOCK_CACTUS
 };
 
 //The values have to stay somewhere
