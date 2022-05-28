@@ -3,7 +3,7 @@
 constexpr GLFix CarpetRenderer::carpet_height, CarpetRenderer::carpet_width;
 
 const TerrainAtlasEntry &CarpetRenderer::getCarpetTexture(const BLOCK_WDATA block) {
-    TerrainAtlasEntry tae = terrain_atlas[0][4];
+    TerrainAtlasEntry &tae = terrain_atlas[0][4];
 
     switch (static_cast<COLOUR>(getBLOCKDATA(block))) {
         case WHITE_CARPET:
