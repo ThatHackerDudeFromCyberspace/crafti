@@ -29,6 +29,7 @@ protected:
     static constexpr GLFix carpet_height = BLOCK_SIZE / 16 * 1;
     static constexpr GLFix carpet_width = BLOCK_SIZE;
 
+    // Carpet colour enum
     enum COLOUR {
         WHITE_CARPET=0, // white
         ORANGE_CARPET=1, // orange

@@ -2,6 +2,7 @@
 
 constexpr GLFix SlabRenderer::slab_height, SlabRenderer::slab_width;
 
+// Get slab texture
 const TerrainAtlasEntry &SlabRenderer::getSlabTexture(const BLOCK_WDATA block) {
     switch (static_cast<SLAB_TYPE>(getBLOCKDATA(block))) {
         default:

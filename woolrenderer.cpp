@@ -1,8 +1,9 @@
 #include "woolrenderer.h"
 
-void WoolRenderer::geometryNormalBlock(const BLOCK_WDATA block, const int local_x, const int local_y, const int local_z, const BLOCK_SIDE side, Chunk &c)
-{
-    TerrainAtlasEntry tae = terrain_atlas[0][4];
+
+// Get wool texture
+const TerrainAtlasEntry &WoolRenderer::getWoolTexture(const BLOCK_WDATA block) {
+    TerrainAtlasEntry &tae = terrain_atlas[0][4];
 
     switch (static_cast<COLOUR>(getBLOCKDATA(block))) {
         case WHITE_WOOL:
@@ -55,107 +56,21 @@ void WoolRenderer::geometryNormalBlock(const BLOCK_WDATA block, const int local_
             break;
     }
 
-    BlockRenderer::renderNormalBlockSide(local_x, local_y, local_z, side, tae.current, c);
+    return tae;
+}
+
+void WoolRenderer::geometryNormalBlock(const BLOCK_WDATA block, const int local_x, const int local_y, const int local_z, const BLOCK_SIDE side, Chunk &c)
+{
+    BlockRenderer::renderNormalBlockSide(local_x, local_y, local_z, side, getWoolTexture(block).current, c);
 }
 
 void WoolRenderer::drawPreview(const BLOCK_WDATA block, TEXTURE &dest, int x, int y)
 {
-    TerrainAtlasEntry tae = terrain_atlas[0][4];
-
-    switch (static_cast<COLOUR>(getBLOCKDATA(block))) {
-        case WHITE_WOOL:
-            tae = terrain_atlas[0][4];
-            break;
-        case ORANGE_WOOL:
-            tae = terrain_atlas[2][13];
-            break;
-        case MAGENTA_WOOL:
-            tae = terrain_atlas[2][12];
-            break;
-        case LIGHT_BLUE_WOOL:
-            tae = terrain_atlas[2][11];
-            break;
-        case YELLOW_WOOL:
-            tae = terrain_atlas[2][10];
-            break;
-        case LIME_WOOL:
-            tae = terrain_atlas[2][9];
-            break;
-        case PINK_WOOL:
-            tae = terrain_atlas[2][8];
-            break;
-        case GRAY_WOOL:
-            tae = terrain_atlas[2][7];
-            break;
-        case LIGHT_GRAY_WOOL:
-            tae = terrain_atlas[1][14];
-            break;
-        case CYAN_WOOL:
-            tae = terrain_atlas[1][13];
-            break;
-        case PURPLE_WOOL:
-            tae = terrain_atlas[1][12];
-            break;
-        case BLUE_WOOL:
-            tae = terrain_atlas[1][11];
-            break;
-        case BROWN_WOOL:
-            tae = terrain_atlas[1][10];
-            break;
-        case GREEN_WOOL:
-            tae = terrain_atlas[1][9];
-            break;
-        case RED_WOOL:
-            tae = terrain_atlas[1][8];
-            break;
-        case BLACK_WOOL:
-            tae = terrain_atlas[1][7];
-            break;
-        default:
-            tae = terrain_atlas[0][4];
-            break;
-    }
-
-    BlockRenderer::drawTextureAtlasEntry(*terrain_resized, tae.resized, dest, x, y);
+    BlockRenderer::drawTextureAtlasEntry(*terrain_resized, getWoolTexture(block).resized, dest, x, y);
 }
 
 const TerrainAtlasEntry &WoolRenderer::destructionTexture(const BLOCK_WDATA block) {
-    switch (static_cast<COLOUR>(getBLOCKDATA(block))) {
-        case WHITE_WOOL:
-            return terrain_atlas[0][4];
-        case ORANGE_WOOL:
-            return terrain_atlas[2][13];
-        case MAGENTA_WOOL:
-            return terrain_atlas[2][12];
-        case LIGHT_BLUE_WOOL:
-            return terrain_atlas[2][11];
-        case YELLOW_WOOL:
-            return terrain_atlas[2][10];
-        case LIME_WOOL:
-            return terrain_atlas[2][9];
-        case PINK_WOOL:
-            return terrain_atlas[2][8];
-        case GRAY_WOOL:
-            return terrain_atlas[2][7];
-        case LIGHT_GRAY_WOOL:
-            return terrain_atlas[1][14];
-        case CYAN_WOOL:
-            return terrain_atlas[1][13];
-        case PURPLE_WOOL:
-            return terrain_atlas[1][12];
-        case BLUE_WOOL:
-            return terrain_atlas[1][11];
-        case BROWN_WOOL:
-            return terrain_atlas[1][10];
-        case GREEN_WOOL:
-            return terrain_atlas[1][9];
-        case RED_WOOL:
-            return terrain_atlas[1][8];
-        case BLACK_WOOL:
-            return terrain_atlas[1][7];
-        default:
-            return terrain_atlas[0][4];
-    }
+    return getWoolTexture(block);
 }
 
 const char *WoolRenderer::getName(const BLOCK_WDATA block)

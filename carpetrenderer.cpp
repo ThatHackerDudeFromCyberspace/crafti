@@ -2,6 +2,7 @@
 
 constexpr GLFix CarpetRenderer::carpet_height, CarpetRenderer::carpet_width;
 
+// Get carpet texture function
 const TerrainAtlasEntry &CarpetRenderer::getCarpetTexture(const BLOCK_WDATA block) {
     TerrainAtlasEntry &tae = terrain_atlas[0][4];
 
@@ -62,16 +63,17 @@ const TerrainAtlasEntry &CarpetRenderer::getCarpetTexture(const BLOCK_WDATA bloc
     return tae;
 }
 
+// Get texture depending on carpet texture
 const TerrainAtlasEntry &CarpetRenderer::destructionTexture(const BLOCK_WDATA block) {
     return getCarpetTexture(block);
 }
 
 void CarpetRenderer::renderSpecialBlock(const BLOCK_WDATA block, GLFix x, GLFix y, GLFix z, Chunk &c)
 {
-
     const TextureAtlasEntry &carpet_top = getCarpetTexture(block).current;
     TextureAtlasEntry carpet_sid = getCarpetTexture(block).current;
 
+    // Carpet is only 1/16th in size
     carpet_sid.top = carpet_sid.top + (carpet_sid.bottom - carpet_sid.top) * (1 / 16);
 
 
