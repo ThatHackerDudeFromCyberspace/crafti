@@ -18,6 +18,7 @@
 #include "woolrenderer.h"
 #include "slabrenderer.h"
 #include "cactusrenderer.h"
+#include "carpetrenderer.h"
 
 UniversalBlockRenderer global_block_renderer;
 
@@ -386,6 +387,7 @@ UniversalBlockRenderer::UniversalBlockRenderer()
     map[BLOCK_WOOL] = std::make_shared<WoolRenderer>();
     map[BLOCK_SLAB] = std::make_shared<SlabRenderer>();
     map[BLOCK_CACTUS] = std::make_shared<CactusRenderer>();
+    map[BLOCK_CARPET] = std::make_shared<CarpetRenderer>();
     
     auto flower_renderer = std::make_shared<BillboardRenderer>();
     flower_renderer->setEntry(0, 12, 0, "Red flower", BLOCK_SIZE, BLOCK_SIZE/2, BLOCK_SIZE);
