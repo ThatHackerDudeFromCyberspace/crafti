@@ -17,11 +17,11 @@ public:
     virtual AABB getAABB(const BLOCK_WDATA, GLFix x, GLFix y, GLFix z) override;
 
     virtual void drawPreview(const BLOCK_WDATA block, TEXTURE &dest, int x, int y) override;
-    
+
     virtual const char* getName(const BLOCK_WDATA) override;
 
 protected:
-    static constexpr GLFix cactus_height = BLOCK_SIZE / 16 * 9;
+    static constexpr GLFix cactus_height = BLOCK_SIZE;
     static constexpr GLFix cactus_width = BLOCK_SIZE / 16 * 15;
 };
 
