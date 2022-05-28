@@ -20,6 +20,8 @@ public:
     
     // Used for particles spawned on destruction
     virtual const TerrainAtlasEntry &destructionTexture(const BLOCK_WDATA block) override;
+    
+    virtual void tick(const BLOCK_WDATA block, int local_x, int local_y, int local_z, Chunk &c) override;
 
     virtual const char* getName(const BLOCK_WDATA) override;
 
@@ -29,6 +31,7 @@ protected:
     static constexpr GLFix carpet_height = BLOCK_SIZE / 16 * 1;
     static constexpr GLFix carpet_width = BLOCK_SIZE;
 
+    // Carpet colour enum
     enum COLOUR {
         WHITE_CARPET=0, // white
         ORANGE_CARPET=1, // orange

@@ -6,7 +6,6 @@ void CakeRenderer::renderSpecialBlock(const BLOCK_WDATA block, GLFix x, GLFix y,
 {
     // NOTE: CAKE BOTTOM IS MANAGED LIKE A NORMAL BLOCK
 
-
     // Cake offset, the offsettiness of the cake (it isn't a full block ya know)
     const GLFix cake_offset = (GLFix(BLOCK_SIZE) - cake_width) * GLFix(0.5f);
     const TextureAtlasEntry &cake_top = terrain_atlas[9][7].current;
@@ -47,11 +46,9 @@ void CakeRenderer::renderSpecialBlock(const BLOCK_WDATA block, GLFix x, GLFix y,
     std::vector<VERTEX> cake_vertices;
     cake_vertices.reserve(20);
 
-    //cake_sid.right = cake_sid.right - (cake_sid.right - cake_sid.left) * (cake_max_bites - cake_bites) / 6;
-
+    // Get "texturemap" thingies for cake
     GLFix cake_left_texturemap = cake_sid.right - (cake_sid.right - cake_sid.left) * (cake_max_bites - cake_bites) / cake_max_bites;
     GLFix cake_right_texturemap = cake_sid.left + (cake_sid.right - cake_sid.left) * (cake_max_bites - cake_bites) / cake_max_bites;
-
     GLFix cake_top_texturemap = cake_top.left + (cake_top.right - cake_top.left) * (cake_max_bites - cake_bites) / cake_max_bites;
 
 
@@ -88,7 +85,7 @@ void CakeRenderer::renderSpecialBlock(const BLOCK_WDATA block, GLFix x, GLFix y,
     // Rotate Cake According To Face
     BLOCK_SIDE side = static_cast<BLOCK_SIDE>(getBLOCKDATA(block) & BLOCK_SIDE_BITS);
 
-
+    // Rotate GL stuff
     switch(side)
     {
         default:
@@ -176,9 +173,10 @@ bool CakeRenderer::action(const BLOCK_WDATA block, const int local_x, const int 
         return true;
     }
 
-    uint8_t pre_data = getBLOCKDATA(block) ^ (cake_bites << cake_bit_shift); // Set pre-existing cake_bites to zero
+    // Prepare data
+    uint8_t prep_data = getBLOCKDATA(block) ^ (cake_bites << cake_bit_shift); // Set pre-existing cake_bites to zero
 
-    uint8_t new_data = ((cake_bites + 1) << cake_bit_shift) | pre_data;
+    uint8_t new_data = ((cake_bites + 1) << cake_bit_shift) | prep_data;
 
     c.setLocalBlock(local_x, local_y, local_z, getBLOCKWDATA(getBLOCK(block), new_data));
 

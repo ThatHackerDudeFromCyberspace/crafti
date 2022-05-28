@@ -4,9 +4,6 @@ constexpr GLFix CactusRenderer::cactus_width;
 
 void CactusRenderer::renderSpecialBlock(const BLOCK_WDATA /*block*/, GLFix x, GLFix y, GLFix z, Chunk &c)
 {
-    // NOTE: CACTUS BOTTOM IS MANAGED LIKE A NORMAL BLOCK
-
-
     // Cactus offset, the offsettiness of the cactus (it isn't a full block ya know)
     const GLFix cactus_offset = (GLFix(BLOCK_SIZE) - cactus_width) * GLFix(0.5f);
 
@@ -18,44 +15,42 @@ void CactusRenderer::renderSpecialBlock(const BLOCK_WDATA /*block*/, GLFix x, GL
     //////
     glPushMatrix();
     glLoadIdentity();
-
-    glTranslatef(x + BLOCK_SIZE/2, y + BLOCK_SIZE/2, z + BLOCK_SIZE/2);
+    
+    glTranslatef(x, y, z);
 
     std::vector<VERTEX> cactus_vertices;
     cactus_vertices.reserve(20);
 
 
     // Cactus Side
-    cactus_vertices.push_back({0, 0, GLFix(0) + cactus_offset, cactus_sid.left, cactus_sid.bottom, TEXTURE_TRANSPARENT});
-    cactus_vertices.push_back({0, GLFix(0) + BLOCK_SIZE, GLFix(0) + cactus_offset, cactus_sid.left, cactus_sid.top, TEXTURE_TRANSPARENT});
-    cactus_vertices.push_back({GLFix(0) + cactus_width, GLFix(0) + BLOCK_SIZE, GLFix(0) + cactus_offset, cactus_sid.right, cactus_sid.top, TEXTURE_TRANSPARENT});
-    cactus_vertices.push_back({GLFix(0) + cactus_width, 0, GLFix(0) + cactus_offset, cactus_sid.right, cactus_sid.bottom, TEXTURE_TRANSPARENT});
+    cactus_vertices.push_back({0, 0, cactus_offset, cactus_sid.left, cactus_sid.bottom, TEXTURE_TRANSPARENT});
+    cactus_vertices.push_back({0, BLOCK_SIZE, cactus_offset, cactus_sid.left, cactus_sid.top, TEXTURE_TRANSPARENT});
+    cactus_vertices.push_back({cactus_width, BLOCK_SIZE, cactus_offset, cactus_sid.right, cactus_sid.top, TEXTURE_TRANSPARENT});
+    cactus_vertices.push_back({cactus_width, 0, cactus_offset, cactus_sid.right, cactus_sid.bottom, TEXTURE_TRANSPARENT});
 
     // Cactus Side
-    cactus_vertices.push_back({GLFix(0) + cactus_width, 0, GLFix(0) - cactus_offset + BLOCK_SIZE, cactus_sid.left, cactus_sid.bottom, TEXTURE_TRANSPARENT});
-    cactus_vertices.push_back({GLFix(0) + cactus_width, GLFix(0) + BLOCK_SIZE, GLFix(0) - cactus_offset + BLOCK_SIZE, cactus_sid.left, cactus_sid.top, TEXTURE_TRANSPARENT});
-    cactus_vertices.push_back({0, GLFix(0) + BLOCK_SIZE, GLFix(0) - cactus_offset + BLOCK_SIZE, cactus_sid.right, cactus_sid.top, TEXTURE_TRANSPARENT});
+    cactus_vertices.push_back({cactus_width, 0, GLFix(0) - cactus_offset + BLOCK_SIZE, cactus_sid.left, cactus_sid.bottom, TEXTURE_TRANSPARENT});
+    cactus_vertices.push_back({cactus_width, BLOCK_SIZE, GLFix(0) - cactus_offset + BLOCK_SIZE, cactus_sid.left, cactus_sid.top, TEXTURE_TRANSPARENT});
+    cactus_vertices.push_back({0, BLOCK_SIZE, GLFix(0) - cactus_offset + BLOCK_SIZE, cactus_sid.right, cactus_sid.top, TEXTURE_TRANSPARENT});
     cactus_vertices.push_back({0, 0, GLFix(0) - cactus_offset + BLOCK_SIZE, cactus_sid.right, cactus_sid.bottom, TEXTURE_TRANSPARENT});
 
     // Cactus Back Side
-    cactus_vertices.push_back({GLFix(0) + cactus_offset, 0, GLFix(0) + BLOCK_SIZE, cactus_sid.left, cactus_sid.bottom, TEXTURE_TRANSPARENT});
-    cactus_vertices.push_back({GLFix(0) + cactus_offset, GLFix(0) + BLOCK_SIZE, 0 + BLOCK_SIZE, cactus_sid.left, cactus_sid.top, TEXTURE_TRANSPARENT});
-    cactus_vertices.push_back({GLFix(0) + cactus_offset, GLFix(0) + BLOCK_SIZE, 0, cactus_sid.right, cactus_sid.top, TEXTURE_TRANSPARENT});
-    cactus_vertices.push_back({GLFix(0) + cactus_offset, 0, 0, cactus_sid.right, cactus_sid.bottom, TEXTURE_TRANSPARENT});
+    cactus_vertices.push_back({cactus_offset, 0, BLOCK_SIZE, cactus_sid.left, cactus_sid.bottom, TEXTURE_TRANSPARENT});
+    cactus_vertices.push_back({cactus_offset, BLOCK_SIZE, BLOCK_SIZE, cactus_sid.left, cactus_sid.top, TEXTURE_TRANSPARENT});
+    cactus_vertices.push_back({cactus_offset, BLOCK_SIZE, 0, cactus_sid.right, cactus_sid.top, TEXTURE_TRANSPARENT});
+    cactus_vertices.push_back({cactus_offset, 0, 0, cactus_sid.right, cactus_sid.bottom, TEXTURE_TRANSPARENT});
 
     // Cactus (Front) Inside
     cactus_vertices.push_back({(GLFix(0) - cactus_offset) + cactus_width, 0, 0, cactus_sid.left, cactus_sid.bottom, TEXTURE_TRANSPARENT});
-    cactus_vertices.push_back({(GLFix(0) - cactus_offset) + cactus_width, GLFix(0) + BLOCK_SIZE, 0, cactus_sid.left, cactus_sid.top, TEXTURE_TRANSPARENT});
-    cactus_vertices.push_back({(GLFix(0) - cactus_offset) + cactus_width, GLFix(0) + BLOCK_SIZE, 0 + BLOCK_SIZE, cactus_sid.right, cactus_sid.top, TEXTURE_TRANSPARENT});
-    cactus_vertices.push_back({(GLFix(0) - cactus_offset) + cactus_width, 0, 0 + BLOCK_SIZE, cactus_sid.right, cactus_sid.bottom, TEXTURE_TRANSPARENT});
+    cactus_vertices.push_back({(GLFix(0) - cactus_offset) + cactus_width, BLOCK_SIZE, 0, cactus_sid.left, cactus_sid.top, TEXTURE_TRANSPARENT});
+    cactus_vertices.push_back({(GLFix(0) - cactus_offset) + cactus_width, BLOCK_SIZE, BLOCK_SIZE, cactus_sid.right, cactus_sid.top, TEXTURE_TRANSPARENT});
+    cactus_vertices.push_back({(GLFix(0) - cactus_offset) + cactus_width, 0, BLOCK_SIZE, cactus_sid.right, cactus_sid.bottom, TEXTURE_TRANSPARENT});
 
     // Cactus Top
-    cactus_vertices.push_back({GLFix(0) + BLOCK_SIZE, GLFix(0) + BLOCK_SIZE, GLFix(0) + BLOCK_SIZE, cactus_top.left, cactus_top.bottom, TEXTURE_TRANSPARENT});
-    cactus_vertices.push_back({GLFix(0) + BLOCK_SIZE, GLFix(0) + BLOCK_SIZE, GLFix(0) + BLOCK_SIZE - BLOCK_SIZE, cactus_top.left, cactus_top.top, TEXTURE_TRANSPARENT});
-    cactus_vertices.push_back({GLFix(0) + cactus_width - BLOCK_SIZE, GLFix(0) + BLOCK_SIZE, GLFix(0) + BLOCK_SIZE - BLOCK_SIZE, cactus_top.right, cactus_top.top, TEXTURE_TRANSPARENT});
-    cactus_vertices.push_back({GLFix(0) + cactus_width - BLOCK_SIZE, GLFix(0) + BLOCK_SIZE, GLFix(0) + BLOCK_SIZE, cactus_top.right, cactus_top.bottom, TEXTURE_TRANSPARENT});
-
-    glTranslatef(-BLOCK_SIZE / 2, -BLOCK_SIZE / 2, -BLOCK_SIZE / 2);
+    cactus_vertices.push_back({BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE, cactus_top.left, cactus_top.bottom, TEXTURE_TRANSPARENT});
+    cactus_vertices.push_back({BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE - BLOCK_SIZE, cactus_top.left, cactus_top.top, TEXTURE_TRANSPARENT});
+    cactus_vertices.push_back({cactus_width - BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE - BLOCK_SIZE, cactus_top.right, cactus_top.top, TEXTURE_TRANSPARENT});
+    cactus_vertices.push_back({cactus_width - BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE, cactus_top.right, cactus_top.bottom, TEXTURE_TRANSPARENT});
 
     for(auto&& v : cactus_vertices)
     {
