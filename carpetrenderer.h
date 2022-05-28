@@ -26,7 +26,7 @@ public:
 protected:
     const TerrainAtlasEntry &getCarpetTexture(const BLOCK_WDATA block);
 
-    static constexpr GLFix carpet_height = BLOCK_SIZE / 16 * 4;
+    static constexpr GLFix carpet_height = BLOCK_SIZE / 16 * 1;
     static constexpr GLFix carpet_width = BLOCK_SIZE;
 
     enum COLOUR {
