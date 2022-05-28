@@ -9,6 +9,8 @@ void CactusRenderer::renderSpecialBlock(const BLOCK_WDATA block, GLFix x, GLFix 
 
     // Cactus offset, the offsettiness of the cactus (it isn't a full block ya know)
     const GLFix cactus_offset = (GLFix(BLOCK_SIZE) - cactus_width) * GLFix(0.5f);
+    const GLFix cactus_top_offset = BLOCK_SIZE;//(GLFix(BLOCK_SIZE) - cactus_width) * GLFix(0.5f);
+
     const TextureAtlasEntry &cactus_top = terrain_atlas[5][4].current;
     TextureAtlasEntry cactus_sid = terrain_atlas[6][4].current;
 
@@ -59,10 +61,10 @@ void CactusRenderer::renderSpecialBlock(const BLOCK_WDATA block, GLFix x, GLFix 
     cactus_vertices.push_back({(GLFix(0) - cactus_offset) + cactus_width, 0, 0 + BLOCK_SIZE, cactus_sid.right, cactus_sid.bottom, TEXTURE_TRANSPARENT});
 
     // Cactus Top
-    cactus_vertices.push_back({GLFix(0) + cactus_offset, GLFix(0) + cactus_height, GLFix(0) + cactus_offset, cactus_top.left, cactus_top.bottom, TEXTURE_TRANSPARENT});
-    cactus_vertices.push_back({GLFix(0) + cactus_offset, GLFix(0) + cactus_height, GLFix(0) + BLOCK_SIZE - cactus_offset, cactus_top.left, cactus_top.top, TEXTURE_TRANSPARENT});
-    cactus_vertices.push_back({GLFix(0) + cactus_width - cactus_offset, GLFix(0) + cactus_height, GLFix(0) + BLOCK_SIZE - cactus_offset, cactus_top_texturemap, cactus_top.top, TEXTURE_TRANSPARENT});
-    cactus_vertices.push_back({GLFix(0) + cactus_width - cactus_offset, GLFix(0) + cactus_height, GLFix(0) + cactus_offset, cactus_top_texturemap, cactus_top.bottom, TEXTURE_TRANSPARENT});
+    cactus_vertices.push_back({GLFix(0) + cactus_top_offset, GLFix(0) + cactus_height, GLFix(0) + cactus_top_offset, cactus_top.left, cactus_top.bottom, TEXTURE_TRANSPARENT});
+    cactus_vertices.push_back({GLFix(0) + cactus_top_offset, GLFix(0) + cactus_height, GLFix(0) + BLOCK_SIZE - cactus_top_offset, cactus_top.left, cactus_top.top, TEXTURE_TRANSPARENT});
+    cactus_vertices.push_back({GLFix(0) + cactus_width - cactus_top_offset, GLFix(0) + cactus_height, GLFix(0) + BLOCK_SIZE - cactus_top_offset, cactus_top_texturemap, cactus_top.top, TEXTURE_TRANSPARENT});
+    cactus_vertices.push_back({GLFix(0) + cactus_width - cactus_top_offset, GLFix(0) + cactus_height, GLFix(0) + cactus_top_offset, cactus_top_texturemap, cactus_top.bottom, TEXTURE_TRANSPARENT});
 
     // Rotate Cactus According To Face
     BLOCK_SIDE side = static_cast<BLOCK_SIDE>(getBLOCKDATA(block) & BLOCK_SIDE_BITS);
