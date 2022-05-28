@@ -2,7 +2,7 @@
 
 constexpr GLFix CactusRenderer::cactus_width;
 
-void CactusRenderer::renderSpecialBlock(const BLOCK_WDATA block, GLFix x, GLFix y, GLFix z, Chunk &c)
+void CactusRenderer::renderSpecialBlock(const BLOCK_WDATA /*block*/, GLFix x, GLFix y, GLFix z, Chunk &c)
 {
     // NOTE: CACTUS BOTTOM IS MANAGED LIKE A NORMAL BLOCK
 
