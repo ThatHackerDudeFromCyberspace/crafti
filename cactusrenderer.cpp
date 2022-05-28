@@ -9,8 +9,8 @@ void CactusRenderer::renderSpecialBlock(const BLOCK_WDATA block, GLFix x, GLFix 
 
     // Cactus offset, the offsettiness of the cactus (it isn't a full block ya know)
     const GLFix cactus_offset = (GLFix(BLOCK_SIZE) - cactus_width) * GLFix(0.5f);
-    const TextureAtlasEntry &cactus_top = terrain_atlas[9][7].current;
-    TextureAtlasEntry cactus_sid = terrain_atlas[10][7].current;
+    const TextureAtlasEntry &cactus_top = terrain_atlas[5][4].current;
+    TextureAtlasEntry cactus_sid = terrain_atlas[6][4].current;
 
     cactus_sid.top = cactus_sid.top + (cactus_sid.bottom - cactus_sid.top) * 9 / 16;
 
@@ -119,7 +119,7 @@ AABB CactusRenderer::getAABB(const BLOCK_WDATA block, GLFix x, GLFix y, GLFix z)
 
 void CactusRenderer::drawPreview(const BLOCK_WDATA /*block*/, TEXTURE &dest, int x, int y)
 {
-    TextureAtlasEntry &tex = terrain_atlas[12][8].resized;
+    TextureAtlasEntry &tex = terrain_atlas[7][4].resized;
     BlockRenderer::drawTextureAtlasEntry(*terrain_resized, tex, dest, x, y);
 }
 
