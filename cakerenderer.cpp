@@ -6,7 +6,6 @@ void CakeRenderer::renderSpecialBlock(const BLOCK_WDATA block, GLFix x, GLFix y,
 {
     // NOTE: CAKE BOTTOM IS MANAGED LIKE A NORMAL BLOCK
 
-
     // Cake offset, the offsettiness of the cake (it isn't a full block ya know)
     const GLFix cake_offset = (GLFix(BLOCK_SIZE) - cake_width) * GLFix(0.5f);
     const TextureAtlasEntry &cake_top = terrain_atlas[9][7].current;
@@ -42,7 +41,7 @@ void CakeRenderer::renderSpecialBlock(const BLOCK_WDATA block, GLFix x, GLFix y,
     glPushMatrix();
     glLoadIdentity();
 
-    glTranslatef(x + BLOCK_SIZE/2, y + BLOCK_SIZE/2, z + BLOCK_SIZE/2);
+    glTranslatef(x, y, z);
 
     std::vector<VERTEX> cake_vertices;
     cake_vertices.reserve(20);
@@ -106,9 +105,7 @@ void CakeRenderer::renderSpecialBlock(const BLOCK_WDATA block, GLFix x, GLFix y,
             nglRotateY(0);
             break;
     }
-
-    glTranslatef(-BLOCK_SIZE / 2, -BLOCK_SIZE / 2, -BLOCK_SIZE / 2);
-
+    
     for(auto&& v : cake_vertices)
     {
         VERTEX v1;

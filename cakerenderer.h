@@ -23,8 +23,6 @@ public:
     virtual const char* getName(const BLOCK_WDATA) override;
 
 protected:
-    GLFix getCakeSize(const BLOCK_WDATA block);
-
     static constexpr GLFix cake_height = BLOCK_SIZE / 16 * 9;
     static constexpr GLFix cake_width = BLOCK_SIZE / 16 * 15;
 
