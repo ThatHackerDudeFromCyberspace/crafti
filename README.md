@@ -91,7 +91,7 @@ TODO for next version
 - [x] Implement special block destruction particle rendering
 - [x] Make cake edible
 - [x] Add slabs
-- [ ] Add carpet
+- [x] Add carpet
 - [ ] Add pistons
 - [ ] Add localisation
 - [ ] Add villager house generation to make world more lively
