@@ -101,6 +101,8 @@ static const BLOCK_WDATA user_selectable[] = {
     getBLOCKWDATA(BLOCK_CARPET, 13),
     getBLOCKWDATA(BLOCK_CARPET, 14),
     getBLOCKWDATA(BLOCK_CARPET, 15),
+
+    getBLOCKWDATA(BLOCK_PISTON, 0)
 };
 
 //The values have to stay somewhere
