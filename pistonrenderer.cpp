@@ -15,7 +15,7 @@ void PistonRenderer::renderSpecialBlock(const BLOCK_WDATA block, GLFix x, GLFix 
     /////
     // Get the piston data
     /////
-    const uint8_t piston_bites = 0;
+    const uint8_t piston_bites = static_cast<uint8_t>((getBLOCKDATA(block) & piston_data_bits) >> piston_bit_shift);
 
 
     piston_sid.top = piston_sid.top + (piston_sid.bottom - piston_sid.top) * 9 / 16;
@@ -136,7 +136,7 @@ AABB PistonRenderer::getAABB(const BLOCK_WDATA block, GLFix x, GLFix y, GLFix z)
     /////
     // Get the piston data
     /////
-    const uint8_t piston_bites = 0;
+    const uint8_t piston_bites = static_cast<uint8_t>((getBLOCKDATA(block) & piston_data_bits) >> piston_bit_shift);
 
     // Calculate the piston's size
     const GLFix piston_size = (piston_width / piston_max_bites) * (piston_max_bites - piston_bites);
@@ -166,7 +166,7 @@ bool PistonRenderer::action(const BLOCK_WDATA block, const int local_x, const in
     /////
     // Get the piston data
     /////
-    const uint8_t piston_bites = 0;
+    const uint8_t piston_bites = static_cast<uint8_t>((getBLOCKDATA(block) & piston_data_bits) >> piston_bit_shift);
 
     if (piston_bites + 1 >= piston_max_bites) {
         c.setLocalBlock(local_x, local_y, local_z, getBLOCK(BLOCK_AIR));
