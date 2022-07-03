@@ -9,6 +9,7 @@ void CakeRenderer::renderSpecialBlock(const BLOCK_WDATA block, GLFix x, GLFix y,
     // Cake offset, the offsettiness of the cake (it isn't a full block ya know)
     const GLFix cake_offset = (GLFix(BLOCK_SIZE) - cake_width) * GLFix(0.5f);
     const TextureAtlasEntry &cake_top = terrain_atlas[9][7].current;
+    const TextureAtlasEntry &cake_bottom = terrain_atlas[12][7].current;
     TextureAtlasEntry cake_sid = terrain_atlas[10][7].current;
 
 
@@ -82,6 +83,12 @@ void CakeRenderer::renderSpecialBlock(const BLOCK_WDATA block, GLFix x, GLFix y,
     cake_vertices.push_back({GLFix(0) + cake_size - cake_offset, GLFix(0) + cake_height, GLFix(0) + BLOCK_SIZE - cake_offset, cake_top_texturemap, cake_top.top, TEXTURE_TRANSPARENT});
     cake_vertices.push_back({GLFix(0) + cake_size - cake_offset, GLFix(0) + cake_height, GLFix(0) + cake_offset, cake_top_texturemap, cake_top.bottom, TEXTURE_TRANSPARENT});
 
+    // Cake Bottom
+    cake_vertices.push_back({GLFix(0) + cake_offset, GLFix(0), GLFix(0) + cake_offset, cake_bottom.left, cake_bottom.bottom, TEXTURE_DRAW_BACKFACE});
+    cake_vertices.push_back({GLFix(0) + cake_offset, GLFix(0), GLFix(0) + BLOCK_SIZE - cake_offset, cake_bottom.left, cake_bottom.top, TEXTURE_DRAW_BACKFACE});
+    cake_vertices.push_back({GLFix(0) + cake_size - cake_offset, GLFix(0), GLFix(0) + BLOCK_SIZE - cake_offset, cake_top_texturemap, cake_top.top, TEXTURE_DRAW_BACKFACE});
+    cake_vertices.push_back({GLFix(0) + cake_size - cake_offset, GLFix(0), GLFix(0) + cake_offset, cake_top_texturemap, cake_bottom.bottom, TEXTURE_DRAW_BACKFACE});
+
     // Rotate Cake According To Face
     BLOCK_SIDE side = static_cast<BLOCK_SIDE>(getBLOCKDATA(block) & BLOCK_SIDE_BITS);
 
@@ -114,16 +121,6 @@ void CakeRenderer::renderSpecialBlock(const BLOCK_WDATA block, GLFix x, GLFix y,
     }
 
     glPopMatrix();
-}
-
-void CakeRenderer::geometryNormalBlock(const BLOCK_WDATA /*block*/, const int local_x, const int local_y, const int local_z, const BLOCK_SIDE side, Chunk &c)
-{
-    // Render the bottom of the block as a normal side (needs to be replaced later)
-    if(side != BLOCK_BOTTOM)
-        return;
-
-    // BOTTOM DOESN'T WORK!!! afdghtresdvbhtredfsvcbgfhtresd
-    renderNormalBlockSide(local_x, local_y, local_z, side, terrain_atlas[12][7].current, c);
 }
 
 AABB CakeRenderer::getAABB(const BLOCK_WDATA block, GLFix x, GLFix y, GLFix z)
