@@ -43,16 +43,16 @@ void PistonRenderer::renderSpecialBlock(const BLOCK_WDATA block, GLFix x, GLFix 
         default:
             break;
         case BLOCK_BACK:
-            nglRotateY(50);
+            nglRotateY(180);
             break;
         case BLOCK_FRONT:
             nglRotateY(0);
             break;
         case BLOCK_LEFT:
-            nglRotateY(50);
+            nglRotateY(90);
             break;
         case BLOCK_RIGHT:
-            nglRotateY(50);
+            nglRotateY(270);
             break;
     }
 
@@ -70,12 +70,7 @@ void PistonRenderer::renderSpecialBlock(const BLOCK_WDATA block, GLFix x, GLFix 
 
 void PistonRenderer::geometryNormalBlock(const BLOCK_WDATA /*block*/, const int local_x, const int local_y, const int local_z, const BLOCK_SIDE side, Chunk &c)
 {
-    // Render the bottom of the block as a normal side (needs to be replaced later)
-    if(side != BLOCK_BOTTOM)
-        return;
-
-    // BOTTOM DOESN'T WORK!!! afdghtresdvbhtredfsvcbgfhtresd
-    renderNormalBlockSide(local_x, local_y, local_z, side, terrain_atlas[12][7].current, c);
+    return;
 }
 
 AABB PistonRenderer::getAABB(const BLOCK_WDATA block, GLFix x, GLFix y, GLFix z)
