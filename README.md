@@ -9,10 +9,10 @@ Thread on omnimaga: http://www.omnimaga.org/ti-nspire-projects/ngl-a-fast-(enoug
 Screenshots
 -----------
 
-![asdf](http://www.ticalc.org/archives/files/ss/859/85909.gif)
-![jklö](http://i.imgur.com/WMDurMv.png)  
-![qwertz](http://www.ticalc.org/archives/files/ss/855/85542.gif)
-![abcde](http://img.ourl.ca/crafti_v1.0_list.png)
+![Crafti Redstone](/.github/images/crafti_redstone.gif)
+![Crafti Help](/.github/images/crafti_help.png)  
+![Crafti Menu](/.github/images/crafti_menu.gif)
+![Crafti List](/.github/images/crafti_v1.0_list.png)
 
 Controls
 --------
