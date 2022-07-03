@@ -81,6 +81,10 @@ Contributors
 </table>
 <!-- readme: contributors -end -->
 
+Development
+-----------
+Crafti is written in C++, so an understanding of the language is recommended, documentation of how each piece of the code works, including tutorials is available:
+In the [WIKI](../../wiki)
 
 TODO for next version
 -----------
