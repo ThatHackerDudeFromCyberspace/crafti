@@ -6,28 +6,15 @@ void PistonRenderer::renderSpecialBlock(const BLOCK_WDATA block, GLFix x, GLFix 
 {
     // NOTE: PISTON BOTTOM IS MANAGED LIKE A NORMAL BLOCK
 
-    // Piston offset, the offsettiness of the piston (it isn't a full block ya know)
-    const GLFix piston_offset = (GLFix(BLOCK_SIZE) - piston_width) * GLFix(0.5f);
-    //const TextureAtlasEntry &piston_sid = terrain_atlas[12][6].current;
-    TextureAtlasEntry piston_sid = terrain_atlas[12][6].current;
+    TextureAtlasEntry piston_side = terrain_atlas[12][6].current;
+    TextureAtlasEntry piston_back = terrain_atlas[12][6].current;
+    TextureAtlasEntry piston_front = terrain_atlas[12][6].current;
 
 
     /////
     // Get the piston data
     /////
-    const uint8_t piston_bites = static_cast<uint8_t>((getBLOCKDATA(block) & piston_data_bits) >> piston_bit_shift);
-
-
-    piston_sid.top = piston_sid.top + (piston_sid.bottom - piston_sid.top) * 9 / 16;
-    
-    // If piston not full, set "inside" to standard side
-    TextureAtlasEntry piston_inside = terrain_atlas[11][6].current;
-    piston_inside.top = piston_inside.top + (piston_inside.bottom - piston_inside.top) * 9 / 16;
-
-
-
-    // Calculate the piston's size
-    const GLFix piston_size = (piston_width / piston_max_bites) * (piston_max_bites - piston_bites);
+    const uint8_t piston_type = static_cast<uint8_t>((getBLOCKDATA(block) & piston_data_bits) >> piston_bit_shift);
 
 
     //////
@@ -39,38 +26,13 @@ void PistonRenderer::renderSpecialBlock(const BLOCK_WDATA block, GLFix x, GLFix 
     glTranslatef(x + BLOCK_SIZE/2, y + BLOCK_SIZE/2, z + BLOCK_SIZE/2);
 
     std::vector<VERTEX> piston_vertices;
-    piston_vertices.reserve(20);
+    piston_vertices.reserve(5);
 
-
-    // Piston Side
-    piston_vertices.push_back({0, 0, GLFix(0) + piston_offset, piston_sid.left, piston_sid.bottom, TEXTURE_TRANSPARENT});
-    piston_vertices.push_back({0, GLFix(0) + piston_height, GLFix(0) + piston_offset, piston_sid.left, piston_sid.top, TEXTURE_TRANSPARENT});
-    piston_vertices.push_back({GLFix(0) + piston_size, GLFix(0) + piston_height, GLFix(0) + piston_offset, piston_sid.right, piston_sid.top, TEXTURE_TRANSPARENT});
-    piston_vertices.push_back({GLFix(0) + piston_size, 0, GLFix(0) + piston_offset, piston_sid.right, piston_sid.bottom, TEXTURE_TRANSPARENT});
-
-    // Piston Side
-    piston_vertices.push_back({GLFix(0) + piston_size, 0, GLFix(0) - piston_offset + BLOCK_SIZE, piston_sid.left, piston_sid.bottom, TEXTURE_TRANSPARENT});
-    piston_vertices.push_back({GLFix(0) + piston_size, GLFix(0) + piston_height, GLFix(0) - piston_offset + BLOCK_SIZE, piston_sid.left, piston_sid.top, TEXTURE_TRANSPARENT});
-    piston_vertices.push_back({0, GLFix(0) + piston_height, GLFix(0) - piston_offset + BLOCK_SIZE, piston_sid.right, piston_sid.top, TEXTURE_TRANSPARENT});
-    piston_vertices.push_back({0, 0, GLFix(0) - piston_offset + BLOCK_SIZE, piston_sid.right, piston_sid.bottom, TEXTURE_TRANSPARENT});
-
-    // Piston Back Side
-    piston_vertices.push_back({GLFix(0) + piston_offset, 0, GLFix(0) + BLOCK_SIZE, piston_sid.left, piston_sid.bottom, TEXTURE_TRANSPARENT});
-    piston_vertices.push_back({GLFix(0) + piston_offset, GLFix(0) + piston_height, 0 + BLOCK_SIZE, piston_sid.left, piston_sid.top, TEXTURE_TRANSPARENT});
-    piston_vertices.push_back({GLFix(0) + piston_offset, GLFix(0) + piston_height, 0, piston_sid.right, piston_sid.top, TEXTURE_TRANSPARENT});
-    piston_vertices.push_back({GLFix(0) + piston_offset, 0, 0, piston_sid.right, piston_sid.bottom, TEXTURE_TRANSPARENT});
-
-    // Piston (Front) Inside
-    piston_vertices.push_back({(GLFix(0) - piston_offset) + piston_size, 0, 0, piston_inside.left, piston_inside.bottom, TEXTURE_TRANSPARENT});
-    piston_vertices.push_back({(GLFix(0) - piston_offset) + piston_size, GLFix(0) + piston_height, 0, piston_inside.left, piston_inside.top, TEXTURE_TRANSPARENT});
-    piston_vertices.push_back({(GLFix(0) - piston_offset) + piston_size, GLFix(0) + piston_height, 0 + BLOCK_SIZE, piston_inside.right, piston_inside.top, TEXTURE_TRANSPARENT});
-    piston_vertices.push_back({(GLFix(0) - piston_offset) + piston_size, 0, 0 + BLOCK_SIZE, piston_inside.right, piston_inside.bottom, TEXTURE_TRANSPARENT});
-
-    // Piston Top
-    piston_vertices.push_back({GLFix(0) + piston_offset, GLFix(0) + piston_height, GLFix(0) + piston_offset, piston_sid.left, piston_sid.bottom, TEXTURE_TRANSPARENT});
-    piston_vertices.push_back({GLFix(0) + piston_offset, GLFix(0) + piston_height, GLFix(0) + BLOCK_SIZE - piston_offset, piston_sid.left, piston_sid.top, TEXTURE_TRANSPARENT});
-    piston_vertices.push_back({GLFix(0) + piston_size - piston_offset, GLFix(0) + piston_height, GLFix(0) + BLOCK_SIZE - piston_offset, piston_sid.top, piston_sid.top, TEXTURE_TRANSPARENT});
-    piston_vertices.push_back({GLFix(0) + piston_size - piston_offset, GLFix(0) + piston_height, GLFix(0) + piston_offset, piston_sid.top, piston_sid.bottom, TEXTURE_TRANSPARENT});
+    // Piston Front
+    piston_vertices.push_back({0, 0, 0, piston_side.left, piston_side.bottom, TEXTURE_TRANSPARENT});
+    piston_vertices.push_back({0, GLFix(0) + BLOCK_SIZE, 0, piston_side.left, piston_side.top, TEXTURE_TRANSPARENT});
+    piston_vertices.push_back({GLFix(0) + BLOCK_SIZE, GLFix(0) + BLOCK_SIZE, 0, piston_side.right, piston_side.top, TEXTURE_TRANSPARENT});
+    piston_vertices.push_back({GLFix(0) + BLOCK_SIZE, 0, 0, piston_side.right, piston_side.bottom, TEXTURE_TRANSPARENT});
 
     // Rotate Piston According To Face
     BLOCK_SIDE side = static_cast<BLOCK_SIDE>(getBLOCKDATA(block) & BLOCK_SIDE_BITS);
@@ -81,16 +43,16 @@ void PistonRenderer::renderSpecialBlock(const BLOCK_WDATA block, GLFix x, GLFix 
         default:
             break;
         case BLOCK_BACK:
-            nglRotateY(270);
+            nglRotateY(50);
             break;
         case BLOCK_FRONT:
-            nglRotateY(90);
+            nglRotateY(0);
             break;
         case BLOCK_LEFT:
-            nglRotateY(180);
+            nglRotateY(50);
             break;
         case BLOCK_RIGHT:
-            nglRotateY(0);
+            nglRotateY(50);
             break;
     }
 
