@@ -94,5 +94,6 @@ TODO for next version
 - [x] Add carpet
 - [ ] Add pistons
 - [ ] Add localisation
+- [ ] Add redstone block
 - [ ] Add villager house generation to make world more lively
 - [ ] Documentation of functions and whatnot for future devs (mostly me)
