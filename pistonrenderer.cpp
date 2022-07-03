@@ -8,8 +8,8 @@ void PistonRenderer::renderSpecialBlock(const BLOCK_WDATA block, GLFix x, GLFix 
 
     // Piston offset, the offsettiness of the piston (it isn't a full block ya know)
     const GLFix piston_offset = (GLFix(BLOCK_SIZE) - piston_width) * GLFix(0.5f);
-    const TextureAtlasEntry &piston_top = terrain_atlas[9][7].current;
-    TextureAtlasEntry piston_sid = terrain_atlas[10][7].current;
+    const TextureAtlasEntry &piston_top = terrain_atlas[12][6].current;
+    TextureAtlasEntry piston_sid = terrain_atlas[12][6].current;
 
 
     /////
@@ -25,7 +25,7 @@ void PistonRenderer::renderSpecialBlock(const BLOCK_WDATA block, GLFix x, GLFix 
 
     if (piston_bites > 0) {
         // Piston inside only if piston is not full
-        piston_inside = terrain_atlas[11][7].current;
+        piston_inside = terrain_atlas[11][6].current;
         piston_inside.top = piston_inside.top + (piston_inside.bottom - piston_inside.top) * 9 / 16;
     }
 
