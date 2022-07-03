@@ -121,6 +121,42 @@ void PistonRenderer::geometryNormalBlock(const BLOCK_WDATA /*block*/, const int 
     renderNormalBlockSide(local_x, local_y, local_z, side, terrain_atlas[12][7].current, c);
 }
 
+AABB PistonRenderer::getAABB(const BLOCK_WDATA block, GLFix x, GLFix y, GLFix z)
+{
+    // Get block side
+    BLOCK_SIDE side = static_cast<BLOCK_SIDE>(getBLOCKDATA(block) & BLOCK_SIDE_BITS);
+    const GLFix piston_offset = (GLFix(BLOCK_SIZE) - piston_width) * GLFix(0.5f);
+
+
+    /////
+    // Get the piston data
+    /////
+    const uint8_t piston_bites = static_cast<uint8_t>((getBLOCKDATA(block) & piston_data_bits) >> piston_bit_shift);
+
+    // Calculate the piston's size
+    const GLFix piston_size = (piston_width / piston_max_bites) * (piston_max_bites - piston_bites);
+
+    switch(side)
+    {
+        default:
+            return {x + piston_offset, y, z + piston_offset + (piston_width - piston_size), x + piston_offset + piston_width, y + piston_height, z + piston_offset + piston_width};
+            break;
+        case BLOCK_BACK:
+            return {x + piston_offset, y, z + piston_offset, x + piston_offset + piston_width, y + piston_height, z + piston_offset +  piston_size};
+            break;
+        case BLOCK_FRONT:
+            return {x + piston_offset, y, z + piston_offset + (piston_width - piston_size), x + piston_offset + piston_width, y + piston_height, z + piston_offset + piston_width};
+            break;
+        case BLOCK_LEFT:
+            return {x + piston_offset + (piston_width - piston_size), y, z + piston_offset, x + piston_offset + piston_width, y + piston_height, z + piston_offset + piston_width};
+            break;
+        case BLOCK_RIGHT:
+            return {x + piston_offset, y, z + piston_offset, x + piston_offset + piston_size, y + piston_height, z + piston_offset + piston_width};
+            break;
+    }
+    
+}
+
 bool PistonRenderer::action(const BLOCK_WDATA block, const int local_x, const int local_y, const int local_z, Chunk &c) {
     /////
     // Get the piston data
