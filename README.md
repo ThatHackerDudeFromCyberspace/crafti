@@ -84,7 +84,7 @@ Contributors
 Development
 -----------
 Crafti is written in C++, so an understanding of the language is recommended, documentation of how each piece of the code works, including tutorials is available:
-In the [WIKI](../../wiki)
+In the [Wiki](../../wiki)
 
 TODO for next version
 -----------
