@@ -343,6 +343,7 @@ UniversalBlockRenderer::UniversalBlockRenderer()
 {
     auto color_renderer = std::make_shared<ColorBlockRenderer>();
     auto normal_renderer = std::make_shared<NormalBlockRenderer>();
+    auto opacity_renderer = std::make_shared<GlassRenderer>();
     auto oriented_renderer = std::make_shared<OrientedBlockRenderer>();
     auto null_renderer = std::make_shared<NullBlockRenderer>();
 
@@ -366,7 +367,7 @@ UniversalBlockRenderer::UniversalBlockRenderer()
     map[BLOCK_DIRT] = color_renderer;
     map[BLOCK_DOOR] = std::make_shared<DoorRenderer>();
     map[BLOCK_FURNACE] = oriented_renderer;
-    map[BLOCK_GLASS] = std::make_shared<GlassRenderer>();
+    map[BLOCK_GLASS] = opacity_renderer;
     map[BLOCK_GRASS] = color_renderer;
     map[BLOCK_LEAVES] = std::make_shared<LeavesRenderer>();
     map[BLOCK_TNT] = std::make_shared<TNTRenderer>();
