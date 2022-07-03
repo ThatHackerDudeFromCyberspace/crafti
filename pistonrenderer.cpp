@@ -48,34 +48,34 @@ void PistonRenderer::renderSpecialBlock(const BLOCK_WDATA block, GLFix x, GLFix 
 
 
     // Piston Side
-    piston_vertices.push_back({0, 0, GLFix(0) + piston_offset, piston_sid.left, piston_sid.bottom, TEXTURE_TRANSPARENT});
-    piston_vertices.push_back({0, GLFix(0) + piston_height, GLFix(0) + piston_offset, piston_sid.left, piston_sid.top, TEXTURE_TRANSPARENT});
-    piston_vertices.push_back({GLFix(0) + piston_width, GLFix(0) + piston_height, GLFix(0) + piston_offset, piston_right_texturemap, piston_sid.top, TEXTURE_TRANSPARENT});
-    piston_vertices.push_back({GLFix(0) + piston_width, 0, GLFix(0) + piston_offset, piston_right_texturemap, piston_sid.bottom, TEXTURE_TRANSPARENT});
+    piston_vertices.push_back({0, 0, GLFix(0), piston_sid.left, piston_sid.bottom, TEXTURE_TRANSPARENT});
+    piston_vertices.push_back({0, GLFix(0) + piston_height, GLFix(0), piston_sid.left, piston_sid.top, TEXTURE_TRANSPARENT});
+    piston_vertices.push_back({GLFix(0) + piston_width, GLFix(0) + piston_height, GLFix(0), piston_right_texturemap, piston_sid.top, TEXTURE_TRANSPARENT});
+    piston_vertices.push_back({GLFix(0) + piston_width, 0, GLFix(0), piston_right_texturemap, piston_sid.bottom, TEXTURE_TRANSPARENT});
 
     // Piston Side
-    piston_vertices.push_back({GLFix(0) + piston_width, 0, GLFix(0) - piston_offset + BLOCK_SIZE, piston_left_texturemap, piston_sid.bottom, TEXTURE_TRANSPARENT});
-    piston_vertices.push_back({GLFix(0) + piston_width, GLFix(0) + piston_height, GLFix(0) - piston_offset + BLOCK_SIZE, piston_left_texturemap, piston_sid.top, TEXTURE_TRANSPARENT});
-    piston_vertices.push_back({0, GLFix(0) + piston_height, GLFix(0) - piston_offset + BLOCK_SIZE, piston_sid.right, piston_sid.top, TEXTURE_TRANSPARENT});
-    piston_vertices.push_back({0, 0, GLFix(0) - piston_offset + BLOCK_SIZE, piston_sid.right, piston_sid.bottom, TEXTURE_TRANSPARENT});
+    piston_vertices.push_back({GLFix(0) + piston_width, 0, GLFix(0) + BLOCK_SIZE, piston_left_texturemap, piston_sid.bottom, TEXTURE_TRANSPARENT});
+    piston_vertices.push_back({GLFix(0) + piston_width, GLFix(0) + piston_height, GLFix(0) + BLOCK_SIZE, piston_left_texturemap, piston_sid.top, TEXTURE_TRANSPARENT});
+    piston_vertices.push_back({0, GLFix(0) + piston_height, GLFix(0) + BLOCK_SIZE, piston_sid.right, piston_sid.top, TEXTURE_TRANSPARENT});
+    piston_vertices.push_back({0, 0, GLFix(0) + BLOCK_SIZE, piston_sid.right, piston_sid.bottom, TEXTURE_TRANSPARENT});
 
     // Piston Back Side
-    piston_vertices.push_back({GLFix(0) + piston_offset, 0, GLFix(0) + BLOCK_SIZE, piston_sid.left, piston_sid.bottom, TEXTURE_TRANSPARENT});
-    piston_vertices.push_back({GLFix(0) + piston_offset, GLFix(0) + piston_height, 0 + BLOCK_SIZE, piston_sid.left, piston_sid.top, TEXTURE_TRANSPARENT});
-    piston_vertices.push_back({GLFix(0) + piston_offset, GLFix(0) + piston_height, 0, piston_sid.right, piston_sid.top, TEXTURE_TRANSPARENT});
-    piston_vertices.push_back({GLFix(0) + piston_offset, 0, 0, piston_sid.right, piston_sid.bottom, TEXTURE_TRANSPARENT});
+    piston_vertices.push_back({GLFix(0), 0, GLFix(0) + BLOCK_SIZE, piston_sid.left, piston_sid.bottom, TEXTURE_TRANSPARENT});
+    piston_vertices.push_back({GLFix(0), GLFix(0) + piston_height, 0 + BLOCK_SIZE, piston_sid.left, piston_sid.top, TEXTURE_TRANSPARENT});
+    piston_vertices.push_back({GLFix(0), GLFix(0) + piston_height, 0, piston_sid.right, piston_sid.top, TEXTURE_TRANSPARENT});
+    piston_vertices.push_back({GLFix(0), 0, 0, piston_sid.right, piston_sid.bottom, TEXTURE_TRANSPARENT});
 
     // Piston Front
-    piston_vertices.push_back({(GLFix(0) - piston_offset) + piston_width, 0, 0, piston_inside.left, piston_inside.bottom, TEXTURE_TRANSPARENT});
-    piston_vertices.push_back({(GLFix(0) - piston_offset) + piston_width, GLFix(0) + piston_height, 0, piston_inside.left, piston_inside.top, TEXTURE_TRANSPARENT});
-    piston_vertices.push_back({(GLFix(0) - piston_offset) + piston_width, GLFix(0) + piston_height, 0 + BLOCK_SIZE, piston_inside.right, piston_inside.top, TEXTURE_TRANSPARENT});
-    piston_vertices.push_back({(GLFix(0) - piston_offset) + piston_width, 0, 0 + BLOCK_SIZE, piston_inside.right, piston_inside.bottom, TEXTURE_TRANSPARENT});
+    piston_vertices.push_back({(GLFix(0)) + piston_width, 0, 0, piston_inside.left, piston_inside.bottom, TEXTURE_TRANSPARENT});
+    piston_vertices.push_back({(GLFix(0)) + piston_width, GLFix(0) + piston_height, 0, piston_inside.left, piston_inside.top, TEXTURE_TRANSPARENT});
+    piston_vertices.push_back({(GLFix(0)) + piston_width, GLFix(0) + piston_height, 0 + BLOCK_SIZE, piston_inside.right, piston_inside.top, TEXTURE_TRANSPARENT});
+    piston_vertices.push_back({(GLFix(0)) + piston_width, 0, 0 + BLOCK_SIZE, piston_inside.right, piston_inside.bottom, TEXTURE_TRANSPARENT});
 
     // Piston Top
-    piston_vertices.push_back({GLFix(0) + piston_offset, GLFix(0) + piston_height, GLFix(0) + piston_offset, piston_top.left, piston_top.bottom, TEXTURE_TRANSPARENT});
-    piston_vertices.push_back({GLFix(0) + piston_offset, GLFix(0) + piston_height, GLFix(0) + BLOCK_SIZE - piston_offset, piston_top.left, piston_top.top, TEXTURE_TRANSPARENT});
-    piston_vertices.push_back({GLFix(0) + piston_width - piston_offset, GLFix(0) + piston_height, GLFix(0) + BLOCK_SIZE - piston_offset, piston_top_texturemap, piston_top.top, TEXTURE_TRANSPARENT});
-    piston_vertices.push_back({GLFix(0) + piston_width - piston_offset, GLFix(0) + piston_height, GLFix(0) + piston_offset, piston_top_texturemap, piston_top.bottom, TEXTURE_TRANSPARENT});
+    piston_vertices.push_back({GLFix(0), GLFix(0) + piston_height, GLFix(0), piston_top.left, piston_top.bottom, TEXTURE_TRANSPARENT});
+    piston_vertices.push_back({GLFix(0), GLFix(0) + piston_height, GLFix(0) + BLOCK_SIZE, piston_top.left, piston_top.top, TEXTURE_TRANSPARENT});
+    piston_vertices.push_back({GLFix(0) + piston_width, GLFix(0) + piston_height, GLFix(0) + BLOCK_SIZE, piston_top_texturemap, piston_top.top, TEXTURE_TRANSPARENT});
+    piston_vertices.push_back({GLFix(0) + piston_width, GLFix(0) + piston_height, GLFix(0), piston_top_texturemap, piston_top.bottom, TEXTURE_TRANSPARENT});
 
     // Rotate Piston According To Face
     BLOCK_SIDE side = static_cast<BLOCK_SIDE>(getBLOCKDATA(block) & BLOCK_SIDE_BITS);
@@ -125,56 +125,28 @@ AABB PistonRenderer::getAABB(const BLOCK_WDATA block, GLFix x, GLFix y, GLFix z)
 {
     // Get block side
     BLOCK_SIDE side = static_cast<BLOCK_SIDE>(getBLOCKDATA(block) & BLOCK_SIDE_BITS);
-    const GLFix piston_offset = (GLFix(BLOCK_SIZE) - piston_width) * GLFix(0.5f);
-
-
-    /////
-    // Get the piston data
-    /////
-    const uint8_t piston_bites = static_cast<uint8_t>((getBLOCKDATA(block) & piston_data_bits) >> piston_bit_shift);
-
-    // Calculate the piston's size
-    const GLFix piston_size = (piston_width / piston_max_bites) * (piston_max_bites - piston_bites);
 
     switch(side)
     {
         default:
-            return {x + piston_offset, y, z + piston_offset + (piston_width - piston_size), x + piston_offset + piston_width, y + piston_height, z + piston_offset + piston_width};
+            return {x, y, z + (piston_width), x + piston_width, y + piston_height, z + piston_width};
             break;
         case BLOCK_BACK:
-            return {x + piston_offset, y, z + piston_offset, x + piston_offset + piston_width, y + piston_height, z + piston_offset +  piston_size};
+            return {x, y, z, x + piston_width, y + piston_height, z};
             break;
         case BLOCK_FRONT:
-            return {x + piston_offset, y, z + piston_offset + (piston_width - piston_size), x + piston_offset + piston_width, y + piston_height, z + piston_offset + piston_width};
+            return {x, y, z + (piston_width), x + piston_width, y + piston_height, z + piston_width};
             break;
         case BLOCK_LEFT:
-            return {x + piston_offset + (piston_width - piston_size), y, z + piston_offset, x + piston_offset + piston_width, y + piston_height, z + piston_offset + piston_width};
+            return {x + (piston_width), y, z, x + piston_width, y + piston_height, z + piston_width};
             break;
         case BLOCK_RIGHT:
-            return {x + piston_offset, y, z + piston_offset, x + piston_offset + piston_size, y + piston_height, z + piston_offset + piston_width};
+            return {x, y, z, x, y + piston_height, z + piston_width};
             break;
     }
-    
 }
 
 bool PistonRenderer::action(const BLOCK_WDATA block, const int local_x, const int local_y, const int local_z, Chunk &c) {
-    /////
-    // Get the piston data
-    /////
-    const uint8_t piston_bites = static_cast<uint8_t>((getBLOCKDATA(block) & piston_data_bits) >> piston_bit_shift);
-
-    if (piston_bites + 1 >= piston_max_bites) {
-        c.setLocalBlock(local_x, local_y, local_z, getBLOCK(BLOCK_AIR));
-        return true;
-    }
-
-    // Prepare data
-    uint8_t prep_data = getBLOCKDATA(block) ^ (piston_bites << piston_bit_shift); // Set pre-existing piston_bites to zero
-
-    uint8_t new_data = ((piston_bites + 1) << piston_bit_shift) | prep_data;
-
-    c.setLocalBlock(local_x, local_y, local_z, getBLOCKWDATA(getBLOCK(block), new_data));
-
     return true;
 }
 
