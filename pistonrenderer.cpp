@@ -78,10 +78,10 @@ void PistonRenderer::renderSpecialBlock(const BLOCK_WDATA block, GLFix x, GLFix 
     piston_vertices.push_back({BLOCK_SIZE, 0, 0, piston_front.right, piston_front.bottom, TEXTURE_TRANSPARENT});
 
     // Piston Back
-    piston_vertices.push_back({0, 0, piston_head_size, piston_back.left, piston_back.bottom, TEXTURE_TRANSPARENT});
-    piston_vertices.push_back({BLOCK_SIZE, 0, piston_head_size, piston_back.right, piston_back.bottom, TEXTURE_TRANSPARENT});
-    piston_vertices.push_back({BLOCK_SIZE, BLOCK_SIZE, piston_head_size, piston_back.right, piston_back.top, TEXTURE_TRANSPARENT});
-    piston_vertices.push_back({0, BLOCK_SIZE, piston_head_size, piston_back.left, piston_back.top, TEXTURE_TRANSPARENT});
+    piston_vertices.push_back({0, 0, piston_head_size, piston_front.left, piston_front.bottom, TEXTURE_TRANSPARENT});
+    piston_vertices.push_back({BLOCK_SIZE, 0, piston_head_size, piston_front.right, piston_front.bottom, TEXTURE_TRANSPARENT});
+    piston_vertices.push_back({BLOCK_SIZE, BLOCK_SIZE, piston_head_size, piston_front.right, piston_front.top, TEXTURE_TRANSPARENT});
+    piston_vertices.push_back({0, BLOCK_SIZE, piston_head_size, piston_front.left, piston_front.top, TEXTURE_TRANSPARENT});
 
     // Piston Bottom
     piston_vertices.push_back({0, 0, piston_head_size, piston_side.left, piston_head_bottom_texturemap, TEXTURE_TRANSPARENT});
@@ -106,6 +106,15 @@ void PistonRenderer::renderSpecialBlock(const BLOCK_WDATA block, GLFix x, GLFix 
     piston_vertices.push_back({BLOCK_SIZE, 0, piston_head_size, piston_side.right, piston_head_bottom_texturemap, TEXTURE_TRANSPARENT});
     piston_vertices.push_back({BLOCK_SIZE, 0, 0, piston_side.right, piston_side.top, TEXTURE_TRANSPARENT});
     piston_vertices.push_back({BLOCK_SIZE, BLOCK_SIZE, 0, piston_side.left, piston_side.top, TEXTURE_TRANSPARENT});
+
+
+    // Piston "Neck" Top
+
+    // Piston "Neck" Bottom
+
+    // Piston "Neck" Left
+
+    // Piston "Neck" Right
 
 
     // Rotate Piston According To Face
