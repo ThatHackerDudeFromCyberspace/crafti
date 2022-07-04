@@ -27,6 +27,12 @@ protected:
     static constexpr GLFix piston_width = BLOCK_SIZE;
     const GLFix pistion_block_size = 0;
 
+    enum PISTON_TYPES {
+        PISTON_NORMAL = 0,
+        PISTON_BODY,
+        PISTON_EXTENDED
+    };
+
     /// Bitmap stuff
     static constexpr uint8_t piston_bit_shift = 4; // The amount to shift piston data by to give it room for the orientation or other additional data
     static constexpr uint8_t piston_data_bits = 0b111 << piston_bit_shift; // Piston uses 3 bits of data, however, orientation data is stored in the first three bits, so the piston data has to be shifted by 3 (or more)
