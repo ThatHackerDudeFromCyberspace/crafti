@@ -264,6 +264,7 @@ void PistonRenderer::tick(const BLOCK_WDATA block, int local_x, int local_y, int
 
         // Piston logic stuff:
         VECTOR3 pistonHeadCoordinates;
+        VECTOR3 blockToPushCoordinates;
 
         // Get proper piston head coordinates
         BLOCK_SIDE side = static_cast<BLOCK_SIDE>(getBLOCKDATA(block) & BLOCK_SIDE_BITS);
@@ -275,25 +276,44 @@ void PistonRenderer::tick(const BLOCK_WDATA block, int local_x, int local_y, int
                 pistonHeadCoordinates.x = local_x;
                 pistonHeadCoordinates.y = local_y;
                 pistonHeadCoordinates.z = local_z+1;
+
+                blockToPushCoordinates.x = local_x;
+                blockToPushCoordinates.y = local_y;
+                blockToPushCoordinates.z = local_z+2;
                 break;
             case BLOCK_FRONT:
                 pistonHeadCoordinates.x = local_x;
                 pistonHeadCoordinates.y = local_y;
                 pistonHeadCoordinates.z = local_z-1;
+
+                blockToPushCoordinates.x = local_x;
+                blockToPushCoordinates.y = local_y;
+                blockToPushCoordinates.z = local_z-2;
                 break;
             case BLOCK_LEFT:
                 pistonHeadCoordinates.x = local_x-1;
                 pistonHeadCoordinates.y = local_y;
                 pistonHeadCoordinates.z = local_z;
+
+                blockToPushCoordinates.x = local_x-2;
+                blockToPushCoordinates.y = local_y;
+                blockToPushCoordinates.z = local_z;
                 break;
             case BLOCK_RIGHT:
-                pistonHeadCoordinates.x = local_x;
+                pistonHeadCoordinates.x = local_x+1;
                 pistonHeadCoordinates.y = local_y;
-                pistonHeadCoordinates.z = local_z+1;
+                pistonHeadCoordinates.z = local_z;
+
+                blockToPushCoordinates.x = local_x+2;
+                blockToPushCoordinates.y = local_y;
+                blockToPushCoordinates.z = local_z;
                 break;
         }
 
         if (powered) {
+            BLOCK_WDATA blockToPush = c.getGlobalBlockRelative(pistonHeadCoordinates.x, pistonHeadCoordinates.y, pistonHeadCoordinates.z);
+
+            c.setGlobalBlockRelative(blockToPushCoordinates.x, blockToPushCoordinates.y, blockToPushCoordinates.z, blockToPush);
             c.setGlobalBlockRelative(pistonHeadCoordinates.x, pistonHeadCoordinates.y, pistonHeadCoordinates.z, getBLOCKWDATA(BLOCK_PISTON, side | 2 << piston_bit_shift));
         }
     }
