@@ -65,9 +65,9 @@ void PistonRenderer::renderSpecialBlock(const BLOCK_WDATA block, GLFix x, GLFix 
 
     piston_vertices.reserve(24);
 
-    GLFix piston_neck_bottom_texturemap = piston_side.top + (piston_side.bottom - piston_side.top) * (4 / 16);
-    GLFix piston_neck_left_texturemap = piston_side.right - (piston_side.right - piston_side.left) * (4 / 16);
-    GLFix piston_neck_right_texturemap = piston_side.left + (piston_side.right - piston_side.left) * (4 / 16);
+    GLFix piston_neck_bottom_texturemap = piston_side.top + (piston_side.bottom - piston_side.top) / 4;
+    GLFix piston_neck_left_texturemap = piston_side.right - (piston_side.right - piston_side.left) / 4;
+    GLFix piston_neck_right_texturemap = piston_side.left + (piston_side.right - piston_side.left) / 4;
 
     GLFix piston_head_size = BLOCK_SIZE / 4;
 
@@ -90,10 +90,10 @@ void PistonRenderer::renderSpecialBlock(const BLOCK_WDATA block, GLFix x, GLFix 
     piston_vertices.push_back({BLOCK_SIZE, 0, piston_head_size, piston_side.right, piston_side.bottom, TEXTURE_TRANSPARENT});
 
     // Piston Top
-    piston_vertices.push_back({0, BLOCK_SIZE, piston_head_size, piston_side.left, piston_side.bottom, TEXTURE_TRANSPARENT});
-    piston_vertices.push_back({BLOCK_SIZE, BLOCK_SIZE, piston_head_size, piston_side.right, piston_side.bottom, TEXTURE_TRANSPARENT});
-    piston_vertices.push_back({BLOCK_SIZE, BLOCK_SIZE, 0, piston_side.right, piston_side.top, TEXTURE_TRANSPARENT});
-    piston_vertices.push_back({0, BLOCK_SIZE, 0, piston_side.left, piston_side.top, TEXTURE_TRANSPARENT});
+    piston_vertices.push_back({0, BLOCK_SIZE, piston_head_size, piston_neck_left_texturemap, piston_side.bottom, TEXTURE_TRANSPARENT});
+    piston_vertices.push_back({BLOCK_SIZE, BLOCK_SIZE, piston_head_size, piston_neck_right_texturemap, piston_side.bottom, TEXTURE_TRANSPARENT});
+    piston_vertices.push_back({BLOCK_SIZE, BLOCK_SIZE, 0, piston_neck_right_texturemap, piston_side.top, TEXTURE_TRANSPARENT});
+    piston_vertices.push_back({0, BLOCK_SIZE, 0, piston_neck_left_texturemap, piston_side.top, TEXTURE_TRANSPARENT});
 
     // Piston Left
     piston_vertices.push_back({0, BLOCK_SIZE, piston_head_size, piston_side.left, piston_side.bottom, TEXTURE_TRANSPARENT});
