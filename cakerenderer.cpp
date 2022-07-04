@@ -45,7 +45,7 @@ void CakeRenderer::renderSpecialBlock(const BLOCK_WDATA block, GLFix x, GLFix y,
     glTranslatef(x + BLOCK_SIZE/2, y + BLOCK_SIZE/2, z + BLOCK_SIZE/2);
 
     std::vector<VERTEX> cake_vertices;
-    cake_vertices.reserve(20);
+    cake_vertices.reserve(24);
 
     // Get "texturemap" thingies for cake
     GLFix cake_left_texturemap = cake_sid.right - (cake_sid.right - cake_sid.left) * (cake_max_bites - cake_bites) / cake_max_bites;
