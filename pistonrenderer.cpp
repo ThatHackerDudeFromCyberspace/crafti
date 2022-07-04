@@ -1,5 +1,6 @@
 #include "pistonrenderer.h"
 
+
 std::vector<VERTEX> piston_head_vertices() {
     TextureAtlasEntry piston_side = terrain_atlas[12][6].current;
     TextureAtlasEntry piston_front = terrain_atlas[11][6].current;
@@ -252,6 +253,21 @@ void PistonRenderer::renderSpecialBlock(const BLOCK_WDATA block, GLFix x, GLFix 
 
 void PistonRenderer::tick(const BLOCK_WDATA block, int local_x, int local_y, int local_z, Chunk &c)
 {
+    // Define blocks which the piston cannot move
+    static const std::vector<BLOCK_WDATA> unmovableBlocks = {
+        getBLOCKWDATA(BLOCK_PISTON, PISTON_BODY << piston_bit_shift),
+        getBLOCKWDATA(BLOCK_PISTON, PISTON_HEAD << piston_bit_shift),
+        BLOCK_BEDROCK,
+        BLOCK_DOOR,
+        BLOCK_FLOWER,
+        BLOCK_WHEAT,
+        BLOCK_MUSHROOM,
+        BLOCK_REDSTONE_SWITCH,
+        BLOCK_REDSTONE_TORCH
+    };
+
+
+
     REDSTONE_STATE powered = c.isBlockPowered(local_x, local_y, local_z) ? ON : OFF;
 
     const uint8_t piston_powered = static_cast<uint8_t>((getBLOCKDATA(block) & piston_powered_bits) >> piston_power_bit_shift);
@@ -310,16 +326,18 @@ void PistonRenderer::tick(const BLOCK_WDATA block, int local_x, int local_y, int
         }
 
         uint8_t prep_data = getBLOCKDATA(block) ^ (piston_powered << piston_power_bit_shift); // Set pre-existing power bit to zero
-        
+
         if (powered) {
-            //BLOCK_WDATA blockToPush = c.getGlobalBlockRelative(pistonHeadCoordinates.x, pistonHeadCoordinates.y, pistonHeadCoordinates.z);
+            BLOCK_WDATA blockToPush = c.getGlobalBlockRelative(pistonHeadCoordinates.x, pistonHeadCoordinates.y, pistonHeadCoordinates.z);
 
-            const PISTON_TYPE piston_type = static_cast<PISTON_TYPE>((getBLOCKDATA(block) & piston_data_bits) >> piston_bit_shift);
-            uint8_t prep_data = getBLOCKDATA(block) ^ (piston_type << piston_bit_shift); // Set pre-existing piston data bits to zero
-            c.setLocalBlock(local_x, local_y, local_z, getBLOCKWDATA(getBLOCK(block), prep_data | powered << piston_power_bit_shift | PISTON_BODY << piston_bit_shift));
+            if (std::find(unmovableBlocks.begin(), unmovableBlocks.end(), blockToPush) != unmovableBlocks.end()) {
+                const PISTON_TYPE piston_type = static_cast<PISTON_TYPE>((getBLOCKDATA(block) & piston_data_bits) >> piston_bit_shift);
+                uint8_t prep_data = getBLOCKDATA(block) ^ (piston_type << piston_bit_shift); // Set pre-existing piston data bits to zero
+                c.setLocalBlock(local_x, local_y, local_z, getBLOCKWDATA(getBLOCK(block), prep_data | powered << piston_power_bit_shift | PISTON_BODY << piston_bit_shift));
 
-            //c.setGlobalBlockRelative(blockToPushCoordinates.x, blockToPushCoordinates.y, blockToPushCoordinates.z, blockToPush);
-            c.setGlobalBlockRelative(pistonHeadCoordinates.x, pistonHeadCoordinates.y, pistonHeadCoordinates.z, getBLOCKWDATA(BLOCK_PISTON, side | PISTON_HEAD << piston_bit_shift));
+                c.setGlobalBlockRelative(blockToPushCoordinates.x, blockToPushCoordinates.y, blockToPushCoordinates.z, blockToPush);
+                c.setGlobalBlockRelative(pistonHeadCoordinates.x, pistonHeadCoordinates.y, pistonHeadCoordinates.z, getBLOCKWDATA(BLOCK_PISTON, side | PISTON_HEAD << piston_bit_shift));
+            }
         } else {
             c.setGlobalBlockRelative(pistonHeadCoordinates.x, pistonHeadCoordinates.y, pistonHeadCoordinates.z, BLOCK_AIR);
 
