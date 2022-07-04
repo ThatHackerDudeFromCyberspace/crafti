@@ -186,6 +186,10 @@ std::vector<VERTEX> piston_normal_vertices() {
     return piston_vertices;
 }
 
+const TerrainAtlasEntry &PistonRenderer::destructionTexture(const BLOCK_WDATA block) {
+    return terrain_atlas[4][0];
+}
+
 void PistonRenderer::renderSpecialBlock(const BLOCK_WDATA block, GLFix x, GLFix y, GLFix z, Chunk &c)
 {
     //////
@@ -244,6 +248,55 @@ void PistonRenderer::renderSpecialBlock(const BLOCK_WDATA block, GLFix x, GLFix 
     }
 
     glPopMatrix();
+}
+
+void PistonRenderer::tick(const BLOCK_WDATA block, int local_x, int local_y, int local_z, Chunk &c)
+{
+    REDSTONE_STATE powered = c.isBlockPowered(local_x, local_y, local_z) ? ON : OFF;
+
+    const uint8_t piston_powered = static_cast<uint8_t>((getBLOCKDATA(block) & piston_powered_bits) >> piston_power_bit_shift);
+    const PISTON_TYPE piston_type = static_cast<PISTON_TYPE>((getBLOCKDATA(block) & piston_data_bits) >> piston_bit_shift);
+
+    if(piston_powered != powered && piston_type != PISTON_HEAD) {
+        uint8_t prep_data = getBLOCKDATA(block) ^ (piston_powered << piston_power_bit_shift); // Set pre-existing power bit to zero
+        c.setLocalBlock(local_x, local_y, local_z, getBLOCKWDATA(getBLOCK(block), prep_data | powered << piston_power_bit_shift));
+
+
+        // Piston logic stuff:
+        VECTOR3 pistonHeadCoordinates;
+
+        // Get proper piston head coordinates
+        BLOCK_SIDE side = static_cast<BLOCK_SIDE>(getBLOCKDATA(block) & BLOCK_SIDE_BITS);
+        switch(side)
+        {
+            default:
+                break;
+            case BLOCK_BACK:
+                pistonHeadCoordinates.x = local_x;
+                pistonHeadCoordinates.y = local_y;
+                pistonHeadCoordinates.z = local_z+1;
+                break;
+            case BLOCK_FRONT:
+                pistonHeadCoordinates.x = local_x;
+                pistonHeadCoordinates.y = local_y;
+                pistonHeadCoordinates.z = local_z-1;
+                break;
+            case BLOCK_LEFT:
+                pistonHeadCoordinates.x = local_x-1;
+                pistonHeadCoordinates.y = local_y;
+                pistonHeadCoordinates.z = local_z;
+                break;
+            case BLOCK_RIGHT:
+                pistonHeadCoordinates.x = local_x;
+                pistonHeadCoordinates.y = local_y;
+                pistonHeadCoordinates.z = local_z+1;
+                break;
+        }
+
+        if (powered) {
+            c.setGlobalBlockRelative(pistonHeadCoordinates.x, pistonHeadCoordinates.y, pistonHeadCoordinates.z, getBLOCKWDATA(BLOCK_PISTON, side | 2 << piston_bit_shift));
+        }
+    }
 }
 
 void PistonRenderer::drawPreview(const BLOCK_WDATA /*block*/, TEXTURE &dest, int x, int y)
