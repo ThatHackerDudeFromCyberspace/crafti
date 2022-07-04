@@ -95,8 +95,9 @@ std::vector<VERTEX> piston_body_vertices() {
     //GLFix piston_top_texturemap = GLFix(piston_side.bottom) + GLFix(piston_side.bottom - piston_side.top) * (piston_body_size / GLFix(BLOCK_SIZE));
 
     //piston_side.top = (piston_side.bottom) - ((piston_side.bottom - piston_side.top) * (12 / 16));
-    const GLFix piston_body_texturemap_top = piston_side.top;//GLFix(piston_side.bottom) - (GLFix(piston_side.bottom - piston_side.top) * GLFix(12/16));
-    const GLFix piston_body_texturemap_bottom = GLFix(piston_side.top) + (GLFix(piston_side.bottom - piston_side.top) * GLFix(12/16));
+    const GLFix piston_body_texturemap_top = piston_side.top;// piston_side.bottom - ((piston_side.bottom - piston_side.top) * 12 / 16);
+    //const GLFix piston_body_texturemap_bottom = GLFix(piston_side.top) + (GLFix(piston_side.bottom - piston_side.top) * GLFix(12/16));
+    const GLFix piston_body_texturemap_bottom = piston_side.top + ((piston_side.bottom - piston_side.top) * 12 / 16);
 
     std::vector<VERTEX> piston_vertices;
 
