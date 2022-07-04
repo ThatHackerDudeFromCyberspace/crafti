@@ -31,9 +31,6 @@ void TNTRenderer::explode(const int local_x, const int local_y, const int local_
     // Get the center of the block contents (chunk relative coordinates)
     const auto aabb = global_block_renderer.getAABB(getBLOCK(c.getGlobalBlockRelative(local_x, local_y, local_z)), local_x * BLOCK_SIZE, local_y * BLOCK_SIZE, local_z * BLOCK_SIZE);
     auto center = VECTOR3{(aabb.low_x + aabb.high_x) / 2, (aabb.low_y + aabb.high_y) / 2, (aabb.low_z + aabb.high_z) / 2};
-    center.x -= local_x;
-    center.y -= local_y;
-    center.z -= local_z;
 
     // Spawn four particles at the center with random velocity and offset
     for(int i = 0; i < 4; ++i)
