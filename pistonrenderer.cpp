@@ -338,7 +338,9 @@ void PistonRenderer::tick(const BLOCK_WDATA block, int local_x, int local_y, int
                 
                 c.setLocalBlock(local_x, local_y, local_z, getBLOCKWDATA(getBLOCK(block), piston_data | powered << piston_power_bit_shift | PISTON_BODY << piston_bit_shift));
 
-                c.setGlobalBlockRelative(blockToPushCoordinates.x, blockToPushCoordinates.y, blockToPushCoordinates.z, blockToPush);
+                if (blockToPush != BLOCK_AIR) {
+                    c.setGlobalBlockRelative(blockToPushCoordinates.x, blockToPushCoordinates.y, blockToPushCoordinates.z, blockToPush);
+                }
                 c.setGlobalBlockRelative(pistonHeadCoordinates.x, pistonHeadCoordinates.y, pistonHeadCoordinates.z, getBLOCKWDATA(BLOCK_PISTON, side | PISTON_HEAD << piston_bit_shift));
             } else {
                 c.setLocalBlock(local_x, local_y, local_z, getBLOCKWDATA(getBLOCK(block), piston_data | powered << piston_power_bit_shift));
@@ -349,7 +351,7 @@ void PistonRenderer::tick(const BLOCK_WDATA block, int local_x, int local_y, int
             piston_data = piston_data ^ (piston_type << piston_bit_shift); // Set pre-existing piston data bits to zero
             
             c.setLocalBlock(local_x, local_y, local_z, getBLOCKWDATA(getBLOCK(block), piston_data));
-            
+
             c.setGlobalBlockRelative(pistonHeadCoordinates.x, pistonHeadCoordinates.y, pistonHeadCoordinates.z, BLOCK_AIR);
         }
     }
