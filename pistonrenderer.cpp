@@ -149,7 +149,7 @@ void PistonRenderer::renderSpecialBlock(const BLOCK_WDATA block, GLFix x, GLFix 
 
     glTranslatef(x + BLOCK_SIZE/2, y + BLOCK_SIZE/2, z + BLOCK_SIZE/2);
 
-    std::vector<VERTEX> piston_vertices = piston_normal_vertices();
+    std::vector<VERTEX> piston_vertices = piston_head_vertices();
 
 
     // Rotate Piston According To Face
