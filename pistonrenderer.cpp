@@ -1,6 +1,6 @@
 #include "pistonrenderer.h"
 
-constexpr GLFix PistonRenderer::piston_height, PistonRenderer::piston_width;
+constexpr GLFix PistonRenderer::BLOCK_SIZE, PistonRenderer::BLOCK_SIZE;
 
 std::vector<VERTEX> piston_head_vertices() {
     TextureAtlasEntry piston_side = terrain_atlas[12][6].current;
@@ -190,15 +190,6 @@ std::vector<VERTEX> piston_normal_vertices() {
 
 void PistonRenderer::renderSpecialBlock(const BLOCK_WDATA block, GLFix x, GLFix y, GLFix z, Chunk &c)
 {
-
-
-    /////
-    // Get the piston data
-    /////
-    //const uint8_t piston_type = static_cast<uint8_t>((getBLOCKDATA(block) & piston_data_bits) >> piston_bit_shift);
-    const PISTON_TYPE piston_type = PISTON_HEAD;
-
-
     //////
     // GL CODE
     //////
@@ -207,7 +198,20 @@ void PistonRenderer::renderSpecialBlock(const BLOCK_WDATA block, GLFix x, GLFix 
 
     glTranslatef(x + BLOCK_SIZE/2, y + BLOCK_SIZE/2, z + BLOCK_SIZE/2);
 
-    std::vector<VERTEX> piston_vertices = piston_body_vertices();
+    std::vector<VERTEX> piston_vertices;
+
+    const PISTON_TYPE piston_type = static_cast<PISTON_TYPE>((getBLOCKDATA(block) & piston_data_bits) >> piston_bit_shift);
+    switch (piston_type) {
+        case PISTON_NORMAL:
+            piston_vertices = piston_normal_vertices();
+            break;
+        case PISTON_BODY:
+            piston_vertices = piston_body_vertices();
+            break;
+        case PISTON_HEAD:
+            piston_vertices = piston_head_vertices();
+            break;
+    }
 
 
     // Rotate Piston According To Face
@@ -248,7 +252,7 @@ AABB PistonRenderer::getAABB(const BLOCK_WDATA block, GLFix x, GLFix y, GLFix z)
 {
     // Get block side
     BLOCK_SIDE side = static_cast<BLOCK_SIDE>(getBLOCKDATA(block) & BLOCK_SIDE_BITS);
-    const GLFix piston_offset = (GLFix(BLOCK_SIZE) - piston_width) * GLFix(0.5f);
+    const GLFix piston_offset = (GLFix(BLOCK_SIZE) - BLOCK_SIZE) * GLFix(0.5f);
 
 
     /////
@@ -256,25 +260,22 @@ AABB PistonRenderer::getAABB(const BLOCK_WDATA block, GLFix x, GLFix y, GLFix z)
     /////
     const uint8_t piston_bites = static_cast<uint8_t>((getBLOCKDATA(block) & piston_data_bits) >> piston_bit_shift);
 
-    // Calculate the piston's size
-    const GLFix piston_size = (piston_width / piston_max_bites) * (piston_max_bites - piston_bites);
-
     switch(side)
     {
         default:
-            return {x + piston_offset, y, z + piston_offset + (piston_width - piston_size), x + piston_offset + piston_width, y + piston_height, z + piston_offset + piston_width};
+            return {x + piston_offset, y, z + piston_offset + BLOCK_SIZE, x + piston_offset + BLOCK_SIZE, y + BLOCK_SIZE, z + piston_offset + BLOCK_SIZE};
             break;
         case BLOCK_BACK:
-            return {x + piston_offset, y, z + piston_offset, x + piston_offset + piston_width, y + piston_height, z + piston_offset +  piston_size};
+            return {x + piston_offset, y, z + piston_offset, x + piston_offset + BLOCK_SIZE, y + BLOCK_SIZE, z + piston_offset};
             break;
         case BLOCK_FRONT:
-            return {x + piston_offset, y, z + piston_offset + (piston_width - piston_size), x + piston_offset + piston_width, y + piston_height, z + piston_offset + piston_width};
+            return {x + piston_offset, y, z + piston_offset + BLOCK_SIZE, x + piston_offset + BLOCK_SIZE, y + BLOCK_SIZE, z + piston_offset + BLOCK_SIZE};
             break;
         case BLOCK_LEFT:
-            return {x + piston_offset + (piston_width - piston_size), y, z + piston_offset, x + piston_offset + piston_width, y + piston_height, z + piston_offset + piston_width};
+            return {x + piston_offset + BLOCK_SIZE, y, z + piston_offset, x + piston_offset + BLOCK_SIZE, y + BLOCK_SIZE, z + piston_offset + BLOCK_SIZE};
             break;
         case BLOCK_RIGHT:
-            return {x + piston_offset, y, z + piston_offset, x + piston_offset + piston_size, y + piston_height, z + piston_offset + piston_width};
+            return {x + piston_offset, y, z + piston_offset, x + piston_offset, y + BLOCK_SIZE, z + piston_offset + BLOCK_SIZE};
             break;
     }
     
@@ -284,19 +285,19 @@ bool PistonRenderer::action(const BLOCK_WDATA block, const int local_x, const in
     /////
     // Get the piston data
     /////
-    const uint8_t piston_bites = static_cast<uint8_t>((getBLOCKDATA(block) & piston_data_bits) >> piston_bit_shift);
+    // const uint8_t piston_bites = static_cast<uint8_t>((getBLOCKDATA(block) & piston_data_bits) >> piston_bit_shift);
 
-    if (piston_bites + 1 >= piston_max_bites) {
-        c.setLocalBlock(local_x, local_y, local_z, getBLOCK(BLOCK_AIR));
-        return true;
-    }
+    // if (piston_bites + 1 >= piston_max_bites) {
+    //     c.setLocalBlock(local_x, local_y, local_z, getBLOCK(BLOCK_AIR));
+    //     return true;
+    // }
 
-    // Prepare data
-    uint8_t prep_data = getBLOCKDATA(block) ^ (piston_bites << piston_bit_shift); // Set pre-existing piston_bites to zero
+    // // Prepare data
+    // uint8_t prep_data = getBLOCKDATA(block) ^ (piston_bites << piston_bit_shift); // Set pre-existing piston_bites to zero
 
-    uint8_t new_data = ((piston_bites + 1) << piston_bit_shift) | prep_data;
+    // uint8_t new_data = ((piston_bites + 1) << piston_bit_shift) | prep_data;
 
-    c.setLocalBlock(local_x, local_y, local_z, getBLOCKWDATA(getBLOCK(block), new_data));
+    // c.setLocalBlock(local_x, local_y, local_z, getBLOCKWDATA(getBLOCK(block), new_data));
 
     return true;
 }
@@ -307,7 +308,19 @@ void PistonRenderer::drawPreview(const BLOCK_WDATA /*block*/, TEXTURE &dest, int
     BlockRenderer::drawTextureAtlasEntry(*terrain_resized, tex, dest, x, y);
 }
 
-const char *PistonRenderer::getName(const BLOCK_WDATA /*block*/)
+const char *PistonRenderer::getName(const BLOCK_WDATA block)
 {
-    return "Piston";
+    //return "Piston";
+    const PISTON_TYPE piston_type = static_cast<PISTON_TYPE>((getBLOCKDATA(block) & piston_data_bits) >> piston_bit_shift);
+    switch (piston_type) {
+        case PISTON_NORMAL:
+            return "Piston";
+            break;
+        case PISTON_BODY:
+            return "Piston Body";
+            break;
+        case PISTON_HEAD:
+            return "Piston Head";
+            break;
+    }
 }
