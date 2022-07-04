@@ -52,7 +52,7 @@ static const BLOCK_WDATA user_selectable[] = {
     getBLOCKWDATA(BLOCK_WHEAT, 0),
     BLOCK_SPIDERWEB,
     BLOCK_TORCH,
-    getBLOCKWDATA(BLOCK_CAKE, 0),
+    getBLOCKWDATA(BLOCK_CAKE, 0<<4),
     BLOCK_REDSTONE_LAMP,
     BLOCK_REDSTONE_SWITCH,
     BLOCK_PRESSURE_PLATE,
@@ -102,9 +102,9 @@ static const BLOCK_WDATA user_selectable[] = {
     getBLOCKWDATA(BLOCK_CARPET, 14),
     getBLOCKWDATA(BLOCK_CARPET, 15),
 
-    getBLOCKWDATA(BLOCK_PISTON, 0),
-    getBLOCKWDATA(BLOCK_PISTON, 1),
-    getBLOCKWDATA(BLOCK_PISTON, 2)
+    getBLOCKWDATA(BLOCK_PISTON, 0<<3),
+    getBLOCKWDATA(BLOCK_PISTON, 1<<3),
+    getBLOCKWDATA(BLOCK_PISTON, 2<<3)
 };
 
 //The values have to stay somewhere
