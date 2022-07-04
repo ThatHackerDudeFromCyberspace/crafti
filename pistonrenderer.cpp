@@ -331,7 +331,7 @@ void PistonRenderer::tick(const BLOCK_WDATA block, int local_x, int local_y, int
         if (powered) {
             BLOCK_WDATA blockToPush = c.getGlobalBlockRelative(pistonHeadCoordinates.x, pistonHeadCoordinates.y, pistonHeadCoordinates.z);
 
-            if (std::find(unmovableBlocks.begin(), unmovableBlocks.end(), blockToPush) != unmovableBlocks.end()) {
+            if (std::find(unmovableBlocks.begin(), unmovableBlocks.end(), blockToPush) == unmovableBlocks.end()) {
                 const PISTON_TYPE piston_type = static_cast<PISTON_TYPE>((getBLOCKDATA(block) & piston_data_bits) >> piston_bit_shift);
                 
                 prep_data = prep_data | getBLOCKDATA(block) ^ (piston_type << piston_bit_shift); // Set pre-existing piston data bits to zero
