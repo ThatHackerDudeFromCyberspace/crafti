@@ -65,11 +65,13 @@ void PistonRenderer::renderSpecialBlock(const BLOCK_WDATA block, GLFix x, GLFix 
 
     piston_vertices.reserve(24);
 
+    GLFix piston_neck_bottom_texturemap = piston_side.top + (piston_side.bottom - piston_side.top) * (4 / 16);
+
     // Piston Front
-    piston_vertices.push_back({0, 0, 0, piston_front.left, piston_front.bottom, TEXTURE_TRANSPARENT});
+    piston_vertices.push_back({0, 0, 0, piston_front.left, piston_neck_bottom_texturemap, TEXTURE_TRANSPARENT});
     piston_vertices.push_back({0, BLOCK_SIZE, 0, piston_front.left, piston_front.top, TEXTURE_TRANSPARENT});
     piston_vertices.push_back({BLOCK_SIZE, BLOCK_SIZE, 0, piston_front.right, piston_front.top, TEXTURE_TRANSPARENT});
-    piston_vertices.push_back({BLOCK_SIZE, 0, 0, piston_front.right, piston_front.bottom, TEXTURE_TRANSPARENT});
+    piston_vertices.push_back({BLOCK_SIZE, 0, 0, piston_front.right, piston_neck_bottom_texturemap, TEXTURE_TRANSPARENT});
 
     // Piston Back
     piston_vertices.push_back({0, 0, BLOCK_SIZE, piston_back.left, piston_back.bottom, TEXTURE_TRANSPARENT});
