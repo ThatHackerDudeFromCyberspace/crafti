@@ -95,7 +95,7 @@ std::vector<VERTEX> piston_body_vertices() {
     //GLFix piston_top_texturemap = GLFix(piston_side.bottom) + GLFix(piston_side.bottom - piston_side.top) * (piston_body_size / GLFix(BLOCK_SIZE));
 
     //piston_side.top = (piston_side.bottom) - ((piston_side.bottom - piston_side.top) * (12 / 16));
-    piston_side.top = GLFix(piston_side.bottom) - (GLFix(piston_side.bottom - piston_side.top) * GLFix(14/16));
+    const GLFix piston_body_texturemap_top = GLFix(piston_side.bottom) - (GLFix(piston_side.bottom - piston_side.top) * GLFix(12/16));
 
     std::vector<VERTEX> piston_vertices;
 
@@ -109,27 +109,27 @@ std::vector<VERTEX> piston_body_vertices() {
 
     // Piston Bottom
     piston_vertices.push_back({0, 0, BLOCK_SIZE, piston_side.left, piston_side.bottom, TEXTURE_TRANSPARENT});
-    piston_vertices.push_back({0, 0, piston_head_size, piston_side.left, piston_side.top, TEXTURE_TRANSPARENT});
-    piston_vertices.push_back({BLOCK_SIZE, 0, piston_head_size, piston_side.right, piston_side.top, TEXTURE_TRANSPARENT});
+    piston_vertices.push_back({0, 0, piston_head_size, piston_side.left, piston_body_texturemap_top, TEXTURE_TRANSPARENT});
+    piston_vertices.push_back({BLOCK_SIZE, 0, piston_head_size, piston_side.right, piston_body_texturemap_top, TEXTURE_TRANSPARENT});
     piston_vertices.push_back({BLOCK_SIZE, 0, BLOCK_SIZE, piston_side.right, piston_side.bottom, TEXTURE_TRANSPARENT});
 
     // Piston Top
     piston_vertices.push_back({0, BLOCK_SIZE, BLOCK_SIZE, piston_side.left, piston_side.bottom, TEXTURE_TRANSPARENT});
     piston_vertices.push_back({BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE, piston_side.right, piston_side.bottom, TEXTURE_TRANSPARENT});
-    piston_vertices.push_back({BLOCK_SIZE, BLOCK_SIZE, piston_head_size, piston_side.right, piston_side.top, TEXTURE_TRANSPARENT});
-    piston_vertices.push_back({0, BLOCK_SIZE, piston_head_size, piston_side.left, piston_side.top, TEXTURE_TRANSPARENT});
+    piston_vertices.push_back({BLOCK_SIZE, BLOCK_SIZE, piston_head_size, piston_side.right, piston_body_texturemap_top, TEXTURE_TRANSPARENT});
+    piston_vertices.push_back({0, BLOCK_SIZE, piston_head_size, piston_side.left, piston_body_texturemap_top, TEXTURE_TRANSPARENT});
 
     // Piston Left
     piston_vertices.push_back({0, BLOCK_SIZE, BLOCK_SIZE, piston_side.left, piston_side.bottom, TEXTURE_TRANSPARENT});
-    piston_vertices.push_back({0, BLOCK_SIZE, piston_head_size, piston_side.left, piston_side.top, TEXTURE_TRANSPARENT});
-    piston_vertices.push_back({0, 0, piston_head_size, piston_side.right, piston_side.top, TEXTURE_TRANSPARENT});
+    piston_vertices.push_back({0, BLOCK_SIZE, piston_head_size, piston_side.left, piston_body_texturemap_top, TEXTURE_TRANSPARENT});
+    piston_vertices.push_back({0, 0, piston_head_size, piston_side.right, piston_body_texturemap_top, TEXTURE_TRANSPARENT});
     piston_vertices.push_back({0, 0, BLOCK_SIZE, piston_side.right, piston_side.bottom, TEXTURE_TRANSPARENT});
 
     // Piston Right
     piston_vertices.push_back({BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE, piston_side.left, piston_side.bottom, TEXTURE_TRANSPARENT});
     piston_vertices.push_back({BLOCK_SIZE, 0, BLOCK_SIZE, piston_side.right, piston_side.bottom, TEXTURE_TRANSPARENT});
-    piston_vertices.push_back({BLOCK_SIZE, 0, piston_head_size, piston_side.right, piston_side.top, TEXTURE_TRANSPARENT});
-    piston_vertices.push_back({BLOCK_SIZE, BLOCK_SIZE, piston_head_size, piston_side.left, piston_side.top, TEXTURE_TRANSPARENT});
+    piston_vertices.push_back({BLOCK_SIZE, 0, piston_head_size, piston_side.right, piston_body_texturemap_top, TEXTURE_TRANSPARENT});
+    piston_vertices.push_back({BLOCK_SIZE, BLOCK_SIZE, piston_head_size, piston_side.left, piston_body_texturemap_top, TEXTURE_TRANSPARENT});
 
     // Piston Back
     piston_vertices.push_back({0, 0, BLOCK_SIZE, piston_back.left, piston_back.bottom, TEXTURE_TRANSPARENT});
