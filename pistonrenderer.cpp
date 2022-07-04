@@ -46,6 +46,12 @@ void PistonRenderer::renderSpecialBlock(const BLOCK_WDATA block, GLFix x, GLFix 
     piston_vertices.push_back({0, 0, 0, piston_side.right, piston_side.top, TEXTURE_DRAW_BACKFACE});
     piston_vertices.push_back({0, 0, GLFix(0) + BLOCK_SIZE, piston_side.right, piston_side.bottom, TEXTURE_DRAW_BACKFACE});
 
+    // Piston Right
+    piston_vertices.push_back({GLFix(0) + BLOCK_SIZE, GLFix(0) + BLOCK_SIZE, GLFix(0) + BLOCK_SIZE, piston_side.left, piston_side.bottom, TEXTURE_DRAW_BACKFACE});
+    piston_vertices.push_back({GLFix(0) + BLOCK_SIZE, GLFix(0) + BLOCK_SIZE, 0, piston_side.left, piston_side.top, TEXTURE_DRAW_BACKFACE});
+    piston_vertices.push_back({GLFix(0) + BLOCK_SIZE, 0, 0, piston_side.right, piston_side.top, TEXTURE_DRAW_BACKFACE});
+    piston_vertices.push_back({GLFix(0) + BLOCK_SIZE, 0, GLFix(0) + BLOCK_SIZE, piston_side.right, piston_side.bottom, TEXTURE_DRAW_BACKFACE});
+
 
     // Rotate Piston According To Face
     BLOCK_SIDE side = static_cast<BLOCK_SIDE>(getBLOCKDATA(block) & BLOCK_SIDE_BITS);
