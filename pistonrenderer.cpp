@@ -4,7 +4,6 @@ constexpr GLFix PistonRenderer::piston_height, PistonRenderer::piston_width;
 
 std::vector<VERTEX> piston_head_vertices() {
     TextureAtlasEntry piston_side = terrain_atlas[12][6].current;
-    TextureAtlasEntry piston_back = terrain_atlas[13][6].current;
     TextureAtlasEntry piston_front = terrain_atlas[11][6].current;
 
     std::vector<VERTEX> piston_vertices;
