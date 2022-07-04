@@ -69,7 +69,7 @@ void PistonRenderer::renderSpecialBlock(const BLOCK_WDATA block, GLFix x, GLFix 
     GLFix piston_neck_left_texturemap = piston_side.right - (piston_side.right - piston_side.left) * (4 / 16);
     GLFix piston_neck_right_texturemap = piston_side.left + (piston_side.right - piston_side.left) * (4 / 16);
 
-    GLFix piston_head_size = BLOCK_SIZE * (4 / 16);
+    GLFix piston_head_size = BLOCK_SIZE / 4;
 
     // Piston Front
     piston_vertices.push_back({0, 0, 0, piston_front.left, piston_front.bottom, TEXTURE_TRANSPARENT});
