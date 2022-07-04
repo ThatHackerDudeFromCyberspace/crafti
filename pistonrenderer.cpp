@@ -7,8 +7,8 @@ void PistonRenderer::renderSpecialBlock(const BLOCK_WDATA block, GLFix x, GLFix 
     // NOTE: PISTON BOTTOM IS MANAGED LIKE A NORMAL BLOCK
 
     TextureAtlasEntry piston_side = terrain_atlas[12][6].current;
-    TextureAtlasEntry piston_back = terrain_atlas[12][6].current;
-    TextureAtlasEntry piston_front = terrain_atlas[12][6].current;
+    TextureAtlasEntry piston_back = terrain_atlas[13][6].current;
+    TextureAtlasEntry piston_front = terrain_atlas[11][6].current;
 
 
     /////
@@ -163,7 +163,7 @@ bool PistonRenderer::action(const BLOCK_WDATA block, const int local_x, const in
 
 void PistonRenderer::drawPreview(const BLOCK_WDATA /*block*/, TEXTURE &dest, int x, int y)
 {
-    TextureAtlasEntry &tex = terrain_atlas[12][8].resized;
+    TextureAtlasEntry &tex = terrain_atlas[11][6].resized;
     BlockRenderer::drawTextureAtlasEntry(*terrain_resized, tex, dest, x, y);
 }
 
