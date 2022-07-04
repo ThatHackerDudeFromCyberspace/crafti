@@ -25,6 +25,7 @@ public:
 protected:
     static constexpr GLFix piston_height = BLOCK_SIZE;
     static constexpr GLFix piston_width = BLOCK_SIZE;
+    const GLFix pistion_block_size = 0;
 
     /// Bitmap stuff
     static constexpr uint8_t piston_bit_shift = 4; // The amount to shift piston data by to give it room for the orientation or other additional data
