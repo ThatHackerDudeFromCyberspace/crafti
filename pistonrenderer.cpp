@@ -270,11 +270,12 @@ void PistonRenderer::tick(const BLOCK_WDATA block, int local_x, int local_y, int
 
 
     REDSTONE_STATE powered = c.isBlockPowered(local_x, local_y, local_z) ? ON : OFF;
+    REDSTONE_STATE poweredFromFace = c.gettingPowerFrom(local_x, local_y, local_z, BLOCK_FRONT);
 
     const uint8_t piston_powered = static_cast<uint8_t>((getBLOCKDATA(block) & piston_powered_bits) >> piston_power_bit_shift);
     const PISTON_TYPE piston_type = static_cast<PISTON_TYPE>((getBLOCKDATA(block) & piston_data_bits) >> piston_bit_shift);
 
-    if(piston_powered != powered && piston_type != PISTON_HEAD) {
+    if(!poweredFromFace && piston_powered != powered && piston_type != PISTON_HEAD) {
         //c.setLocalBlock(local_x, local_y, local_z, getBLOCKWDATA(getBLOCK(block), prep_data | powered << piston_power_bit_shift));
 
 
