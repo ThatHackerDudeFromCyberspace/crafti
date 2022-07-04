@@ -268,9 +268,59 @@ void PistonRenderer::tick(const BLOCK_WDATA block, int local_x, int local_y, int
     };
 
 
+    
+    // Piston coordinate stuff
+    VECTOR3 pistonHeadCoordinates;
+    VECTOR3 blockToPushCoordinates;
+
+    // Get proper piston head coordinates
+    BLOCK_SIDE side = static_cast<BLOCK_SIDE>(getBLOCKDATA(block) & BLOCK_SIDE_BITS);
+    switch(side)
+    {
+        default:
+            break;
+        case BLOCK_BACK:
+            pistonHeadCoordinates.x = local_x;
+            pistonHeadCoordinates.y = local_y;
+            pistonHeadCoordinates.z = local_z+1;
+
+            blockToPushCoordinates.x = local_x;
+            blockToPushCoordinates.y = local_y;
+            blockToPushCoordinates.z = local_z+2;
+            break;
+        case BLOCK_FRONT:
+            pistonHeadCoordinates.x = local_x;
+            pistonHeadCoordinates.y = local_y;
+            pistonHeadCoordinates.z = local_z-1;
+
+            blockToPushCoordinates.x = local_x;
+            blockToPushCoordinates.y = local_y;
+            blockToPushCoordinates.z = local_z-2;
+            break;
+        case BLOCK_LEFT:
+            pistonHeadCoordinates.x = local_x-1;
+            pistonHeadCoordinates.y = local_y;
+            pistonHeadCoordinates.z = local_z;
+
+            blockToPushCoordinates.x = local_x-2;
+            blockToPushCoordinates.y = local_y;
+            blockToPushCoordinates.z = local_z;
+            break;
+        case BLOCK_RIGHT:
+            pistonHeadCoordinates.x = local_x+1;
+            pistonHeadCoordinates.y = local_y;
+            pistonHeadCoordinates.z = local_z;
+
+            blockToPushCoordinates.x = local_x+2;
+            blockToPushCoordinates.y = local_y;
+            blockToPushCoordinates.z = local_z;
+            break;
+    }
+
+
 
     REDSTONE_STATE powered = c.isBlockPowered(local_x, local_y, local_z) ? ON : OFF;
-    bool poweredFromFace = c.gettingPowerFrom(local_x, local_y, local_z, BLOCK_FRONT);
+    bool poweredFromFace = c.gettingPowerFrom(blockToPushCoordinates.x, blockToPushCoordinates.y, blockToPushCoordinates.z, BLOCK_FRONT);
 
     const uint8_t piston_powered = static_cast<uint8_t>((getBLOCKDATA(block) & piston_powered_bits) >> piston_power_bit_shift);
     const PISTON_TYPE piston_type = static_cast<PISTON_TYPE>((getBLOCKDATA(block) & piston_data_bits) >> piston_bit_shift);
@@ -280,52 +330,6 @@ void PistonRenderer::tick(const BLOCK_WDATA block, int local_x, int local_y, int
 
 
         // Piston logic stuff:
-        VECTOR3 pistonHeadCoordinates;
-        VECTOR3 blockToPushCoordinates;
-
-        // Get proper piston head coordinates
-        BLOCK_SIDE side = static_cast<BLOCK_SIDE>(getBLOCKDATA(block) & BLOCK_SIDE_BITS);
-        switch(side)
-        {
-            default:
-                break;
-            case BLOCK_BACK:
-                pistonHeadCoordinates.x = local_x;
-                pistonHeadCoordinates.y = local_y;
-                pistonHeadCoordinates.z = local_z+1;
-
-                blockToPushCoordinates.x = local_x;
-                blockToPushCoordinates.y = local_y;
-                blockToPushCoordinates.z = local_z+2;
-                break;
-            case BLOCK_FRONT:
-                pistonHeadCoordinates.x = local_x;
-                pistonHeadCoordinates.y = local_y;
-                pistonHeadCoordinates.z = local_z-1;
-
-                blockToPushCoordinates.x = local_x;
-                blockToPushCoordinates.y = local_y;
-                blockToPushCoordinates.z = local_z-2;
-                break;
-            case BLOCK_LEFT:
-                pistonHeadCoordinates.x = local_x-1;
-                pistonHeadCoordinates.y = local_y;
-                pistonHeadCoordinates.z = local_z;
-
-                blockToPushCoordinates.x = local_x-2;
-                blockToPushCoordinates.y = local_y;
-                blockToPushCoordinates.z = local_z;
-                break;
-            case BLOCK_RIGHT:
-                pistonHeadCoordinates.x = local_x+1;
-                pistonHeadCoordinates.y = local_y;
-                pistonHeadCoordinates.z = local_z;
-
-                blockToPushCoordinates.x = local_x+2;
-                blockToPushCoordinates.y = local_y;
-                blockToPushCoordinates.z = local_z;
-                break;
-        }
 
         uint8_t piston_data = getBLOCKDATA(block) ^ (piston_powered << piston_power_bit_shift) | side; // Set pre-existing power bit to zero
 
