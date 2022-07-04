@@ -5,13 +5,13 @@ constexpr GLFix PistonRenderer::piston_height, PistonRenderer::piston_width;
 std::vector<VERTEX> piston_head_vertices() {
     TextureAtlasEntry piston_side = terrain_atlas[12][6].current;
     TextureAtlasEntry piston_front = terrain_atlas[11][6].current;
+    const GLFix piston_head_size = BLOCK_SIZE / 4;
 
     std::vector<VERTEX> piston_vertices;
 
     piston_vertices.reserve(40);
 
     GLFix piston_head_bottom_texturemap = piston_side.top + ((piston_side.bottom - piston_side.top) * 4 / 16);
-    GLFix piston_head_size = BLOCK_SIZE / 4;
 
     // Piston Front
     piston_vertices.push_back({0, 0, 0, piston_front.left, piston_front.bottom, TEXTURE_TRANSPARENT});
@@ -78,6 +78,63 @@ std::vector<VERTEX> piston_head_vertices() {
     piston_vertices.push_back({piston_neck_offset+piston_neck_size, piston_neck_offset+piston_neck_size, piston_head_size, piston_side.left, piston_side.top, TEXTURE_TRANSPARENT});
     piston_vertices.push_back({piston_neck_offset+piston_neck_size, piston_neck_offset+piston_neck_size, (piston_head_size*2)+piston_neck_length, piston_side.right, piston_side.top, TEXTURE_TRANSPARENT});
     piston_vertices.push_back({piston_neck_offset+piston_neck_size, piston_neck_offset, (piston_head_size*2)+piston_neck_length, piston_side.right, piston_head_bottom_texturemap, TEXTURE_TRANSPARENT});
+
+    return piston_vertices;
+}
+
+std::vector<VERTEX> piston_body_vertices() {
+    TextureAtlasEntry piston_side = terrain_atlas[12][6].current;
+    const TextureAtlasEntry piston_back = terrain_atlas[13][6].current;
+    const TextureAtlasEntry piston_front = terrain_atlas[14][6].current;
+
+    const GLFix piston_head_size = BLOCK_SIZE / 4;
+    const GLFix  piston_body_size = GLFix(BLOCK_SIZE) - piston_head_size;
+
+    //GLFix piston_left_texturemap = GLFix(piston_side.right) - GLFix(piston_side.right - piston_side.left) * (piston_body_size / GLFix(BLOCK_SIZE));
+    //GLFix piston_right_texturemap = GLFix(piston_side.left) + GLFix(piston_side.right - piston_side.left) * (piston_body_size / GLFix(BLOCK_SIZE));
+    //GLFix piston_top_texturemap = GLFix(piston_side.bottom) + GLFix(piston_side.bottom - piston_side.top) * (piston_body_size / GLFix(BLOCK_SIZE));
+
+    piston_side.top = GLFix(piston_side.bottom) + GLFix(piston_side.bottom - piston_side.top) * (piston_body_size / GLFix(BLOCK_SIZE));
+
+    std::vector<VERTEX> piston_vertices;
+
+    piston_vertices.reserve(24);
+
+    // Piston Front
+    piston_vertices.push_back({0, 0, piston_body_size, piston_front.left, piston_front.bottom, TEXTURE_TRANSPARENT});
+    piston_vertices.push_back({0, BLOCK_SIZE, piston_body_size, piston_front.left, piston_front.top, TEXTURE_TRANSPARENT});
+    piston_vertices.push_back({BLOCK_SIZE, BLOCK_SIZE, piston_body_size, piston_front.right, piston_front.top, TEXTURE_TRANSPARENT});
+    piston_vertices.push_back({BLOCK_SIZE, 0, piston_body_size, piston_front.right, piston_front.bottom, TEXTURE_TRANSPARENT});
+
+    // Piston Bottom
+    piston_vertices.push_back({0, 0, BLOCK_SIZE, piston_side.left, piston_side.bottom, TEXTURE_TRANSPARENT});
+    piston_vertices.push_back({0, 0, piston_body_size, piston_side.left, piston_side.top, TEXTURE_TRANSPARENT});
+    piston_vertices.push_back({BLOCK_SIZE, 0, piston_body_size, piston_side.right, piston_side.top, TEXTURE_TRANSPARENT});
+    piston_vertices.push_back({BLOCK_SIZE, 0, BLOCK_SIZE, piston_side.right, piston_side.bottom, TEXTURE_TRANSPARENT});
+
+    // Piston Top
+    piston_vertices.push_back({0, BLOCK_SIZE, BLOCK_SIZE, piston_side.left, piston_side.bottom, TEXTURE_TRANSPARENT});
+    piston_vertices.push_back({BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE, piston_side.right, piston_side.bottom, TEXTURE_TRANSPARENT});
+    piston_vertices.push_back({BLOCK_SIZE, BLOCK_SIZE, piston_body_size, piston_side.right, piston_side.top, TEXTURE_TRANSPARENT});
+    piston_vertices.push_back({0, BLOCK_SIZE, piston_body_size, piston_side.left, piston_side.top, TEXTURE_TRANSPARENT});
+
+    // Piston Left
+    piston_vertices.push_back({0, BLOCK_SIZE, BLOCK_SIZE, piston_side.left, piston_side.bottom, TEXTURE_TRANSPARENT});
+    piston_vertices.push_back({0, BLOCK_SIZE, piston_body_size, piston_side.left, piston_side.top, TEXTURE_TRANSPARENT});
+    piston_vertices.push_back({0, 0, piston_body_size, piston_side.right, piston_side.top, TEXTURE_TRANSPARENT});
+    piston_vertices.push_back({0, 0, BLOCK_SIZE, piston_side.right, piston_side.bottom, TEXTURE_TRANSPARENT});
+
+    // Piston Right
+    piston_vertices.push_back({BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE, piston_side.left, piston_side.bottom, TEXTURE_TRANSPARENT});
+    piston_vertices.push_back({BLOCK_SIZE, 0, BLOCK_SIZE, piston_side.right, piston_side.bottom, TEXTURE_TRANSPARENT});
+    piston_vertices.push_back({BLOCK_SIZE, 0, piston_body_size, piston_side.right, piston_side.top, TEXTURE_TRANSPARENT});
+    piston_vertices.push_back({BLOCK_SIZE, BLOCK_SIZE, piston_body_size, piston_side.left, piston_side.top, TEXTURE_TRANSPARENT});
+
+    // Piston Back
+    piston_vertices.push_back({0, 0, BLOCK_SIZE, piston_back.left, piston_back.bottom, TEXTURE_TRANSPARENT});
+    piston_vertices.push_back({BLOCK_SIZE, 0, BLOCK_SIZE, piston_back.right, piston_back.bottom, TEXTURE_TRANSPARENT});
+    piston_vertices.push_back({BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE, piston_back.right, piston_back.top, TEXTURE_TRANSPARENT});
+    piston_vertices.push_back({0, BLOCK_SIZE, BLOCK_SIZE, piston_back.left, piston_back.top, TEXTURE_TRANSPARENT});
 
     return piston_vertices;
 }
@@ -149,7 +206,7 @@ void PistonRenderer::renderSpecialBlock(const BLOCK_WDATA block, GLFix x, GLFix 
 
     glTranslatef(x + BLOCK_SIZE/2, y + BLOCK_SIZE/2, z + BLOCK_SIZE/2);
 
-    std::vector<VERTEX> piston_vertices = piston_head_vertices();
+    std::vector<VERTEX> piston_vertices = piston_body_vertices();
 
 
     // Rotate Piston According To Face
