@@ -246,27 +246,6 @@ void PistonRenderer::renderSpecialBlock(const BLOCK_WDATA block, GLFix x, GLFix 
     glPopMatrix();
 }
 
-bool PistonRenderer::action(const BLOCK_WDATA block, const int local_x, const int local_y, const int local_z, Chunk &c) {
-    /////
-    // Get the piston data
-    /////
-    // const uint8_t piston_bites = static_cast<uint8_t>((getBLOCKDATA(block) & piston_data_bits) >> piston_bit_shift);
-
-    // if (piston_bites + 1 >= piston_max_bites) {
-    //     c.setLocalBlock(local_x, local_y, local_z, getBLOCK(BLOCK_AIR));
-    //     return true;
-    // }
-
-    // // Prepare data
-    // uint8_t prep_data = getBLOCKDATA(block) ^ (piston_bites << piston_bit_shift); // Set pre-existing piston_bites to zero
-
-    // uint8_t new_data = ((piston_bites + 1) << piston_bit_shift) | prep_data;
-
-    // c.setLocalBlock(local_x, local_y, local_z, getBLOCKWDATA(getBLOCK(block), new_data));
-
-    return true;
-}
-
 void PistonRenderer::drawPreview(const BLOCK_WDATA /*block*/, TEXTURE &dest, int x, int y)
 {
     TextureAtlasEntry &tex = terrain_atlas[11][6].resized;
@@ -275,7 +254,6 @@ void PistonRenderer::drawPreview(const BLOCK_WDATA /*block*/, TEXTURE &dest, int
 
 const char *PistonRenderer::getName(const BLOCK_WDATA block)
 {
-    //return "Piston";
     const PISTON_TYPE piston_type = static_cast<PISTON_TYPE>((getBLOCKDATA(block) & piston_data_bits) >> piston_bit_shift);
     switch (piston_type) {
         case PISTON_NORMAL:
