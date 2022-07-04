@@ -16,9 +16,7 @@ public:
     virtual bool isBlockShaped(const BLOCK_WDATA /*block*/) override { return true; }
 
     virtual void drawPreview(const BLOCK_WDATA block, TEXTURE &dest, int x, int y) override;
-
-    virtual bool action(const BLOCK_WDATA block, const int local_x, const int local_y, const int local_z, Chunk &c) override;
-
+    
     virtual const char* getName(const BLOCK_WDATA block) override;
 
 protected:
