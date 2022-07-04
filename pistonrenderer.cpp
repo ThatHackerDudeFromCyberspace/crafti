@@ -126,16 +126,16 @@ void PistonRenderer::renderSpecialBlock(const BLOCK_WDATA block, GLFix x, GLFix 
     piston_vertices.push_back({piston_neck_offset, piston_neck_offset, piston_head_size, piston_side.right, piston_side.top, TEXTURE_TRANSPARENT});
 
     // Piston "Neck" Left
-    piston_vertices.push_back({piston_neck_offset, piston_neck_offset, piston_head_size+piston_neck_length, piston_side.right, piston_head_bottom_texturemap, TEXTURE_TRANSPARENT});
-    piston_vertices.push_back({piston_neck_offset, piston_neck_offset+piston_neck_size, piston_head_size+piston_neck_length, piston_side.left, piston_head_bottom_texturemap, TEXTURE_TRANSPARENT});
-    piston_vertices.push_back({piston_neck_offset, piston_neck_offset+piston_neck_size, piston_head_size, piston_side.left, piston_side.top, TEXTURE_TRANSPARENT});
-    piston_vertices.push_back({piston_neck_offset, piston_neck_offset, piston_head_size, piston_side.right, piston_side.top, TEXTURE_TRANSPARENT});
+    piston_vertices.push_back({piston_neck_offset, piston_neck_offset, piston_head_size+piston_neck_length, piston_side.left, piston_head_bottom_texturemap, TEXTURE_TRANSPARENT});
+    piston_vertices.push_back({piston_neck_offset, piston_neck_offset+piston_neck_size, piston_head_size+piston_neck_length, piston_side.left, piston_side.top, TEXTURE_TRANSPARENT});
+    piston_vertices.push_back({piston_neck_offset, piston_neck_offset+piston_neck_size, piston_head_size, piston_side.right, piston_side.top, TEXTURE_TRANSPARENT});
+    piston_vertices.push_back({piston_neck_offset, piston_neck_offset, piston_head_size, piston_side.right, piston_head_bottom_texturemap, TEXTURE_TRANSPARENT});
 
     // Piston "Neck" Right
-    piston_vertices.push_back({piston_neck_offset+piston_neck_size, piston_neck_offset, piston_head_size, piston_side.right, piston_head_bottom_texturemap, TEXTURE_TRANSPARENT});
-    piston_vertices.push_back({piston_neck_offset+piston_neck_size, piston_neck_offset+piston_neck_size, piston_head_size, piston_side.left, piston_head_bottom_texturemap, TEXTURE_TRANSPARENT});
-    piston_vertices.push_back({piston_neck_offset+piston_neck_size, piston_neck_offset+piston_neck_size, piston_head_size+piston_neck_length, piston_side.left, piston_side.top, TEXTURE_TRANSPARENT});
-    piston_vertices.push_back({piston_neck_offset+piston_neck_size, piston_neck_offset, piston_head_size+piston_neck_length, piston_side.right, piston_side.top, TEXTURE_TRANSPARENT});
+    piston_vertices.push_back({piston_neck_offset+piston_neck_size, piston_neck_offset, piston_head_size, piston_side.left, piston_head_bottom_texturemap, TEXTURE_TRANSPARENT});
+    piston_vertices.push_back({piston_neck_offset+piston_neck_size, piston_neck_offset+piston_neck_size, piston_head_size, piston_side.right, piston_head_bottom_texturemap, TEXTURE_TRANSPARENT});
+    piston_vertices.push_back({piston_neck_offset+piston_neck_size, piston_neck_offset+piston_neck_size, piston_head_size+piston_neck_length, piston_side.right, piston_side.top, TEXTURE_TRANSPARENT});
+    piston_vertices.push_back({piston_neck_offset+piston_neck_size, piston_neck_offset, piston_head_size+piston_neck_length, piston_side.left, piston_side.top, TEXTURE_TRANSPARENT});
 
 
     // Rotate Piston According To Face
