@@ -27,10 +27,10 @@ protected:
     static constexpr GLFix piston_width = BLOCK_SIZE;
     const GLFix pistion_block_size = 0;
 
-    enum PISTON_TYPES {
+    enum PISTON_TYPE {
         PISTON_NORMAL = 0,
         PISTON_BODY,
-        PISTON_EXTENDED
+        PISTON_HEAD
     };
 
     /// Bitmap stuff
