@@ -1,3 +1,4 @@
+#include <algorithm>
 #include "pistonrenderer.h"
 
 
@@ -332,17 +333,21 @@ void PistonRenderer::tick(const BLOCK_WDATA block, int local_x, int local_y, int
 
             if (std::find(unmovableBlocks.begin(), unmovableBlocks.end(), blockToPush) != unmovableBlocks.end()) {
                 const PISTON_TYPE piston_type = static_cast<PISTON_TYPE>((getBLOCKDATA(block) & piston_data_bits) >> piston_bit_shift);
-                uint8_t prep_data = getBLOCKDATA(block) ^ (piston_type << piston_bit_shift); // Set pre-existing piston data bits to zero
+                
+                prep_data = prep_data | getBLOCKDATA(block) ^ (piston_type << piston_bit_shift); // Set pre-existing piston data bits to zero
+                
                 c.setLocalBlock(local_x, local_y, local_z, getBLOCKWDATA(getBLOCK(block), prep_data | powered << piston_power_bit_shift | PISTON_BODY << piston_bit_shift));
 
                 c.setGlobalBlockRelative(blockToPushCoordinates.x, blockToPushCoordinates.y, blockToPushCoordinates.z, blockToPush);
                 c.setGlobalBlockRelative(pistonHeadCoordinates.x, pistonHeadCoordinates.y, pistonHeadCoordinates.z, getBLOCKWDATA(BLOCK_PISTON, side | PISTON_HEAD << piston_bit_shift));
+            } else {
+                c.setLocalBlock(local_x, local_y, local_z, getBLOCKWDATA(getBLOCK(block), prep_data | powered << piston_power_bit_shift));
             }
         } else {
             c.setGlobalBlockRelative(pistonHeadCoordinates.x, pistonHeadCoordinates.y, pistonHeadCoordinates.z, BLOCK_AIR);
 
             const PISTON_TYPE piston_type = static_cast<PISTON_TYPE>((getBLOCKDATA(block) & piston_data_bits) >> piston_bit_shift);
-            uint8_t prep_data = getBLOCKDATA(block) ^ (piston_type << piston_bit_shift); // Set pre-existing piston data bits to zero
+            prep_data = prep_data | getBLOCKDATA(block) ^ (piston_type << piston_bit_shift); // Set pre-existing piston data bits to zero
             c.setLocalBlock(local_x, local_y, local_z, getBLOCKWDATA(getBLOCK(block), prep_data | powered << piston_power_bit_shift | PISTON_NORMAL << piston_bit_shift));
         }
     }
