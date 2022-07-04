@@ -313,8 +313,18 @@ void PistonRenderer::tick(const BLOCK_WDATA block, int local_x, int local_y, int
         if (powered) {
             BLOCK_WDATA blockToPush = c.getGlobalBlockRelative(pistonHeadCoordinates.x, pistonHeadCoordinates.y, pistonHeadCoordinates.z);
 
+            const PISTON_TYPE piston_type = static_cast<PISTON_TYPE>((getBLOCKDATA(block) & piston_data_bits) >> piston_bit_shift);
+            uint8_t prep_data = getBLOCKDATA(block) ^ (piston_type << piston_bit_shift); // Set pre-existing piston data bits to zero
+            c.setLocalBlock(local_x, local_y, local_z, getBLOCKWDATA(getBLOCK(block), prep_data | PISTON_BODY << piston_bit_shift));
+
             c.setGlobalBlockRelative(blockToPushCoordinates.x, blockToPushCoordinates.y, blockToPushCoordinates.z, blockToPush);
-            c.setGlobalBlockRelative(pistonHeadCoordinates.x, pistonHeadCoordinates.y, pistonHeadCoordinates.z, getBLOCKWDATA(BLOCK_PISTON, side | 2 << piston_bit_shift));
+            c.setGlobalBlockRelative(pistonHeadCoordinates.x, pistonHeadCoordinates.y, pistonHeadCoordinates.z, getBLOCKWDATA(BLOCK_PISTON, side | PISTON_HEAD << piston_bit_shift));
+        } else {
+            c.setGlobalBlockRelative(pistonHeadCoordinates.x, pistonHeadCoordinates.y, pistonHeadCoordinates.z, BLOCK_AIR);
+
+            const PISTON_TYPE piston_type = static_cast<PISTON_TYPE>((getBLOCKDATA(block) & piston_data_bits) >> piston_bit_shift);
+            uint8_t prep_data = getBLOCKDATA(block) ^ (piston_type << piston_bit_shift); // Set pre-existing piston data bits to zero
+            c.setLocalBlock(local_x, local_y, local_z, getBLOCKWDATA(getBLOCK(block), prep_data | PISTON_NORMAL << piston_bit_shift));
         }
     }
 }
