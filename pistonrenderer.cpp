@@ -198,7 +198,9 @@ void PistonRenderer::renderSpecialBlock(const BLOCK_WDATA block, GLFix x, GLFix 
 
     std::vector<VERTEX> piston_vertices;
 
-    const PISTON_TYPE piston_type = static_cast<PISTON_TYPE>((getBLOCKDATA(block) & piston_data_bits) >> piston_bit_shift);
+    //const PISTON_TYPE piston_type = static_cast<PISTON_TYPE>((getBLOCKDATA(block) & piston_data_bits) >> piston_bit_shift);
+
+    const PISTON_TYPE piston_type = PISTON_HEAD;
     switch (piston_type) {
         case PISTON_NORMAL:
             piston_vertices = piston_normal_vertices();
@@ -244,39 +246,6 @@ void PistonRenderer::renderSpecialBlock(const BLOCK_WDATA block, GLFix x, GLFix 
     }
 
     glPopMatrix();
-}
-
-AABB PistonRenderer::getAABB(const BLOCK_WDATA block, GLFix x, GLFix y, GLFix z)
-{
-    // Get block side
-    BLOCK_SIDE side = static_cast<BLOCK_SIDE>(getBLOCKDATA(block) & BLOCK_SIDE_BITS);
-    const GLFix piston_offset = (GLFix(BLOCK_SIZE) - BLOCK_SIZE) * GLFix(0.5f);
-
-
-    /////
-    // Get the piston data
-    /////
-    const uint8_t piston_bites = static_cast<uint8_t>((getBLOCKDATA(block) & piston_data_bits) >> piston_bit_shift);
-
-    switch(side)
-    {
-        default:
-            return {x + piston_offset, y, z + piston_offset + BLOCK_SIZE, x + piston_offset + BLOCK_SIZE, y + BLOCK_SIZE, z + piston_offset + BLOCK_SIZE};
-            break;
-        case BLOCK_BACK:
-            return {x + piston_offset, y, z + piston_offset, x + piston_offset + BLOCK_SIZE, y + BLOCK_SIZE, z + piston_offset};
-            break;
-        case BLOCK_FRONT:
-            return {x + piston_offset, y, z + piston_offset + BLOCK_SIZE, x + piston_offset + BLOCK_SIZE, y + BLOCK_SIZE, z + piston_offset + BLOCK_SIZE};
-            break;
-        case BLOCK_LEFT:
-            return {x + piston_offset + BLOCK_SIZE, y, z + piston_offset, x + piston_offset + BLOCK_SIZE, y + BLOCK_SIZE, z + piston_offset + BLOCK_SIZE};
-            break;
-        case BLOCK_RIGHT:
-            return {x + piston_offset, y, z + piston_offset, x + piston_offset, y + BLOCK_SIZE, z + piston_offset + BLOCK_SIZE};
-            break;
-    }
-    
 }
 
 bool PistonRenderer::action(const BLOCK_WDATA block, const int local_x, const int local_y, const int local_z, Chunk &c) {
