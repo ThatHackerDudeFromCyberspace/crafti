@@ -29,7 +29,7 @@ void TNTRenderer::explode(const int local_x, const int local_y, const int local_
     const auto randMax = [](GLFix max) { return max * (rand() & 0xFF) / 0xFF; };
 
     // Get the center of the block contents (chunk relative coordinates)
-    const auto aabb = global_block_renderer.getAABB(getBLOCK(c.getGlobalBlockRelative(local_x + x, local_y + y, local_z + z)), local_x * BLOCK_SIZE, local_y * BLOCK_SIZE, local_z * BLOCK_SIZE);
+    const auto aabb = global_block_renderer.getAABB(getBLOCK(c.getGlobalBlockRelative(local_x, local_y, local_z)), local_x * BLOCK_SIZE, local_y * BLOCK_SIZE, local_z * BLOCK_SIZE);
     auto center = VECTOR3{(aabb.low_x + aabb.high_x) / 2, (aabb.low_y + aabb.high_y) / 2, (aabb.low_z + aabb.high_z) / 2};
     center.x -= local_x;
     center.y -= local_y;
