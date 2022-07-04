@@ -23,8 +23,6 @@ public:
     virtual const char* getName(const BLOCK_WDATA block) override;
 
 protected:
-    const GLFix pistion_block_size = 0;
-
     enum PISTON_TYPE {
         PISTON_NORMAL = 0,
         PISTON_BODY,

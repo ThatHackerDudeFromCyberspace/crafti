@@ -1,7 +1,5 @@
 #include "pistonrenderer.h"
 
-constexpr GLFix PistonRenderer::BLOCK_SIZE, PistonRenderer::BLOCK_SIZE;
-
 std::vector<VERTEX> piston_head_vertices() {
     TextureAtlasEntry piston_side = terrain_atlas[12][6].current;
     TextureAtlasEntry piston_front = terrain_atlas[11][6].current;
