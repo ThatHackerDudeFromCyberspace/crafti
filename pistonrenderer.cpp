@@ -198,9 +198,7 @@ void PistonRenderer::renderSpecialBlock(const BLOCK_WDATA block, GLFix x, GLFix 
 
     std::vector<VERTEX> piston_vertices;
 
-    //const PISTON_TYPE piston_type = static_cast<PISTON_TYPE>((getBLOCKDATA(block) & piston_data_bits) >> piston_bit_shift);
-
-    const PISTON_TYPE piston_type = PISTON_HEAD;
+    const PISTON_TYPE piston_type = static_cast<PISTON_TYPE>((getBLOCKDATA(block) & piston_data_bits) >> piston_bit_shift);
     switch (piston_type) {
         case PISTON_NORMAL:
             piston_vertices = piston_normal_vertices();
