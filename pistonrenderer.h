@@ -11,7 +11,7 @@ public:
     virtual bool isOpaque(const BLOCK_WDATA /*block*/) override { return false; }
     virtual bool isObstacle(const BLOCK_WDATA /*block*/) override { return true; }
     virtual bool isOriented(const BLOCK_WDATA /*block*/) override { return true; } // Oriented
-    virtual bool isFullyOriented(const BLOCK_WDATA /*block*/) override { return false; } // Torch-like orientation
+    virtual bool isFullyOriented(const BLOCK_WDATA /*block*/) override { return true; } // Torch-like orientation
 
     virtual void tick(const BLOCK_WDATA block, int local_x, int local_y, int local_z, Chunk &c) override;
     virtual bool isBlockShaped(const BLOCK_WDATA /*block*/) override { return true; }
@@ -53,6 +53,8 @@ protected:
     static const uint8_t piston_type_bits = 0b1 << piston_type_bit_shift; // Piston uses 2 bits of data, however, orientation data is stored in the first three bits, so the piston data has to be shifted by 3 (or more)
 
     static const std::vector<BLOCK_WDATA> unmovableBlocks;
+    
+    static const uint8_t push_limit = 12;
 
     std::vector<VERTEX> get_piston_normal_vertices(const PISTON_TYPE piston_type);
     std::vector<VERTEX> get_piston_body_vertices();
