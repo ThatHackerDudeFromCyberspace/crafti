@@ -305,7 +305,8 @@ void WorldTask::logic()
                 if(!global_block_renderer.isFullyOriented(block_to_place) && (side == AABB::TOP || side == AABB::BOTTOM))
                     side = yr < GLFix(45) ? AABB::FRONT : yr < GLFix(135) ? AABB::LEFT : yr < GLFix(225) ? AABB::BACK : yr < GLFix(315) ? AABB::RIGHT : AABB::FRONT;
 
-                world.changeBlock(pos.x, pos.y, pos.z, getBLOCKWDATA(block_to_place, side)); //AABB::SIDE is compatible to BLOCK_SIDE
+                // Combine block data with side data so that oriented special blocks can be added to the inventory with preset data
+                world.changeBlock(pos.x, pos.y, pos.z, getBLOCKWDATA(block_to_place, getBLOCKDATA(block_to_place) | side)); //AABB::SIDE is compatible to BLOCK_SIDE
             }
 
             //If the player is stuck now, it's because of the block change, so remove it again
