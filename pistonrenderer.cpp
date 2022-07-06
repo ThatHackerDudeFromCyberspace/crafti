@@ -385,7 +385,7 @@ void PistonRenderer::tick(const BLOCK_WDATA block, int local_x, int local_y, int
                 // If the block isn't powered properly, simply update the powereyness of the piston without extending it
                 c.setLocalBlock(local_x, local_y, local_z, getBLOCKWDATA(getBLOCK(block), piston_data | poweredProperly << piston_power_bit_shift));
             }
-        } else {
+        } else if (piston_type != PISTON_NORMAL) {
             // If the piston is no longer powered...
 
             // Reset the piston data's piston type
