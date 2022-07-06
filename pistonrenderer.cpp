@@ -477,9 +477,15 @@ void PistonRenderer::removedBlock(const BLOCK_WDATA block, int local_x, int loca
     }
 }
 
-void PistonRenderer::drawPreview(const BLOCK_WDATA /*block*/, TEXTURE &dest, int x, int y)
+void PistonRenderer::drawPreview(const BLOCK_WDATA block, TEXTURE &dest, int x, int y)
 {
-    BlockRenderer::drawTextureAtlasEntry(*terrain_resized, terrain_atlas[11][6].resized, dest, x, y);
+    const PISTON_TYPE piston_type = static_cast<PISTON_TYPE>((getBLOCKDATA(block) & piston_type_bits) >> piston_type_bit_shift);
+
+    if (piston_type == STICKY_PISTON) {
+        BlockRenderer::drawTextureAtlasEntry(*terrain_resized, terrain_atlas[10][6].resized, dest, x, y);
+    } else {
+        BlockRenderer::drawTextureAtlasEntry(*terrain_resized, terrain_atlas[11][6].resized, dest, x, y);
+    }
 }
 
 const char *PistonRenderer::getName(const BLOCK_WDATA block)
