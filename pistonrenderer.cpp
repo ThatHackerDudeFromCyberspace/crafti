@@ -388,7 +388,7 @@ void PistonRenderer::tick(const BLOCK_WDATA block, int local_x, int local_y, int
                 }
 
                 // Set the corresponding block to the piston head
-                c.setGlobalBlockRelative(pistonHeadCoordinates.x, pistonHeadCoordinates.y, pistonHeadCoordinates.z, getBLOCKWDATA(BLOCK_PISTON, side | PISTON_HEAD << piston_state_bit_shift | piston_type));
+                c.setGlobalBlockRelative(pistonHeadCoordinates.x, pistonHeadCoordinates.y, pistonHeadCoordinates.z, getBLOCKWDATA(BLOCK_PISTON, side | PISTON_HEAD << piston_state_bit_shift | piston_type << piston_type_bit_shift));
             }
         } else {
             // Reset the piston data's piston type
