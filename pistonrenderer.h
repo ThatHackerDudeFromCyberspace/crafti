@@ -57,6 +57,7 @@ protected:
     std::vector<VERTEX> get_piston_normal_vertices(const PISTON_TYPE piston_type);
     std::vector<VERTEX> get_piston_body_vertices();
     std::vector<VERTEX> get_piston_head_vertices(const PISTON_TYPE piston_type);
+    VECTOR3 get_piston_block_relative(int local_x, int local_y, int local_z, const BLOCK_SIDE side, const uint8_t offset);
 };
 
 #endif // PISTONRENDERER_H

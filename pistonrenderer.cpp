@@ -312,6 +312,7 @@ void PistonRenderer::tick(const BLOCK_WDATA block, int local_x, int local_y, int
     // Piston coordinate stuff
     VECTOR3 pistonHeadCoordinates = get_piston_block_relative(local_x, local_y, local_z, side, 1);
     VECTOR3 blockToPushCoordinates = get_piston_block_relative(local_x, local_y, local_z, side, 2);
+    VECTOR3 blockToPushAheadCoordinates = get_piston_block_relative(local_x, local_y, local_z, side, 3);
 
     // Calculate piston-side-dependent variables
     switch(side)
@@ -361,6 +362,8 @@ void PistonRenderer::tick(const BLOCK_WDATA block, int local_x, int local_y, int
     const PISTON_STATE piston_state = static_cast<PISTON_STATE>((getBLOCKDATA(block) & piston_state_bits) >> piston_state_bit_shift);
     const PISTON_TYPE piston_type = static_cast<PISTON_TYPE>((getBLOCKDATA(block) & piston_type_bits) >> piston_type_bit_shift);
 
+    const BLOCK_WDATA blockToPushAhead = c.getGlobalBlockRelative(blockToPushAheadCoordinates.x, blockToPushAheadCoordinates.y, blockToPushAheadCoordinates.z);
+
     // If the piston's power state has changed and it isn't a piston_head
     if(piston_powered != poweredProperly && piston_state != PISTON_HEAD) {
 
@@ -368,7 +371,7 @@ void PistonRenderer::tick(const BLOCK_WDATA block, int local_x, int local_y, int
         uint8_t piston_data = getBLOCKDATA(block) ^ (piston_powered << piston_power_state_bit_shift); // Set pre-existing power bit to zero
 
         // If it is powered "properly" (not by the face)
-        if (poweredProperly) {
+        if (blockToPushAhead == BLOCK_AIR && poweredProperly) {
             // Get the block to push
             BLOCK_WDATA blockToPush = c.getGlobalBlockRelative(pistonHeadCoordinates.x, pistonHeadCoordinates.y, pistonHeadCoordinates.z);
 
