@@ -17,7 +17,7 @@ public:
     virtual bool isBlockShaped(const BLOCK_WDATA /*block*/) override { return true; }
 
     // Used for particles spawned on destruction
-    virtual const TerrainAtlasEntry &destructionTexture(const BLOCK_WDATA block) override;
+    virtual const TerrainAtlasEntry &destructionTexture(const BLOCK_WDATA /*block*/) override;
 
     virtual void removedBlock(const BLOCK_WDATA block, int local_x, int local_y, int local_z, Chunk &c) override;
 
