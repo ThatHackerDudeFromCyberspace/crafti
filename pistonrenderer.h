@@ -42,6 +42,7 @@ protected:
     static const uint8_t piston_data_bits = 0b11 << piston_bit_shift; // Piston uses 2 bits of data, however, orientation data is stored in the first three bits, so the piston data has to be shifted by 3 (or more)
     static const uint8_t piston_power_bit_shift = 5;
     static const uint8_t piston_powered_bits = 0b1 << piston_power_bit_shift;
+    static const std::vector<BLOCK_WDATA> unmovableBlocks;
 };
 
 #endif // PISTONRENDERER_H
