@@ -74,10 +74,8 @@ std::vector<VERTEX> PistonRenderer::get_piston_body_vertices() {
     const TextureAtlasEntry piston_front = terrain_atlas[14][6].current;
 
     const GLFix piston_head_size = BLOCK_SIZE / 4;
-    const GLFix  piston_body_size = GLFix(BLOCK_SIZE) * GLFix(12/16);
 
     const GLFix piston_body_texturemap_top = piston_side.bottom - ((piston_side.bottom - piston_side.top) * 12 / 16);
-    const GLFix piston_body_texturemap_bottom = piston_side.bottom;//piston_side.top + ((piston_side.bottom - piston_side.top) * 12 / 16);
 
     std::vector<VERTEX> piston_vertices;
 
@@ -90,26 +88,26 @@ std::vector<VERTEX> PistonRenderer::get_piston_body_vertices() {
     piston_vertices.push_back({BLOCK_SIZE, 0, piston_head_size, piston_front.right, piston_front.bottom, TEXTURE_TRANSPARENT});
 
     // Piston Bottom
-    piston_vertices.push_back({0, 0, BLOCK_SIZE, piston_side.left, piston_body_texturemap_bottom, TEXTURE_TRANSPARENT});
+    piston_vertices.push_back({0, 0, BLOCK_SIZE, piston_side.left, piston_side.bottom, TEXTURE_TRANSPARENT});
     piston_vertices.push_back({0, 0, piston_head_size, piston_side.left, piston_body_texturemap_top, TEXTURE_TRANSPARENT});
     piston_vertices.push_back({BLOCK_SIZE, 0, piston_head_size, piston_side.right, piston_body_texturemap_top, TEXTURE_TRANSPARENT});
-    piston_vertices.push_back({BLOCK_SIZE, 0, BLOCK_SIZE, piston_side.right, piston_body_texturemap_bottom, TEXTURE_TRANSPARENT});
+    piston_vertices.push_back({BLOCK_SIZE, 0, BLOCK_SIZE, piston_side.right, piston_side.bottom, TEXTURE_TRANSPARENT});
 
     // Piston Top
-    piston_vertices.push_back({0, BLOCK_SIZE, BLOCK_SIZE, piston_side.left, piston_body_texturemap_bottom, TEXTURE_TRANSPARENT});
-    piston_vertices.push_back({BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE, piston_side.right, piston_body_texturemap_bottom, TEXTURE_TRANSPARENT});
+    piston_vertices.push_back({0, BLOCK_SIZE, BLOCK_SIZE, piston_side.left, piston_side.bottom, TEXTURE_TRANSPARENT});
+    piston_vertices.push_back({BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE, piston_side.right, piston_side.bottom, TEXTURE_TRANSPARENT});
     piston_vertices.push_back({BLOCK_SIZE, BLOCK_SIZE, piston_head_size, piston_side.right, piston_body_texturemap_top, TEXTURE_TRANSPARENT});
     piston_vertices.push_back({0, BLOCK_SIZE, piston_head_size, piston_side.left, piston_body_texturemap_top, TEXTURE_TRANSPARENT});
 
     // Piston Left
-    piston_vertices.push_back({0, BLOCK_SIZE, BLOCK_SIZE, piston_side.left, piston_body_texturemap_bottom, TEXTURE_TRANSPARENT});
+    piston_vertices.push_back({0, BLOCK_SIZE, BLOCK_SIZE, piston_side.left, piston_side.bottom, TEXTURE_TRANSPARENT});
     piston_vertices.push_back({0, BLOCK_SIZE, piston_head_size, piston_side.left, piston_body_texturemap_top, TEXTURE_TRANSPARENT});
     piston_vertices.push_back({0, 0, piston_head_size, piston_side.right, piston_body_texturemap_top, TEXTURE_TRANSPARENT});
-    piston_vertices.push_back({0, 0, BLOCK_SIZE, piston_side.right, piston_body_texturemap_bottom, TEXTURE_TRANSPARENT});
+    piston_vertices.push_back({0, 0, BLOCK_SIZE, piston_side.right, piston_side.bottom, TEXTURE_TRANSPARENT});
 
     // Piston Right
-    piston_vertices.push_back({BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE, piston_side.left, piston_body_texturemap_bottom, TEXTURE_TRANSPARENT});
-    piston_vertices.push_back({BLOCK_SIZE, 0, BLOCK_SIZE, piston_side.right, piston_body_texturemap_bottom, TEXTURE_TRANSPARENT});
+    piston_vertices.push_back({BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE, piston_side.left, piston_side.bottom, TEXTURE_TRANSPARENT});
+    piston_vertices.push_back({BLOCK_SIZE, 0, BLOCK_SIZE, piston_side.right, piston_side.bottom, TEXTURE_TRANSPARENT});
     piston_vertices.push_back({BLOCK_SIZE, 0, piston_head_size, piston_side.right, piston_body_texturemap_top, TEXTURE_TRANSPARENT});
     piston_vertices.push_back({BLOCK_SIZE, BLOCK_SIZE, piston_head_size, piston_side.left, piston_body_texturemap_top, TEXTURE_TRANSPARENT});
 
@@ -209,7 +207,7 @@ std::vector<VERTEX> PistonRenderer::get_piston_head_vertices(const PISTON_TYPE p
 
 
 
-const TerrainAtlasEntry &PistonRenderer::destructionTexture(const BLOCK_WDATA block) {
+const TerrainAtlasEntry &PistonRenderer::destructionTexture(const BLOCK_WDATA /*block*/) {
     return terrain_atlas[4][0];
 }
 
@@ -520,4 +518,6 @@ const char *PistonRenderer::getName(const BLOCK_WDATA block)
                 break;
         }
     }
+    
+    return "Piston"
 }
