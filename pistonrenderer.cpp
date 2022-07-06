@@ -1,17 +1,29 @@
 #include <algorithm>
 #include "pistonrenderer.h"
 
+// Define blocks which the piston cannot move
+const std::vector<BLOCK_WDATA> PistonRenderer::unmovableBlocks = {
+    getBLOCKWDATA(BLOCK_PISTON, PISTON_BODY << piston_bit_shift),
+    getBLOCKWDATA(BLOCK_PISTON, PISTON_HEAD << piston_bit_shift),
+    BLOCK_BEDROCK,
+    BLOCK_DOOR,
+    BLOCK_FLOWER,
+    BLOCK_WHEAT,
+    BLOCK_MUSHROOM,
+    BLOCK_REDSTONE_SWITCH,
+    BLOCK_REDSTONE_TORCH
+};
 
 std::vector<VERTEX> piston_head_vertices() {
-    TextureAtlasEntry piston_side = terrain_atlas[12][6].current;
-    TextureAtlasEntry piston_front = terrain_atlas[11][6].current;
+    const TextureAtlasEntry piston_side = terrain_atlas[12][6].current;
+    const TextureAtlasEntry piston_front = terrain_atlas[11][6].current;
     const GLFix piston_head_size = BLOCK_SIZE / 4;
 
     std::vector<VERTEX> piston_vertices;
 
     piston_vertices.reserve(40);
 
-    GLFix piston_head_bottom_texturemap = piston_side.top + ((piston_side.bottom - piston_side.top) * 4 / 16);
+    const GLFix piston_head_bottom_texturemap = piston_side.top + ((piston_side.bottom - piston_side.top) * 4 / 16);
 
     // Piston Front
     piston_vertices.push_back({0, 0, 0, piston_front.left, piston_front.bottom, TEXTURE_TRANSPARENT});
@@ -83,16 +95,12 @@ std::vector<VERTEX> piston_head_vertices() {
 }
 
 std::vector<VERTEX> piston_body_vertices() {
-    TextureAtlasEntry piston_side = terrain_atlas[12][6].current;
+    const TextureAtlasEntry piston_side = terrain_atlas[12][6].current;
     const TextureAtlasEntry piston_back = terrain_atlas[13][6].current;
     const TextureAtlasEntry piston_front = terrain_atlas[14][6].current;
 
     const GLFix piston_head_size = BLOCK_SIZE / 4;
     const GLFix  piston_body_size = GLFix(BLOCK_SIZE) * GLFix(12/16);
-
-    //GLFix piston_left_texturemap = GLFix(piston_side.right) - GLFix(piston_side.right - piston_side.left) * (piston_body_size / GLFix(BLOCK_SIZE));
-    //GLFix piston_right_texturemap = GLFix(piston_side.left) + GLFix(piston_side.right - piston_side.left) * (piston_body_size / GLFix(BLOCK_SIZE));
-    //GLFix piston_top_texturemap = GLFix(piston_side.bottom) + GLFix(piston_side.bottom - piston_side.top) * (piston_body_size / GLFix(BLOCK_SIZE));
 
     const GLFix piston_body_texturemap_top = piston_side.bottom - ((piston_side.bottom - piston_side.top) * 12 / 16);
     const GLFix piston_body_texturemap_bottom = piston_side.bottom;//piston_side.top + ((piston_side.bottom - piston_side.top) * 12 / 16);
@@ -141,9 +149,9 @@ std::vector<VERTEX> piston_body_vertices() {
 }
 
 std::vector<VERTEX> piston_normal_vertices() {
-    TextureAtlasEntry piston_side = terrain_atlas[12][6].current;
-    TextureAtlasEntry piston_back = terrain_atlas[13][6].current;
-    TextureAtlasEntry piston_front = terrain_atlas[11][6].current;
+    const TextureAtlasEntry piston_side = terrain_atlas[12][6].current;
+    const TextureAtlasEntry piston_back = terrain_atlas[13][6].current;
+    const TextureAtlasEntry piston_front = terrain_atlas[11][6].current;
 
     std::vector<VERTEX> piston_vertices;
 
@@ -253,22 +261,7 @@ void PistonRenderer::renderSpecialBlock(const BLOCK_WDATA block, GLFix x, GLFix 
 }
 
 void PistonRenderer::tick(const BLOCK_WDATA block, int local_x, int local_y, int local_z, Chunk &c)
-{
-    // Define blocks which the piston cannot move
-    static const std::vector<BLOCK_WDATA> unmovableBlocks = {
-        getBLOCKWDATA(BLOCK_PISTON, PISTON_BODY << piston_bit_shift),
-        getBLOCKWDATA(BLOCK_PISTON, PISTON_HEAD << piston_bit_shift),
-        BLOCK_BEDROCK,
-        BLOCK_DOOR,
-        BLOCK_FLOWER,
-        BLOCK_WHEAT,
-        BLOCK_MUSHROOM,
-        BLOCK_REDSTONE_SWITCH,
-        BLOCK_REDSTONE_TORCH
-    };
-
-
-    
+{    
     // Piston coordinate stuff
     VECTOR3 pistonHeadCoordinates;
     VECTOR3 blockToPushCoordinates;
@@ -381,9 +374,6 @@ void PistonRenderer::tick(const BLOCK_WDATA block, int local_x, int local_y, int
 
                 // Set the corresponding block to the piston head
                 c.setGlobalBlockRelative(pistonHeadCoordinates.x, pistonHeadCoordinates.y, pistonHeadCoordinates.z, getBLOCKWDATA(BLOCK_PISTON, side | PISTON_HEAD << piston_bit_shift));
-            } else {
-                // If the block isn't powered properly, simply update the powereyness of the piston without extending it
-                //c.setLocalBlock(local_x, local_y, local_z, getBLOCKWDATA(getBLOCK(block), piston_data | poweredProperly << piston_power_bit_shift));
             }
         } else {
             // Reset the piston data's piston type
@@ -468,8 +458,7 @@ void PistonRenderer::removedBlock(const BLOCK_WDATA block, int local_x, int loca
 
 void PistonRenderer::drawPreview(const BLOCK_WDATA /*block*/, TEXTURE &dest, int x, int y)
 {
-    TextureAtlasEntry &tex = terrain_atlas[11][6].resized;
-    BlockRenderer::drawTextureAtlasEntry(*terrain_resized, tex, dest, x, y);
+    BlockRenderer::drawTextureAtlasEntry(*terrain_resized, terrain_atlas[11][6].resized, dest, x, y);
 }
 
 const char *PistonRenderer::getName(const BLOCK_WDATA block)
