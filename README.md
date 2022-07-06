@@ -14,6 +14,15 @@ Screenshots
 ![Crafti Menu](.github/images/crafti_menu.gif)
 ![Crafti List](.github/images/crafti_v1.0_list.png)
 
+How To Run
+--------
+
+Simply download the `crafti.tns` file from the latest release in the [releases](https://github.com/Bluebotlaboratories/crafti/releases/latest) section in GitHub and copy it over to your calculator.
+Then, simply locate the copied `crafti.tns` file on your calculator, and run it
+
+NOTE: Crafti requires a [jailbroken](http://ndless.me/) calculator to run and will not work without Ndless
+
+
 Controls
 --------
 
