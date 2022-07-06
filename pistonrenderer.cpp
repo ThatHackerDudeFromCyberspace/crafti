@@ -408,16 +408,40 @@ void PistonRenderer::tick(const BLOCK_WDATA block, int local_x, int local_y, int
             // Get the block to push
             BLOCK_WDATA blockToPush = c.getGlobalBlockRelative(pistonHeadCoordinates.x, pistonHeadCoordinates.y, pistonHeadCoordinates.z);
 
+            bool piston_pushable = false;
             // If the block to push isn't an unmovable block
-            if (blockToPushAhead == BLOCK_AIR && std::find(unmovableBlocks.begin(), unmovableBlocks.end(), getBLOCK(blockToPush)) == unmovableBlocks.end() && std::find(unmovableBlocks.begin(), unmovableBlocks.end(), blockToPush) == unmovableBlocks.end()) {
+            for (int i = 2; i <= push_limit+1; i++) {
+                VECTOR3 block_to_check = get_piston_block_relative(local_x, local_y, local_x, side, i);
+
+                if (c.getGlobalBlockRelative(block_to_check.x, block_to_check.y, block_to_check.z) == BLOCK_AIR || (std::find(unmovableBlocks.begin(), unmovableBlocks.end(), getBLOCK(blockToPush)) == unmovableBlocks.end() && std::find(unmovableBlocks.begin(), unmovableBlocks.end(), blockToPush) == unmovableBlocks.end())) {
+                    piston_pushable = true;
+                    break;
+                }
+            }
+
+            if (piston_pushable) {
                 piston_data = piston_data ^ (piston_state << piston_state_bit_shift); // Set pre-existing piston type bits to zero
 
                 // Set the block to the piston body
                 c.setLocalBlock(local_x, local_y, local_z, getBLOCKWDATA(getBLOCK(block), piston_data | poweredProperly << piston_power_state_bit_shift | PISTON_BODY << piston_state_bit_shift));
+                
+                BLOCK_WDATA block_to_move;
 
-                // If the block isn't air, then "push" the block (pushing air causes bugs)
-                if (blockToPush != BLOCK_AIR) {
-                    c.setGlobalBlockRelative(blockToPushCoordinates.x, blockToPushCoordinates.y, blockToPushCoordinates.z, blockToPush);
+                for (int i = 2; i <= push_limit+2; i++) {
+                    VECTOR3 block_to_check = get_piston_block_relative(local_x, local_y, local_x, side, i);
+
+                    if (i == 2) {
+                        block_to_move = c.getGlobalBlockRelative(block_to_check.x, block_to_check.y, block_to_check.z);
+                        continue;
+                    }
+
+                    if (c.getGlobalBlockRelative(block_to_check.x, block_to_check.y, block_to_check.z) == BLOCK_AIR) {
+                        c.setGlobalBlockRelative(block_to_check.x, block_to_check.y, block_to_check.z, block_to_move);
+                        break;
+                    }
+
+                    block_to_move = c.getGlobalBlockRelative(block_to_check.x, block_to_check.y, block_to_check.z);
+                    c.setGlobalBlockRelative(block_to_check.x, block_to_check.y, block_to_check.z, block_to_move);
                 }
 
                 // Set the corresponding block to the piston head
