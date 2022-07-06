@@ -68,7 +68,7 @@ std::vector<VERTEX> PistonRenderer::get_piston_normal_vertices(const PISTON_TYPE
     return piston_vertices;
 }
 
-std::vector<VERTEX> PistonRenderer::get_piston_body_vertices(const PISTON_TYPE piston_type) {
+std::vector<VERTEX> PistonRenderer::get_piston_body_vertices() {
     const TextureAtlasEntry piston_side = terrain_atlas[12][6].current;
     const TextureAtlasEntry piston_back = terrain_atlas[13][6].current;
 
