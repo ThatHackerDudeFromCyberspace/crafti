@@ -388,6 +388,68 @@ void PistonRenderer::tick(const BLOCK_WDATA block, int local_x, int local_y, int
     }
 }
 
+void PistonRenderer::removedBlock(const BLOCK_WDATA block, int local_x, int local_y, int local_z, Chunk &c) {
+    const PISTON_TYPE piston_type = static_cast<PISTON_TYPE>((getBLOCKDATA(block) & piston_data_bits) >> piston_bit_shift);
+
+    if (piston_type != PISTON_NORMAL) {
+        BLOCK_SIDE side = static_cast<BLOCK_SIDE>(getBLOCKDATA(block) & BLOCK_SIDE_BITS);
+        // Piston coordinate stuff
+        VECTOR3 pistonHeadCoordinates;
+        VECTOR3 pistonBodyCoordinates;
+
+        switch(side)
+        {
+            default:
+                break;
+            case BLOCK_BACK:
+                pistonHeadCoordinates.x = local_x;
+                pistonHeadCoordinates.y = local_y;
+                pistonHeadCoordinates.z = local_z+1;
+
+                pistonBodyCoordinates.x = local_x;
+                pistonBodyCoordinates.y = local_y;
+                pistonBodyCoordinates.z = local_z-1;
+                break;
+            case BLOCK_FRONT:
+                pistonHeadCoordinates.x = local_x;
+                pistonHeadCoordinates.y = local_y;
+                pistonHeadCoordinates.z = local_z-1;
+
+                pistonBodyCoordinates.x = local_x;
+                pistonBodyCoordinates.y = local_y;
+                pistonBodyCoordinates.z = local_z+1;
+                break;
+            case BLOCK_LEFT:
+                pistonHeadCoordinates.x = local_x-1;
+                pistonHeadCoordinates.y = local_y;
+                pistonHeadCoordinates.z = local_z;
+
+                pistonBodyCoordinates.x = local_x+1;
+                pistonBodyCoordinates.y = local_y;
+                pistonBodyCoordinates.z = local_z;
+                break;
+            case BLOCK_RIGHT:
+                pistonHeadCoordinates.x = local_x+1;
+                pistonHeadCoordinates.y = local_y;
+                pistonHeadCoordinates.z = local_z;
+
+                pistonBodyCoordinates.x = local_x-1;
+                pistonBodyCoordinates.y = local_y;
+                pistonBodyCoordinates.z = local_z;
+                break;
+        }
+
+        switch (piston_type) {
+            case PISTON_BODY:
+                c.setLocalBlock(pistonHeadCoordinates.x, pistonHeadCoordinates.y, pistonHeadCoordinates.z, getBLOCK(BLOCK_AIR));
+                break;
+            case PISTON_HEAD:
+                c.setLocalBlock(pistonBodyCoordinates.x, pistonBodyCoordinates.y, pistonBodyCoordinates.z, getBLOCK(BLOCK_AIR));
+                break;
+        }
+    }
+}
+
 void PistonRenderer::drawPreview(const BLOCK_WDATA /*block*/, TEXTURE &dest, int x, int y)
 {
     TextureAtlasEntry &tex = terrain_atlas[11][6].resized;
