@@ -410,7 +410,7 @@ void PistonRenderer::tick(const BLOCK_WDATA block, int local_x, int local_y, int
 
             bool piston_pushable = false;
             // If the block to push isn't an unmovable block
-            for (int i = 2; i <= push_limit+1; i++) {
+            for (int i = 1; i <= push_limit+1; i++) {
                 VECTOR3 block_to_check = get_piston_block_relative(local_x, local_y, local_x, side, i);
 
                 if (c.getGlobalBlockRelative(block_to_check.x, block_to_check.y, block_to_check.z) == BLOCK_AIR || (std::find(unmovableBlocks.begin(), unmovableBlocks.end(), getBLOCK(blockToPush)) == unmovableBlocks.end() && std::find(unmovableBlocks.begin(), unmovableBlocks.end(), blockToPush) == unmovableBlocks.end())) {
