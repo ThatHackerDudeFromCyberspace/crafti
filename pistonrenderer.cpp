@@ -519,5 +519,5 @@ const char *PistonRenderer::getName(const BLOCK_WDATA block)
         }
     }
     
-    return "Piston"
+    return "Piston";
 }
