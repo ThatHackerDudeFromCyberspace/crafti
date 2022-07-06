@@ -22,7 +22,7 @@ std::vector<VERTEX> PistonRenderer::get_piston_normal_vertices(const PISTON_TYPE
     
     TextureAtlasEntry piston_front = terrain_atlas[11][6].current;
     if (piston_type == STICKY_PISTON) {
-        TextureAtlasEntry piston_front = terrain_atlas[10][6].current;
+        piston_front = terrain_atlas[10][6].current;
     }
 
     std::vector<VERTEX> piston_vertices;
@@ -127,7 +127,7 @@ std::vector<VERTEX> PistonRenderer::get_piston_head_vertices(const PISTON_TYPE p
 
     TextureAtlasEntry piston_front = terrain_atlas[11][6].current;
     if (piston_type == STICKY_PISTON) {
-        TextureAtlasEntry piston_front = terrain_atlas[10][6].current;
+        piston_front = terrain_atlas[10][6].current;
     }
 
     const GLFix piston_head_size = BLOCK_SIZE / 4;
@@ -403,6 +403,7 @@ void PistonRenderer::tick(const BLOCK_WDATA block, int local_x, int local_y, int
                 if (piston_type == STICKY_PISTON) {
                     BLOCK_WDATA blockToPull = c.getGlobalBlockRelative(blockToPushCoordinates.x, blockToPushCoordinates.y, blockToPushCoordinates.z);
                     c.setGlobalBlockRelative(pistonHeadCoordinates.x, pistonHeadCoordinates.y, pistonHeadCoordinates.z, blockToPull);
+                    c.setGlobalBlockRelative(blockToPushCoordinates.x, blockToPushCoordinates.y, blockToPushCoordinates.z, BLOCK_AIR);
                 } else {
                     c.setGlobalBlockRelative(pistonHeadCoordinates.x, pistonHeadCoordinates.y, pistonHeadCoordinates.z, BLOCK_AIR);
                 }
