@@ -409,17 +409,23 @@ void PistonRenderer::tick(const BLOCK_WDATA block, int local_x, int local_y, int
             BLOCK_WDATA blockToPush = c.getGlobalBlockRelative(pistonHeadCoordinates.x, pistonHeadCoordinates.y, pistonHeadCoordinates.z);
 
             bool piston_pushable = false;
+            bool piston_movable = true;
+
             // If the block to push isn't an unmovable block
             for (int i = 1; i <= push_limit+1; i++) {
                 VECTOR3 block_to_check = get_piston_block_relative(local_x, local_y, local_x, side, i);
 
-                if (c.getGlobalBlockRelative(block_to_check.x, block_to_check.y, block_to_check.z) == BLOCK_AIR || (std::find(unmovableBlocks.begin(), unmovableBlocks.end(), getBLOCK(blockToPush)) == unmovableBlocks.end() && std::find(unmovableBlocks.begin(), unmovableBlocks.end(), blockToPush) == unmovableBlocks.end())) {
+                if (std::find(unmovableBlocks.begin(), unmovableBlocks.end(), getBLOCK(blockToPush)) == unmovableBlocks.end() && std::find(unmovableBlocks.begin(), unmovableBlocks.end(), blockToPush) == unmovableBlocks.end()) {
+                    piston_movable = false;
+                }
+
+                if (c.getGlobalBlockRelative(block_to_check.x, block_to_check.y, block_to_check.z) == BLOCK_AIR) {
                     piston_pushable = true;
                     break;
                 }
             }
 
-            if (piston_pushable) {
+            if (piston_pushable && piston_movable) {
                 piston_data = piston_data ^ (piston_state << piston_state_bit_shift); // Set pre-existing piston type bits to zero
 
                 // Set the block to the piston body
@@ -434,6 +440,9 @@ void PistonRenderer::tick(const BLOCK_WDATA block, int local_x, int local_y, int
 
                     if (i == 1) {
                         block_to_move = c.getGlobalBlockRelative(block_to_check.x, block_to_check.y, block_to_check.z);
+                        if (block_to_move == BLOCK_AIR) {
+                            break;
+                        }
                         continue;
                     }
 
