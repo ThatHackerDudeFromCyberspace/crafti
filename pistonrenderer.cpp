@@ -291,7 +291,10 @@ void PistonRenderer::renderSpecialBlock(const BLOCK_WDATA block, GLFix x, GLFix 
             nglRotateY(270);
             break;
         case BLOCK_BOTTOM:
-            nglRotateX(180);
+            nglRotateX(90);
+            break;
+        case BLOCK_TOP:
+            nglRotateX(270);
             break;
     }
 
