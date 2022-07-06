@@ -383,7 +383,7 @@ void PistonRenderer::tick(const BLOCK_WDATA block, int local_x, int local_y, int
                 c.setGlobalBlockRelative(pistonHeadCoordinates.x, pistonHeadCoordinates.y, pistonHeadCoordinates.z, getBLOCKWDATA(BLOCK_PISTON, side | PISTON_HEAD << piston_bit_shift));
             } else {
                 // If the block isn't powered properly, simply update the powereyness of the piston without extending it
-                c.setLocalBlock(local_x, local_y, local_z, getBLOCKWDATA(getBLOCK(block), piston_data | poweredProperly << piston_power_bit_shift));
+                //c.setLocalBlock(local_x, local_y, local_z, getBLOCKWDATA(getBLOCK(block), piston_data | poweredProperly << piston_power_bit_shift));
             }
         } else {
             // Reset the piston data's piston type
