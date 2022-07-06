@@ -323,7 +323,7 @@ void PistonRenderer::renderSpecialBlock(const BLOCK_WDATA block, GLFix x, GLFix 
 void PistonRenderer::tick(const BLOCK_WDATA block, int local_x, int local_y, int local_z, Chunk &c) {
     // Get proper piston head coordinates
     BLOCK_SIDE side = static_cast<BLOCK_SIDE>(getBLOCKDATA(block) & BLOCK_SIDE_BITS);
-    bool poweredProperly = true;
+    bool poweredProperly = false;
 
     // Piston coordinate stuff
     VECTOR3 pistonHeadCoordinates = get_piston_block_relative(local_x, local_y, local_z, side, 1);
@@ -365,6 +365,24 @@ void PistonRenderer::tick(const BLOCK_WDATA block, int local_x, int local_y, int
             poweredProperly = (
                 c.gettingPowerFrom(local_x-1, local_y, local_z, BLOCK_RIGHT)
                 || c.gettingPowerFrom(local_x, local_y-1, local_z, BLOCK_TOP)
+                || c.gettingPowerFrom(local_x, local_y+1, local_z, BLOCK_BOTTOM)
+                || c.gettingPowerFrom(local_x, local_y, local_z-1, BLOCK_BACK)
+                || c.gettingPowerFrom(local_x, local_y, local_z+1, BLOCK_FRONT)
+            );
+            break;
+        case BLOCK_TOP:
+            poweredProperly = (
+                c.gettingPowerFrom(local_x-1, local_y, local_z, BLOCK_RIGHT)
+                || c.gettingPowerFrom(local_x+1, local_y, local_z, BLOCK_LEFT)
+                || c.gettingPowerFrom(local_x, local_y-1, local_z, BLOCK_TOP)
+                || c.gettingPowerFrom(local_x, local_y, local_z-1, BLOCK_BACK)
+                || c.gettingPowerFrom(local_x, local_y, local_z+1, BLOCK_FRONT)
+            );
+            break;
+        case BLOCK_BOTTOM:
+            poweredProperly = (
+                c.gettingPowerFrom(local_x-1, local_y, local_z, BLOCK_RIGHT)
+                || c.gettingPowerFrom(local_x+1, local_y, local_z, BLOCK_LEFT)
                 || c.gettingPowerFrom(local_x, local_y+1, local_z, BLOCK_BOTTOM)
                 || c.gettingPowerFrom(local_x, local_y, local_z-1, BLOCK_BACK)
                 || c.gettingPowerFrom(local_x, local_y, local_z+1, BLOCK_FRONT)
