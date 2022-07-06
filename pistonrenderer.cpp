@@ -21,7 +21,7 @@ bool PistonRenderer::isBlockMovable(BLOCK_WDATA block) {
         if (getBLOCK(block) == BLOCK_PISTON) {
             const PISTON_STATE piston_state = static_cast<PISTON_STATE>((getBLOCKDATA(block) & piston_state_bits) >> piston_state_bit_shift);
             if (piston_state != PISTON_NORMAL) {
-                return false;
+                return true;
             }
         }
 
