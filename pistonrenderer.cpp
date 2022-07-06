@@ -71,11 +71,7 @@ std::vector<VERTEX> PistonRenderer::get_piston_normal_vertices(const PISTON_TYPE
 std::vector<VERTEX> PistonRenderer::get_piston_body_vertices() {
     const TextureAtlasEntry piston_side = terrain_atlas[12][6].current;
     const TextureAtlasEntry piston_back = terrain_atlas[13][6].current;
-
-    TextureAtlasEntry piston_front = terrain_atlas[14][6].current;
-    if (piston_type == STICKY_PISTON) {
-        TextureAtlasEntry piston_front = terrain_atlas[13][6].current;
-    }
+    const TextureAtlasEntry piston_front = terrain_atlas[14][6].current;
 
     const GLFix piston_head_size = BLOCK_SIZE / 4;
     const GLFix  piston_body_size = GLFix(BLOCK_SIZE) * GLFix(12/16);
