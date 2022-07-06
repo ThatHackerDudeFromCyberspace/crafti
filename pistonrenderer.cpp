@@ -4,7 +4,6 @@
 // Define blocks which the piston cannot move
 const std::vector<BLOCK_WDATA> PistonRenderer::unmovableBlocks = {
     BLOCK_BEDROCK,
-    BLOCK_DOOR,
     BLOCK_FLOWER,
     BLOCK_WHEAT,
     BLOCK_MUSHROOM,
