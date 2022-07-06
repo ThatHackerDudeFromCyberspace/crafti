@@ -360,6 +360,7 @@ void PistonRenderer::tick(const BLOCK_WDATA block, int local_x, int local_y, int
     // Get the piston's powered-state and its type
     const uint8_t piston_powered = static_cast<uint8_t>((getBLOCKDATA(block) & piston_power_state_bits) >> piston_power_state_bit_shift);
     const PISTON_STATE piston_state = static_cast<PISTON_STATE>((getBLOCKDATA(block) & piston_state_bits) >> piston_state_bit_shift);
+    const PISTON_TYPE piston_type = static_cast<PISTON_TYPE>((getBLOCKDATA(block) & piston_type_bits) >> piston_type_bit_shift);
 
     // If the piston's power state has changed and it isn't a piston_head
     if(piston_powered != poweredProperly && piston_state != PISTON_HEAD) {
@@ -385,7 +386,7 @@ void PistonRenderer::tick(const BLOCK_WDATA block, int local_x, int local_y, int
                 }
 
                 // Set the corresponding block to the piston head
-                c.setGlobalBlockRelative(pistonHeadCoordinates.x, pistonHeadCoordinates.y, pistonHeadCoordinates.z, getBLOCKWDATA(BLOCK_PISTON, side | PISTON_HEAD << piston_state_bit_shift));
+                c.setGlobalBlockRelative(pistonHeadCoordinates.x, pistonHeadCoordinates.y, pistonHeadCoordinates.z, getBLOCKWDATA(BLOCK_PISTON, side | PISTON_HEAD << piston_state_bit_shift | piston_type));
             }
         } else {
             // Reset the piston data's piston type
@@ -396,8 +397,6 @@ void PistonRenderer::tick(const BLOCK_WDATA block, int local_x, int local_y, int
 
             // Remove the piston head only if it is actually extended
             if (piston_state == PISTON_BODY) {
-                const PISTON_TYPE piston_type = static_cast<PISTON_TYPE>((getBLOCKDATA(block) & piston_type_bits) >> piston_type_bit_shift);
-
                 if (piston_type == STICKY_PISTON) {
                     BLOCK_WDATA blockToPull = c.getGlobalBlockRelative(blockToPushCoordinates.x, blockToPushCoordinates.y, blockToPushCoordinates.z);
                     c.setGlobalBlockRelative(pistonHeadCoordinates.x, pistonHeadCoordinates.y, pistonHeadCoordinates.z, blockToPull);
