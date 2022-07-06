@@ -16,6 +16,38 @@ const std::vector<BLOCK_WDATA> PistonRenderer::unmovableBlocks = {
 
 
 
+VECTOR3 PistonRenderer::get_piston_block_relative(int local_x, int local_y, int local_z, const BLOCK_SIDE side, const uint8_t offset) {
+    VECTOR3 piston_block_relative;
+
+    switch(side)
+    {
+        default:
+            break;
+        case BLOCK_BACK:
+            piston_block_relative.x = local_x;
+            piston_block_relative.y = local_y;
+            piston_block_relative.z = local_z+offset;
+            break;
+        case BLOCK_FRONT:
+            piston_block_relative.x = local_x;
+            piston_block_relative.y = local_y;
+            piston_block_relative.z = local_z-offset;
+            break;
+        case BLOCK_LEFT:
+            piston_block_relative.x = local_x-offset;
+            piston_block_relative.y = local_y;
+            piston_block_relative.z = local_z;
+            break;
+        case BLOCK_RIGHT:
+            piston_block_relative.x = local_x+offset;
+            piston_block_relative.y = local_y;
+            piston_block_relative.z = local_z;
+            break;
+    }
+
+    return piston_block_relative;
+}
+
 std::vector<VERTEX> PistonRenderer::get_piston_normal_vertices(const PISTON_TYPE piston_type) {
     const TextureAtlasEntry piston_side = terrain_atlas[12][6].current;
     const TextureAtlasEntry piston_back = terrain_atlas[13][6].current;
@@ -272,15 +304,14 @@ void PistonRenderer::renderSpecialBlock(const BLOCK_WDATA block, GLFix x, GLFix 
     glPopMatrix();
 }
 
-void PistonRenderer::tick(const BLOCK_WDATA block, int local_x, int local_y, int local_z, Chunk &c)
-{    
-    // Piston coordinate stuff
-    VECTOR3 pistonHeadCoordinates;
-    VECTOR3 blockToPushCoordinates;
-
+void PistonRenderer::tick(const BLOCK_WDATA block, int local_x, int local_y, int local_z, Chunk &c) {
     // Get proper piston head coordinates
     BLOCK_SIDE side = static_cast<BLOCK_SIDE>(getBLOCKDATA(block) & BLOCK_SIDE_BITS);
     bool poweredProperly = true;
+
+    // Piston coordinate stuff
+    VECTOR3 pistonHeadCoordinates = get_piston_block_relative(local_x, local_y, local_z, side, 1);
+    VECTOR3 blockToPushCoordinates = get_piston_block_relative(local_x, local_y, local_z, side, 2);
 
     // Calculate piston-side-dependent variables
     switch(side)
@@ -288,14 +319,6 @@ void PistonRenderer::tick(const BLOCK_WDATA block, int local_x, int local_y, int
         default:
             break;
         case BLOCK_BACK:
-            pistonHeadCoordinates.x = local_x;
-            pistonHeadCoordinates.y = local_y;
-            pistonHeadCoordinates.z = local_z+1;
-
-            blockToPushCoordinates.x = local_x;
-            blockToPushCoordinates.y = local_y;
-            blockToPushCoordinates.z = local_z+2;
-
             poweredProperly = (
                 c.gettingPowerFrom(local_x-1, local_y, local_z, BLOCK_RIGHT)
                 || c.gettingPowerFrom(local_x+1, local_y, local_z, BLOCK_LEFT)
@@ -305,14 +328,6 @@ void PistonRenderer::tick(const BLOCK_WDATA block, int local_x, int local_y, int
             );
             break;
         case BLOCK_FRONT:
-            pistonHeadCoordinates.x = local_x;
-            pistonHeadCoordinates.y = local_y;
-            pistonHeadCoordinates.z = local_z-1;
-
-            blockToPushCoordinates.x = local_x;
-            blockToPushCoordinates.y = local_y;
-            blockToPushCoordinates.z = local_z-2;
-
             poweredProperly = (
                 c.gettingPowerFrom(local_x-1, local_y, local_z, BLOCK_RIGHT)
                 || c.gettingPowerFrom(local_x+1, local_y, local_z, BLOCK_LEFT)
@@ -322,14 +337,6 @@ void PistonRenderer::tick(const BLOCK_WDATA block, int local_x, int local_y, int
             );
             break;
         case BLOCK_LEFT:
-            pistonHeadCoordinates.x = local_x-1;
-            pistonHeadCoordinates.y = local_y;
-            pistonHeadCoordinates.z = local_z;
-
-            blockToPushCoordinates.x = local_x-2;
-            blockToPushCoordinates.y = local_y;
-            blockToPushCoordinates.z = local_z;
-
             poweredProperly = (
                 c.gettingPowerFrom(local_x+1, local_y, local_z, BLOCK_LEFT)
                 || c.gettingPowerFrom(local_x, local_y-1, local_z, BLOCK_TOP)
@@ -339,14 +346,6 @@ void PistonRenderer::tick(const BLOCK_WDATA block, int local_x, int local_y, int
             );
             break;
         case BLOCK_RIGHT:
-            pistonHeadCoordinates.x = local_x+1;
-            pistonHeadCoordinates.y = local_y;
-            pistonHeadCoordinates.z = local_z;
-
-            blockToPushCoordinates.x = local_x+2;
-            blockToPushCoordinates.y = local_y;
-            blockToPushCoordinates.z = local_z;
-
             poweredProperly = (
                 c.gettingPowerFrom(local_x-1, local_y, local_z, BLOCK_RIGHT)
                 || c.gettingPowerFrom(local_x, local_y-1, local_z, BLOCK_TOP)
@@ -418,50 +417,9 @@ void PistonRenderer::removedBlock(const BLOCK_WDATA block, int local_x, int loca
         // Get side-dependant variable thingies
         BLOCK_SIDE side = static_cast<BLOCK_SIDE>(getBLOCKDATA(block) & BLOCK_SIDE_BITS);
         // Piston coordinate stuff
-        VECTOR3 pistonHeadCoordinates;
-        VECTOR3 pistonBodyCoordinates;
-
-        switch(side)
-        {
-            default:
-                break;
-            case BLOCK_BACK:
-                pistonHeadCoordinates.x = local_x;
-                pistonHeadCoordinates.y = local_y;
-                pistonHeadCoordinates.z = local_z+1;
-
-                pistonBodyCoordinates.x = local_x;
-                pistonBodyCoordinates.y = local_y;
-                pistonBodyCoordinates.z = local_z-1;
-                break;
-            case BLOCK_FRONT:
-                pistonHeadCoordinates.x = local_x;
-                pistonHeadCoordinates.y = local_y;
-                pistonHeadCoordinates.z = local_z-1;
-
-                pistonBodyCoordinates.x = local_x;
-                pistonBodyCoordinates.y = local_y;
-                pistonBodyCoordinates.z = local_z+1;
-                break;
-            case BLOCK_LEFT:
-                pistonHeadCoordinates.x = local_x-1;
-                pistonHeadCoordinates.y = local_y;
-                pistonHeadCoordinates.z = local_z;
-
-                pistonBodyCoordinates.x = local_x+1;
-                pistonBodyCoordinates.y = local_y;
-                pistonBodyCoordinates.z = local_z;
-                break;
-            case BLOCK_RIGHT:
-                pistonHeadCoordinates.x = local_x+1;
-                pistonHeadCoordinates.y = local_y;
-                pistonHeadCoordinates.z = local_z;
-
-                pistonBodyCoordinates.x = local_x-1;
-                pistonBodyCoordinates.y = local_y;
-                pistonBodyCoordinates.z = local_z;
-                break;
-        }
+        // Piston coordinate stuff
+        VECTOR3 pistonHeadCoordinates = get_piston_block_relative(local_x, local_y, local_z, side, 1);
+        VECTOR3 pistonBodyCoordinates = get_piston_block_relative(local_x, local_y, local_z, side, -1);
 
         // Set the piston's head/body to air, thereby removing it depending on which type the destroyed one is
         switch (piston_state) {
