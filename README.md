@@ -89,6 +89,7 @@ Contributors
     </td></tr>
 </table>
 <!-- readme: contributors -end -->
+Textures from PureBDcraft ResourcePack by https://bdcraft.net
 
 Development
 -----------
@@ -107,6 +108,7 @@ TODO for next version
 - [x] Add carpet
 - [x] Add basic pistons
 - [x] Add advanced pistons (push limit of 12)
+- [ ] Add texture pack converter for more blocks
 - [ ] Add localisation
 - [ ] Add redstone block
 - [ ] Add villager house generation to make world more lively
