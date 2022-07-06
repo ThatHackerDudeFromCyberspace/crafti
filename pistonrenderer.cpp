@@ -10,8 +10,7 @@ const std::vector<BLOCK_WDATA> PistonRenderer::unmovableBlocks = {
     BLOCK_MUSHROOM,
     BLOCK_REDSTONE_SWITCH,
     BLOCK_REDSTONE_TORCH,
-    BLOCK_BEDROCK,
-    BLOCK_DOOR
+    BLOCK_BEDROCK
 };
 
 
