@@ -106,7 +106,7 @@ TODO for next version
 - [x] Add slabs
 - [x] Add carpet
 - [x] Add basic pistons
-- [ ] Add advanced pistons
+- [x] Add advanced pistons (push limit of 12)
 - [ ] Add localisation
 - [ ] Add redstone block
 - [ ] Add villager house generation to make world more lively
