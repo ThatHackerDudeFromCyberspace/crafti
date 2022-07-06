@@ -418,17 +418,19 @@ void PistonRenderer::removedBlock(const BLOCK_WDATA block, int local_x, int loca
     if (piston_state != PISTON_NORMAL) {
         // Get side-dependant variable thingies
         BLOCK_SIDE side = static_cast<BLOCK_SIDE>(getBLOCKDATA(block) & BLOCK_SIDE_BITS);
+        VECTOR3 pistonBodyCoordinates;
+        VECTOR3 pistonHeadCoordinates;
 
         // Set the piston's head/body to air, thereby removing it depending on which type the destroyed one is
         switch (piston_state) {
             case PISTON_NORMAL:
                 break; // Stop compiler warnings
             case PISTON_BODY:
-                VECTOR3 pistonHeadCoordinates = get_piston_block_relative(local_x, local_y, local_z, side, 1);
+                pistonHeadCoordinates = get_piston_block_relative(local_x, local_y, local_z, side, 1);
                 c.setLocalBlock(pistonHeadCoordinates.x, pistonHeadCoordinates.y, pistonHeadCoordinates.z, getBLOCK(BLOCK_AIR));
                 break;
             case PISTON_HEAD:
-                VECTOR3 pistonBodyCoordinates = get_piston_block_relative(local_x, local_y, local_z, side, -1);
+                pistonBodyCoordinates = get_piston_block_relative(local_x, local_y, local_z, side, -1);
                 c.setLocalBlock(pistonBodyCoordinates.x, pistonBodyCoordinates.y, pistonBodyCoordinates.z, getBLOCK(BLOCK_AIR));
                 break;
         }
