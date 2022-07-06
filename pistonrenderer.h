@@ -19,6 +19,8 @@ public:
     // Used for particles spawned on destruction
     virtual const TerrainAtlasEntry &destructionTexture(const BLOCK_WDATA block) override;
 
+    virtual void removedBlock(const BLOCK_WDATA block, int local_x, int local_y, int local_z, Chunk &c) override;
+
     virtual void drawPreview(const BLOCK_WDATA block, TEXTURE &dest, int x, int y) override;
 
     virtual const char* getName(const BLOCK_WDATA block) override;
