@@ -27,6 +27,8 @@ bool PistonRenderer::isBlockMovable(BLOCK_WDATA block) {
 
         return true;
     }
+
+    return false
 }
 
 VECTOR3 PistonRenderer::get_piston_block_relative(int local_x, int local_y, int local_z, const BLOCK_SIDE side, const int8_t offset) {
@@ -407,8 +409,6 @@ void PistonRenderer::tick(const BLOCK_WDATA block, int local_x, int local_y, int
     const uint8_t piston_powered = static_cast<uint8_t>((getBLOCKDATA(block) & piston_power_state_bits) >> piston_power_state_bit_shift);
     const PISTON_STATE piston_state = static_cast<PISTON_STATE>((getBLOCKDATA(block) & piston_state_bits) >> piston_state_bit_shift);
     const PISTON_TYPE piston_type = static_cast<PISTON_TYPE>((getBLOCKDATA(block) & piston_type_bits) >> piston_type_bit_shift);
-
-    const BLOCK_WDATA blockToPushAhead = c.getGlobalBlockRelative(blockToPushCoordinates.x, blockToPushCoordinates.y, blockToPushCoordinates.z);
 
     // If the piston's power state has changed and it isn't a piston_head
     if(piston_powered != poweredProperly && piston_state != PISTON_HEAD) {
