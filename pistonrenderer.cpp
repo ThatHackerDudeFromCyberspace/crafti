@@ -385,15 +385,17 @@ void PistonRenderer::tick(const BLOCK_WDATA block, int local_x, int local_y, int
                 // If the block isn't powered properly, simply update the powereyness of the piston without extending it
                 c.setLocalBlock(local_x, local_y, local_z, getBLOCKWDATA(getBLOCK(block), piston_data | poweredProperly << piston_power_bit_shift));
             }
-        } else if (piston_type != PISTON_NORMAL) { // If the piston is no longer powered...
+        } else {
             // Reset the piston data's piston type
             piston_data = piston_data ^ (piston_type << piston_bit_shift); // Set pre-existing piston data bits to zero
 
             // Update the piston type
             c.setLocalBlock(local_x, local_y, local_z, getBLOCKWDATA(getBLOCK(block), piston_data));
 
-            // Remove the piston head
-            c.setGlobalBlockRelative(pistonHeadCoordinates.x, pistonHeadCoordinates.y, pistonHeadCoordinates.z, BLOCK_AIR);
+            // Remove the piston head only if it is actually extended
+            if (piston_type == PISTON_BODY) {
+                c.setGlobalBlockRelative(pistonHeadCoordinates.x, pistonHeadCoordinates.y, pistonHeadCoordinates.z, BLOCK_AIR);
+            }
         }
     }
 }
