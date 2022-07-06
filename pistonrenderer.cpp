@@ -17,7 +17,7 @@ const std::vector<BLOCK_WDATA> PistonRenderer::unmovableBlocks = {
 
 
 bool PistonRenderer::isBlockMovable(BLOCK_WDATA block) {
-    if (std::find(unmovableBlocks.begin(), unmovableBlocks.end(), getBLOCK(block)) != unmovableBlocks.end() || std::find(unmovableBlocks.begin(), unmovableBlocks.end(), block) != unmovableBlocks.end()) {
+    if (std::find(unmovableBlocks.begin(), unmovableBlocks.end(), getBLOCK(block)) == unmovableBlocks.end() && std::find(unmovableBlocks.begin(), unmovableBlocks.end(), block) == unmovableBlocks.end()) {
         if (getBLOCK(block) == BLOCK_PISTON) {
             const PISTON_STATE piston_state = static_cast<PISTON_STATE>((getBLOCKDATA(block) & piston_state_bits) >> piston_state_bit_shift);
             if (piston_state != PISTON_NORMAL) {
@@ -429,7 +429,7 @@ void PistonRenderer::tick(const BLOCK_WDATA block, int local_x, int local_y, int
                 VECTOR3 block_to_check = get_piston_block_relative(local_x, local_y, local_z, side, i);
 
                 // Test that blocks are movable
-                if (isBlockMovable(blockToPush)) {
+                if (!isBlockMovable(blockToPush)) {
                     piston_movable = false;
                 }
 
@@ -484,10 +484,10 @@ void PistonRenderer::tick(const BLOCK_WDATA block, int local_x, int local_y, int
             if (piston_state == PISTON_BODY) {
                 if (piston_type == STICKY_PISTON) {
                     BLOCK_WDATA blockToPull = c.getGlobalBlockRelative(blockToPushCoordinates.x, blockToPushCoordinates.y, blockToPushCoordinates.z);
+                    c.setGlobalBlockRelative(blockToPushCoordinates.x, blockToPushCoordinates.y, blockToPushCoordinates.z, BLOCK_AIR);
 
                     if (isBlockMovable(blockToPull)) {
                         c.setGlobalBlockRelative(pistonHeadCoordinates.x, pistonHeadCoordinates.y, pistonHeadCoordinates.z, blockToPull);
-                        c.setGlobalBlockRelative(blockToPushCoordinates.x, blockToPushCoordinates.y, blockToPushCoordinates.z, BLOCK_AIR);
                     }
                 } else {
                     c.setGlobalBlockRelative(pistonHeadCoordinates.x, pistonHeadCoordinates.y, pistonHeadCoordinates.z, BLOCK_AIR);
