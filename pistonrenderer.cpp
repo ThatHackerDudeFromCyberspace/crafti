@@ -430,7 +430,7 @@ void PistonRenderer::tick(const BLOCK_WDATA block, int local_x, int local_y, int
                 BLOCK_WDATA new_block_to_move;
 
                 for (int i = 1; i <= push_limit+1; i++) {
-                    block_to_check = get_piston_block_relative(local_x, local_y, local_x, side, i);
+                    block_to_check = get_piston_block_relative(local_x, local_y, local_z, side, i);
 
                     if (i == 1) {
                         block_to_move = c.getGlobalBlockRelative(block_to_check.x, block_to_check.y, block_to_check.z);
