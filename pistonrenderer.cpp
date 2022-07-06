@@ -275,7 +275,8 @@ void PistonRenderer::tick(const BLOCK_WDATA block, int local_x, int local_y, int
 
     // Get proper piston head coordinates
     BLOCK_SIDE side = static_cast<BLOCK_SIDE>(getBLOCKDATA(block) & BLOCK_SIDE_BITS);
-    BLOCK_SIDE powered_side = BLOCK_FRONT;
+    bool poweredProperly = true;
+
     switch(side)
     {
         default:
@@ -289,7 +290,13 @@ void PistonRenderer::tick(const BLOCK_WDATA block, int local_x, int local_y, int
             blockToPushCoordinates.y = local_y;
             blockToPushCoordinates.z = local_z+2;
 
-            powered_side = BLOCK_FRONT;
+            poweredProperly = (
+                c.gettingPowerFrom(local_x-1, local_y, local_z, BLOCK_RIGHT)
+                || c.gettingPowerFrom(local_x+1, local_y, local_z, BLOCK_LEFT)
+                || c.gettingPowerFrom(local_x, local_y-1, local_z, BLOCK_TOP)
+                || c.gettingPowerFrom(local_x, local_y+1, local_z, BLOCK_BOTTOM)
+                || c.gettingPowerFrom(local_x, local_y, local_z-1, BLOCK_BACK)
+            );
             break;
         case BLOCK_FRONT:
             pistonHeadCoordinates.x = local_x;
@@ -300,7 +307,13 @@ void PistonRenderer::tick(const BLOCK_WDATA block, int local_x, int local_y, int
             blockToPushCoordinates.y = local_y;
             blockToPushCoordinates.z = local_z-2;
 
-            powered_side = BLOCK_BACK;
+            poweredProperly = (
+                c.gettingPowerFrom(local_x-1, local_y, local_z, BLOCK_RIGHT)
+                || c.gettingPowerFrom(local_x+1, local_y, local_z, BLOCK_LEFT)
+                || c.gettingPowerFrom(local_x, local_y-1, local_z, BLOCK_TOP)
+                || c.gettingPowerFrom(local_x, local_y+1, local_z, BLOCK_BOTTOM)
+                || c.gettingPowerFrom(local_x, local_y, local_z+1, BLOCK_FRONT)
+            );
             break;
         case BLOCK_LEFT:
             pistonHeadCoordinates.x = local_x-1;
@@ -311,7 +324,13 @@ void PistonRenderer::tick(const BLOCK_WDATA block, int local_x, int local_y, int
             blockToPushCoordinates.y = local_y;
             blockToPushCoordinates.z = local_z;
 
-            powered_side = BLOCK_RIGHT;
+            poweredProperly = (
+                c.gettingPowerFrom(local_x+1, local_y, local_z, BLOCK_LEFT)
+                || c.gettingPowerFrom(local_x, local_y-1, local_z, BLOCK_TOP)
+                || c.gettingPowerFrom(local_x, local_y+1, local_z, BLOCK_BOTTOM)
+                || c.gettingPowerFrom(local_x, local_y, local_z-1, BLOCK_BACK)
+                || c.gettingPowerFrom(local_x, local_y, local_z+1, BLOCK_FRONT)
+            );
             break;
         case BLOCK_RIGHT:
             pistonHeadCoordinates.x = local_x+1;
@@ -322,27 +341,25 @@ void PistonRenderer::tick(const BLOCK_WDATA block, int local_x, int local_y, int
             blockToPushCoordinates.y = local_y;
             blockToPushCoordinates.z = local_z;
 
-            powered_side = BLOCK_LEFT;
+            poweredProperly = (
+                c.gettingPowerFrom(local_x-1, local_y, local_z, BLOCK_RIGHT)
+                || c.gettingPowerFrom(local_x, local_y-1, local_z, BLOCK_TOP)
+                || c.gettingPowerFrom(local_x, local_y+1, local_z, BLOCK_BOTTOM)
+                || c.gettingPowerFrom(local_x, local_y, local_z-1, BLOCK_BACK)
+                || c.gettingPowerFrom(local_x, local_y, local_z+1, BLOCK_FRONT)
+            );
             break;
     }
-
-
-
-    REDSTONE_STATE powered = c.isBlockPowered(local_x, local_y, local_z) ? ON : OFF;
-    bool poweredFromFace = c.gettingPowerFrom(pistonHeadCoordinates.x, pistonHeadCoordinates.y, pistonHeadCoordinates.z, powered_side);
-
+    
     const uint8_t piston_powered = static_cast<uint8_t>((getBLOCKDATA(block) & piston_powered_bits) >> piston_power_bit_shift);
     const PISTON_TYPE piston_type = static_cast<PISTON_TYPE>((getBLOCKDATA(block) & piston_data_bits) >> piston_bit_shift);
 
-    if(!poweredFromFace && piston_powered != powered && piston_type != PISTON_HEAD) {
-        //c.setLocalBlock(local_x, local_y, local_z, getBLOCKWDATA(getBLOCK(block), prep_data | powered << piston_power_bit_shift));
-
+    if(piston_powered != poweredProperly && piston_type != PISTON_HEAD) {
 
         // Piston logic stuff:
-
         uint8_t piston_data = getBLOCKDATA(block) ^ (piston_powered << piston_power_bit_shift) | side; // Set pre-existing power bit to zero
 
-        if (powered) {
+        if (poweredProperly) {
             BLOCK_WDATA blockToPush = c.getGlobalBlockRelative(pistonHeadCoordinates.x, pistonHeadCoordinates.y, pistonHeadCoordinates.z);
 
             if (std::find(unmovableBlocks.begin(), unmovableBlocks.end(), blockToPush) == unmovableBlocks.end()) {
