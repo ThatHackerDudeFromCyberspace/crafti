@@ -290,6 +290,9 @@ void PistonRenderer::renderSpecialBlock(const BLOCK_WDATA block, GLFix x, GLFix 
         case BLOCK_RIGHT:
             nglRotateY(270);
             break;
+        case BLOCK_BOTTOM:
+            nglRotateX(180);
+            break;
     }
 
     glTranslatef(-BLOCK_SIZE / 2, -BLOCK_SIZE / 2, -BLOCK_SIZE / 2);
