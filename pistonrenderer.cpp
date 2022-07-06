@@ -9,7 +9,9 @@ const std::vector<BLOCK_WDATA> PistonRenderer::unmovableBlocks = {
     BLOCK_MUSHROOM,
     BLOCK_REDSTONE_SWITCH,
     BLOCK_REDSTONE_TORCH,
-    BLOCK_BEDROCK
+    BLOCK_BEDROCK,
+    BLOCK_DOOR,
+    getBLOCKWDATA(BLOCK_PISTON, PISTON_HEAD << piston_state_bit_shift)
 };
 
 
