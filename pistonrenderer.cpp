@@ -43,6 +43,16 @@ VECTOR3 PistonRenderer::get_piston_block_relative(int local_x, int local_y, int 
             piston_block_relative.y = local_y;
             piston_block_relative.z = local_z;
             break;
+        case BLOCK_TOP:
+            piston_block_relative.x = local_x;
+            piston_block_relative.y = local_y+offset;
+            piston_block_relative.z = local_z;
+            break;
+        case BLOCK_BOTTOM:
+            piston_block_relative.x = local_x;
+            piston_block_relative.y = local_y-offset;
+            piston_block_relative.z = local_z;
+            break;
     }
 
     return piston_block_relative;
@@ -291,10 +301,10 @@ void PistonRenderer::renderSpecialBlock(const BLOCK_WDATA block, GLFix x, GLFix 
             nglRotateY(270);
             break;
         case BLOCK_BOTTOM:
-            nglRotateX(90);
+            nglRotateX(270);
             break;
         case BLOCK_TOP:
-            nglRotateX(270);
+            nglRotateX(90);
             break;
     }
 
