@@ -371,12 +371,12 @@ void PistonRenderer::tick(const BLOCK_WDATA block, int local_x, int local_y, int
         uint8_t piston_data = getBLOCKDATA(block) ^ (piston_powered << piston_power_state_bit_shift); // Set pre-existing power bit to zero
 
         // If it is powered "properly" (not by the face)
-        if (blockToPushAhead == BLOCK_AIR && poweredProperly) {
+        if (poweredProperly) {
             // Get the block to push
             BLOCK_WDATA blockToPush = c.getGlobalBlockRelative(pistonHeadCoordinates.x, pistonHeadCoordinates.y, pistonHeadCoordinates.z);
 
             // If the block to push isn't an unmovable block
-            if (std::find(unmovableBlocks.begin(), unmovableBlocks.end(), getBLOCK(blockToPush)) == unmovableBlocks.end() && std::find(unmovableBlocks.begin(), unmovableBlocks.end(), blockToPush) == unmovableBlocks.end()) {
+            if (blockToPushAhead == BLOCK_AIR && std::find(unmovableBlocks.begin(), unmovableBlocks.end(), getBLOCK(blockToPush)) == unmovableBlocks.end() && std::find(unmovableBlocks.begin(), unmovableBlocks.end(), blockToPush) == unmovableBlocks.end()) {
                 piston_data = piston_data ^ (piston_state << piston_state_bit_shift); // Set pre-existing piston type bits to zero
 
                 // Set the block to the piston body
