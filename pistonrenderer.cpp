@@ -466,6 +466,8 @@ void PistonRenderer::removedBlock(const BLOCK_WDATA block, int local_x, int loca
 
         // Set the piston's head/body to air, thereby removing it depending on which type the destroyed one is
         switch (piston_state) {
+            case PISTON_NORMAL:
+                break; // Stop compiler warnings
             case PISTON_BODY:
                 c.setLocalBlock(pistonHeadCoordinates.x, pistonHeadCoordinates.y, pistonHeadCoordinates.z, getBLOCK(BLOCK_AIR));
                 break;
