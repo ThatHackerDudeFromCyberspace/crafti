@@ -3,18 +3,33 @@
 
 // Define blocks which the piston cannot move
 const std::vector<BLOCK_WDATA> PistonRenderer::unmovableBlocks = {
-    getBLOCKWDATA(BLOCK_PISTON, PISTON_BODY << piston_state_bit_shift),
-    getBLOCKWDATA(BLOCK_PISTON, PISTON_HEAD << piston_state_bit_shift),
     BLOCK_BEDROCK,
-    BLOCK_DOOR,
     BLOCK_FLOWER,
     BLOCK_WHEAT,
     BLOCK_MUSHROOM,
     BLOCK_REDSTONE_SWITCH,
-    BLOCK_REDSTONE_TORCH
+    BLOCK_REDSTONE_TORCH,
+    BLOCK_BEDROCK,
+    BLOCK_DOOR,
+    getBLOCKWDATA(BLOCK_PISTON, PISTON_HEAD << piston_state_bit_shift)
 };
 
 
+
+bool PistonRenderer::isBlockMovable(BLOCK_WDATA block) {
+    if (std::find(unmovableBlocks.begin(), unmovableBlocks.end(), getBLOCK(block)) == unmovableBlocks.end() && std::find(unmovableBlocks.begin(), unmovableBlocks.end(), block) == unmovableBlocks.end()) {
+        if (getBLOCK(block) == BLOCK_PISTON) {
+            const PISTON_STATE piston_state = static_cast<PISTON_STATE>((getBLOCKDATA(block) & piston_state_bits) >> piston_state_bit_shift);
+            if (piston_state != PISTON_NORMAL) {
+                return true;
+            }
+        }
+
+        return true;
+    }
+
+    return false;
+}
 
 VECTOR3 PistonRenderer::get_piston_block_relative(int local_x, int local_y, int local_z, const BLOCK_SIDE side, const int8_t offset) {
     VECTOR3 piston_block_relative;
@@ -41,6 +56,16 @@ VECTOR3 PistonRenderer::get_piston_block_relative(int local_x, int local_y, int 
         case BLOCK_RIGHT:
             piston_block_relative.x = local_x+offset;
             piston_block_relative.y = local_y;
+            piston_block_relative.z = local_z;
+            break;
+        case BLOCK_TOP:
+            piston_block_relative.x = local_x;
+            piston_block_relative.y = local_y+offset;
+            piston_block_relative.z = local_z;
+            break;
+        case BLOCK_BOTTOM:
+            piston_block_relative.x = local_x;
+            piston_block_relative.y = local_y-offset;
             piston_block_relative.z = local_z;
             break;
     }
@@ -290,6 +315,12 @@ void PistonRenderer::renderSpecialBlock(const BLOCK_WDATA block, GLFix x, GLFix 
         case BLOCK_RIGHT:
             nglRotateY(270);
             break;
+        case BLOCK_BOTTOM:
+            nglRotateX(270);
+            break;
+        case BLOCK_TOP:
+            nglRotateX(90);
+            break;
     }
 
     glTranslatef(-BLOCK_SIZE / 2, -BLOCK_SIZE / 2, -BLOCK_SIZE / 2);
@@ -307,7 +338,7 @@ void PistonRenderer::renderSpecialBlock(const BLOCK_WDATA block, GLFix x, GLFix 
 void PistonRenderer::tick(const BLOCK_WDATA block, int local_x, int local_y, int local_z, Chunk &c) {
     // Get proper piston head coordinates
     BLOCK_SIDE side = static_cast<BLOCK_SIDE>(getBLOCKDATA(block) & BLOCK_SIDE_BITS);
-    bool poweredProperly = true;
+    bool poweredProperly = false;
 
     // Piston coordinate stuff
     VECTOR3 pistonHeadCoordinates = get_piston_block_relative(local_x, local_y, local_z, side, 1);
@@ -354,14 +385,30 @@ void PistonRenderer::tick(const BLOCK_WDATA block, int local_x, int local_y, int
                 || c.gettingPowerFrom(local_x, local_y, local_z+1, BLOCK_FRONT)
             );
             break;
+        case BLOCK_TOP:
+            poweredProperly = (
+                c.gettingPowerFrom(local_x-1, local_y, local_z, BLOCK_RIGHT)
+                || c.gettingPowerFrom(local_x+1, local_y, local_z, BLOCK_LEFT)
+                || c.gettingPowerFrom(local_x, local_y-1, local_z, BLOCK_TOP)
+                || c.gettingPowerFrom(local_x, local_y, local_z-1, BLOCK_BACK)
+                || c.gettingPowerFrom(local_x, local_y, local_z+1, BLOCK_FRONT)
+            );
+            break;
+        case BLOCK_BOTTOM:
+            poweredProperly = (
+                c.gettingPowerFrom(local_x-1, local_y, local_z, BLOCK_RIGHT)
+                || c.gettingPowerFrom(local_x+1, local_y, local_z, BLOCK_LEFT)
+                || c.gettingPowerFrom(local_x, local_y+1, local_z, BLOCK_BOTTOM)
+                || c.gettingPowerFrom(local_x, local_y, local_z-1, BLOCK_BACK)
+                || c.gettingPowerFrom(local_x, local_y, local_z+1, BLOCK_FRONT)
+            );
+            break;
     }
 
     // Get the piston's powered-state and its type
     const uint8_t piston_powered = static_cast<uint8_t>((getBLOCKDATA(block) & piston_power_state_bits) >> piston_power_state_bit_shift);
     const PISTON_STATE piston_state = static_cast<PISTON_STATE>((getBLOCKDATA(block) & piston_state_bits) >> piston_state_bit_shift);
     const PISTON_TYPE piston_type = static_cast<PISTON_TYPE>((getBLOCKDATA(block) & piston_type_bits) >> piston_type_bit_shift);
-
-    const BLOCK_WDATA blockToPushAhead = c.getGlobalBlockRelative(blockToPushCoordinates.x, blockToPushCoordinates.y, blockToPushCoordinates.z);
 
     // If the piston's power state has changed and it isn't a piston_head
     if(piston_powered != poweredProperly && piston_state != PISTON_HEAD) {
@@ -374,16 +421,53 @@ void PistonRenderer::tick(const BLOCK_WDATA block, int local_x, int local_y, int
             // Get the block to push
             BLOCK_WDATA blockToPush = c.getGlobalBlockRelative(pistonHeadCoordinates.x, pistonHeadCoordinates.y, pistonHeadCoordinates.z);
 
+            bool piston_pushable = false;
+            bool piston_movable = true;
+
             // If the block to push isn't an unmovable block
-            if (blockToPushAhead == BLOCK_AIR && std::find(unmovableBlocks.begin(), unmovableBlocks.end(), getBLOCK(blockToPush)) == unmovableBlocks.end() && std::find(unmovableBlocks.begin(), unmovableBlocks.end(), blockToPush) == unmovableBlocks.end()) {
+            for (int i = 1; i <= push_limit+1; i++) {
+                VECTOR3 block_to_check = get_piston_block_relative(local_x, local_y, local_z, side, i);
+
+                // Test that blocks are movable
+                if (!isBlockMovable(blockToPush)) {
+                    piston_movable = false;
+                }
+
+                if (c.getGlobalBlockRelative(block_to_check.x, block_to_check.y, block_to_check.z) == BLOCK_AIR) {
+                    piston_pushable = true;
+                    break;
+                }
+            }
+
+            if (piston_pushable && piston_movable) {
                 piston_data = piston_data ^ (piston_state << piston_state_bit_shift); // Set pre-existing piston type bits to zero
 
                 // Set the block to the piston body
                 c.setLocalBlock(local_x, local_y, local_z, getBLOCKWDATA(getBLOCK(block), piston_data | poweredProperly << piston_power_state_bit_shift | PISTON_BODY << piston_state_bit_shift));
+                
+                BLOCK_WDATA block_to_move;
+                VECTOR3 block_to_check;
+                BLOCK_WDATA new_block_to_move;
 
-                // If the block isn't air, then "push" the block (pushing air causes bugs)
-                if (blockToPush != BLOCK_AIR) {
-                    c.setGlobalBlockRelative(blockToPushCoordinates.x, blockToPushCoordinates.y, blockToPushCoordinates.z, blockToPush);
+                for (int i = 1; i <= push_limit+1; i++) {
+                    block_to_check = get_piston_block_relative(local_x, local_y, local_z, side, i);
+
+                    if (i == 1) {
+                        block_to_move = c.getGlobalBlockRelative(block_to_check.x, block_to_check.y, block_to_check.z);
+                        if (block_to_move == BLOCK_AIR) {
+                            break;
+                        }
+                        continue;
+                    }
+
+                    if (c.getGlobalBlockRelative(block_to_check.x, block_to_check.y, block_to_check.z) == BLOCK_AIR) {
+                        c.changeGlobalBlockRelative(block_to_check.x, block_to_check.y, block_to_check.z, block_to_move);
+                        break;
+                    }
+                    
+                    new_block_to_move = c.getGlobalBlockRelative(block_to_check.x, block_to_check.y, block_to_check.z);
+                    c.changeGlobalBlockRelative(block_to_check.x, block_to_check.y, block_to_check.z, block_to_move);
+                    block_to_move = new_block_to_move;
                 }
 
                 // Set the corresponding block to the piston head
@@ -400,8 +484,13 @@ void PistonRenderer::tick(const BLOCK_WDATA block, int local_x, int local_y, int
             if (piston_state == PISTON_BODY) {
                 if (piston_type == STICKY_PISTON) {
                     BLOCK_WDATA blockToPull = c.getGlobalBlockRelative(blockToPushCoordinates.x, blockToPushCoordinates.y, blockToPushCoordinates.z);
-                    c.setGlobalBlockRelative(pistonHeadCoordinates.x, pistonHeadCoordinates.y, pistonHeadCoordinates.z, blockToPull);
-                    c.setGlobalBlockRelative(blockToPushCoordinates.x, blockToPushCoordinates.y, blockToPushCoordinates.z, BLOCK_AIR);
+
+                    if (isBlockMovable(blockToPull)) {
+                        c.setGlobalBlockRelative(pistonHeadCoordinates.x, pistonHeadCoordinates.y, pistonHeadCoordinates.z, blockToPull);
+                        c.changeGlobalBlockRelative(blockToPushCoordinates.x, blockToPushCoordinates.y, blockToPushCoordinates.z, BLOCK_AIR);
+                    } else {
+                        c.setGlobalBlockRelative(pistonHeadCoordinates.x, pistonHeadCoordinates.y, pistonHeadCoordinates.z, BLOCK_AIR);
+                    }
                 } else {
                     c.setGlobalBlockRelative(pistonHeadCoordinates.x, pistonHeadCoordinates.y, pistonHeadCoordinates.z, BLOCK_AIR);
                 }
