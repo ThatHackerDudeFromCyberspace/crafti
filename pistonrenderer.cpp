@@ -277,6 +277,7 @@ void PistonRenderer::tick(const BLOCK_WDATA block, int local_x, int local_y, int
     BLOCK_SIDE side = static_cast<BLOCK_SIDE>(getBLOCKDATA(block) & BLOCK_SIDE_BITS);
     bool poweredProperly = true;
 
+    // Calculate piston-side-dependent variables
     switch(side)
     {
         default:
@@ -351,47 +352,61 @@ void PistonRenderer::tick(const BLOCK_WDATA block, int local_x, int local_y, int
             break;
     }
 
+    // Get the piston's powered-state and its type
     const uint8_t piston_powered = static_cast<uint8_t>((getBLOCKDATA(block) & piston_powered_bits) >> piston_power_bit_shift);
     const PISTON_TYPE piston_type = static_cast<PISTON_TYPE>((getBLOCKDATA(block) & piston_data_bits) >> piston_bit_shift);
 
+    // If the piston's power state has changed and it isn't a piston_head
     if(piston_powered != poweredProperly && piston_type != PISTON_HEAD) {
 
-        // Piston logic stuff:
-        uint8_t piston_data = getBLOCKDATA(block) ^ (piston_powered << piston_power_bit_shift) | side; // Set pre-existing power bit to zero
+        // Get the piston's data and prepare it by resetting its powered state
+        uint8_t piston_data = getBLOCKDATA(block) ^ (piston_powered << piston_power_bit_shift); // Set pre-existing power bit to zero
 
+        // If it is powered "properly" (not by the face)
         if (poweredProperly) {
+            // Get the block to push
             BLOCK_WDATA blockToPush = c.getGlobalBlockRelative(pistonHeadCoordinates.x, pistonHeadCoordinates.y, pistonHeadCoordinates.z);
 
-            if (std::find(unmovableBlocks.begin(), unmovableBlocks.end(), blockToPush) == unmovableBlocks.end()) {
-                const PISTON_TYPE piston_type = static_cast<PISTON_TYPE>((getBLOCKDATA(block) & piston_data_bits) >> piston_bit_shift);
-                
-                piston_data = piston_data ^ (piston_type << piston_bit_shift); // Set pre-existing piston data bits to zero
-                
+            // If the block to push isn't an unmovable block
+            if (std::find(unmovableBlocks.begin(), unmovableBlocks.end(), getBLOCK(blockToPush)) == unmovableBlocks.end() && std::find(unmovableBlocks.begin(), unmovableBlocks.end(), blockToPush) == unmovableBlocks.end()) {
+                piston_data = piston_data ^ (piston_type << piston_bit_shift); // Set pre-existing piston type bits to zero
+
+                // Set the block to the piston body
                 c.setLocalBlock(local_x, local_y, local_z, getBLOCKWDATA(getBLOCK(block), piston_data | poweredProperly << piston_power_bit_shift | PISTON_BODY << piston_bit_shift));
 
+                // If the block isn't air, then "push" the block (pushing air causes bugs)
                 if (blockToPush != BLOCK_AIR) {
                     c.setGlobalBlockRelative(blockToPushCoordinates.x, blockToPushCoordinates.y, blockToPushCoordinates.z, blockToPush);
                 }
+
+                // Set the corresponding block to the piston head
                 c.setGlobalBlockRelative(pistonHeadCoordinates.x, pistonHeadCoordinates.y, pistonHeadCoordinates.z, getBLOCKWDATA(BLOCK_PISTON, side | PISTON_HEAD << piston_bit_shift));
             } else {
+                // If the block isn't powered properly, simply update the powereyness of the piston without extending it
                 c.setLocalBlock(local_x, local_y, local_z, getBLOCKWDATA(getBLOCK(block), piston_data | poweredProperly << piston_power_bit_shift));
             }
         } else {
-            const PISTON_TYPE piston_type = static_cast<PISTON_TYPE>((getBLOCKDATA(block) & piston_data_bits) >> piston_bit_shift);
+            // If the piston is no longer powered...
 
+            // Reset the piston data's piston type
             piston_data = piston_data ^ (piston_type << piston_bit_shift); // Set pre-existing piston data bits to zero
-            
+
+            // Update the piston type
             c.setLocalBlock(local_x, local_y, local_z, getBLOCKWDATA(getBLOCK(block), piston_data));
 
+            // Remove the piston head
             c.setGlobalBlockRelative(pistonHeadCoordinates.x, pistonHeadCoordinates.y, pistonHeadCoordinates.z, BLOCK_AIR);
         }
     }
 }
 
 void PistonRenderer::removedBlock(const BLOCK_WDATA block, int local_x, int local_y, int local_z, Chunk &c) {
+    // Check the piston type
     const PISTON_TYPE piston_type = static_cast<PISTON_TYPE>((getBLOCKDATA(block) & piston_data_bits) >> piston_bit_shift);
 
+    // If the piston isn't a "normal" piston
     if (piston_type != PISTON_NORMAL) {
+        // Get side-dependant variable thingies
         BLOCK_SIDE side = static_cast<BLOCK_SIDE>(getBLOCKDATA(block) & BLOCK_SIDE_BITS);
         // Piston coordinate stuff
         VECTOR3 pistonHeadCoordinates;
@@ -439,6 +454,7 @@ void PistonRenderer::removedBlock(const BLOCK_WDATA block, int local_x, int loca
                 break;
         }
 
+        // Set the piston's head/body to air, thereby removing it depending on which type the destroyed one is
         switch (piston_type) {
             case PISTON_BODY:
                 c.setLocalBlock(pistonHeadCoordinates.x, pistonHeadCoordinates.y, pistonHeadCoordinates.z, getBLOCK(BLOCK_AIR));
@@ -458,6 +474,7 @@ void PistonRenderer::drawPreview(const BLOCK_WDATA /*block*/, TEXTURE &dest, int
 
 const char *PistonRenderer::getName(const BLOCK_WDATA block)
 {
+    // Mainly just for debug as PISTON_BODY and PISTON_HEAD should never end up in the inventory
     const PISTON_TYPE piston_type = static_cast<PISTON_TYPE>((getBLOCKDATA(block) & piston_data_bits) >> piston_bit_shift);
     switch (piston_type) {
         case PISTON_NORMAL:
