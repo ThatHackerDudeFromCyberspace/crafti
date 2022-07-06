@@ -28,7 +28,7 @@ bool PistonRenderer::isBlockMovable(BLOCK_WDATA block) {
         return true;
     }
 
-    return false
+    return false;
 }
 
 VECTOR3 PistonRenderer::get_piston_block_relative(int local_x, int local_y, int local_z, const BLOCK_SIDE side, const int8_t offset) {
