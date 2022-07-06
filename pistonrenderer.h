@@ -26,7 +26,7 @@ public:
     virtual const char* getName(const BLOCK_WDATA block) override;
 
 protected:
-    enum PISTON_TYPE {
+    enum PISTON_STATE {
         PISTON_NORMAL = 0,
         PISTON_BODY,
         PISTON_HEAD
@@ -37,12 +37,26 @@ protected:
         ON
     };
 
+    enum PISTON_TYPE {
+        NORMAL_PISTON = 0,
+        STICKY_PISTON = 1
+    };
+
     /// Bitmap stuff
-    static const uint8_t piston_bit_shift = 3; // The amount to shift piston data by to give it room for the orientation or other additional data
-    static const uint8_t piston_data_bits = 0b11 << piston_bit_shift; // Piston uses 2 bits of data, however, orientation data is stored in the first three bits, so the piston data has to be shifted by 3 (or more)
-    static const uint8_t piston_power_bit_shift = 5;
-    static const uint8_t piston_powered_bits = 0b1 << piston_power_bit_shift;
+    static const uint8_t piston_state_bit_shift = 3; // The amount to shift piston data by to give it room for the orientation or other additional data
+    static const uint8_t piston_state_bits = 0b11 << piston_state_bit_shift; // Piston uses 2 bits of data, however, orientation data is stored in the first three bits, so the piston data has to be shifted by 3 (or more)
+
+    static const uint8_t piston_power_state_bit_shift = 5;
+    static const uint8_t piston_power_state_bits = 0b1 << piston_power_state_bit_shift;
+
+    static const uint8_t piston_type_bit_shift = 6;
+    static const uint8_t piston_type_bits = 0b1 << piston_type_bit_shift; // Piston uses 2 bits of data, however, orientation data is stored in the first three bits, so the piston data has to be shifted by 3 (or more)
+
     static const std::vector<BLOCK_WDATA> unmovableBlocks;
+
+    std::vector<VERTEX> get_piston_normal_vertices(const PISTON_TYPE piston_type);
+    std::vector<VERTEX> get_piston_body_vertices();
+    std::vector<VERTEX> get_piston_head_vertices(const PISTON_TYPE piston_type);
 };
 
 #endif // PISTONRENDERER_H

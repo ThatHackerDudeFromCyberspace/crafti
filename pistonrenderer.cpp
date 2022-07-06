@@ -3,8 +3,8 @@
 
 // Define blocks which the piston cannot move
 const std::vector<BLOCK_WDATA> PistonRenderer::unmovableBlocks = {
-    getBLOCKWDATA(BLOCK_PISTON, PISTON_BODY << piston_bit_shift),
-    getBLOCKWDATA(BLOCK_PISTON, PISTON_HEAD << piston_bit_shift),
+    getBLOCKWDATA(BLOCK_PISTON, PISTON_BODY << piston_state_bit_shift),
+    getBLOCKWDATA(BLOCK_PISTON, PISTON_HEAD << piston_state_bit_shift),
     BLOCK_BEDROCK,
     BLOCK_DOOR,
     BLOCK_FLOWER,
@@ -14,9 +14,126 @@ const std::vector<BLOCK_WDATA> PistonRenderer::unmovableBlocks = {
     BLOCK_REDSTONE_TORCH
 };
 
-std::vector<VERTEX> piston_head_vertices() {
+
+
+std::vector<VERTEX> PistonRenderer::get_piston_normal_vertices(const PISTON_TYPE piston_type) {
     const TextureAtlasEntry piston_side = terrain_atlas[12][6].current;
-    const TextureAtlasEntry piston_front = terrain_atlas[11][6].current;
+    const TextureAtlasEntry piston_back = terrain_atlas[13][6].current;
+    
+    TextureAtlasEntry piston_front = terrain_atlas[14][6].current;
+    if (piston_type == STICKY_PISTON) {
+        TextureAtlasEntry piston_front = terrain_atlas[13][6].current;
+    }
+
+    std::vector<VERTEX> piston_vertices;
+
+    piston_vertices.reserve(24);
+
+    // Piston Front
+    piston_vertices.push_back({0, 0, 0, piston_front.left, piston_front.bottom, TEXTURE_TRANSPARENT});
+    piston_vertices.push_back({0, BLOCK_SIZE, 0, piston_front.left, piston_front.top, TEXTURE_TRANSPARENT});
+    piston_vertices.push_back({BLOCK_SIZE, BLOCK_SIZE, 0, piston_front.right, piston_front.top, TEXTURE_TRANSPARENT});
+    piston_vertices.push_back({BLOCK_SIZE, 0, 0, piston_front.right, piston_front.bottom, TEXTURE_TRANSPARENT});
+
+    // Piston Bottom
+    piston_vertices.push_back({0, 0, BLOCK_SIZE, piston_side.left, piston_side.bottom, TEXTURE_TRANSPARENT});
+    piston_vertices.push_back({0, 0, 0, piston_side.left, piston_side.top, TEXTURE_TRANSPARENT});
+    piston_vertices.push_back({BLOCK_SIZE, 0, 0, piston_side.right, piston_side.top, TEXTURE_TRANSPARENT});
+    piston_vertices.push_back({BLOCK_SIZE, 0, BLOCK_SIZE, piston_side.right, piston_side.bottom, TEXTURE_TRANSPARENT});
+
+    // Piston Top
+    piston_vertices.push_back({0, BLOCK_SIZE, BLOCK_SIZE, piston_side.left, piston_side.bottom, TEXTURE_TRANSPARENT});
+    piston_vertices.push_back({BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE, piston_side.right, piston_side.bottom, TEXTURE_TRANSPARENT});
+    piston_vertices.push_back({BLOCK_SIZE, BLOCK_SIZE, 0, piston_side.right, piston_side.top, TEXTURE_TRANSPARENT});
+    piston_vertices.push_back({0, BLOCK_SIZE, 0, piston_side.left, piston_side.top, TEXTURE_TRANSPARENT});
+
+    // Piston Left
+    piston_vertices.push_back({0, BLOCK_SIZE, BLOCK_SIZE, piston_side.left, piston_side.bottom, TEXTURE_TRANSPARENT});
+    piston_vertices.push_back({0, BLOCK_SIZE, 0, piston_side.left, piston_side.top, TEXTURE_TRANSPARENT});
+    piston_vertices.push_back({0, 0, 0, piston_side.right, piston_side.top, TEXTURE_TRANSPARENT});
+    piston_vertices.push_back({0, 0, BLOCK_SIZE, piston_side.right, piston_side.bottom, TEXTURE_TRANSPARENT});
+
+    // Piston Right
+    piston_vertices.push_back({BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE, piston_side.left, piston_side.bottom, TEXTURE_TRANSPARENT});
+    piston_vertices.push_back({BLOCK_SIZE, 0, BLOCK_SIZE, piston_side.right, piston_side.bottom, TEXTURE_TRANSPARENT});
+    piston_vertices.push_back({BLOCK_SIZE, 0, 0, piston_side.right, piston_side.top, TEXTURE_TRANSPARENT});
+    piston_vertices.push_back({BLOCK_SIZE, BLOCK_SIZE, 0, piston_side.left, piston_side.top, TEXTURE_TRANSPARENT});
+
+    // Piston Back
+    piston_vertices.push_back({0, 0, BLOCK_SIZE, piston_back.left, piston_back.bottom, TEXTURE_TRANSPARENT});
+    piston_vertices.push_back({BLOCK_SIZE, 0, BLOCK_SIZE, piston_back.right, piston_back.bottom, TEXTURE_TRANSPARENT});
+    piston_vertices.push_back({BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE, piston_back.right, piston_back.top, TEXTURE_TRANSPARENT});
+    piston_vertices.push_back({0, BLOCK_SIZE, BLOCK_SIZE, piston_back.left, piston_back.top, TEXTURE_TRANSPARENT});
+
+    return piston_vertices;
+}
+
+std::vector<VERTEX> PistonRenderer::get_piston_body_vertices(const PISTON_TYPE piston_type) {
+    const TextureAtlasEntry piston_side = terrain_atlas[12][6].current;
+    const TextureAtlasEntry piston_back = terrain_atlas[13][6].current;
+
+    TextureAtlasEntry piston_front = terrain_atlas[14][6].current;
+    if (piston_type == STICKY_PISTON) {
+        TextureAtlasEntry piston_front = terrain_atlas[13][6].current;
+    }
+
+    const GLFix piston_head_size = BLOCK_SIZE / 4;
+    const GLFix  piston_body_size = GLFix(BLOCK_SIZE) * GLFix(12/16);
+
+    const GLFix piston_body_texturemap_top = piston_side.bottom - ((piston_side.bottom - piston_side.top) * 12 / 16);
+    const GLFix piston_body_texturemap_bottom = piston_side.bottom;//piston_side.top + ((piston_side.bottom - piston_side.top) * 12 / 16);
+
+    std::vector<VERTEX> piston_vertices;
+
+    piston_vertices.reserve(24);
+
+    // Piston Front
+    piston_vertices.push_back({0, 0, piston_head_size, piston_front.left, piston_front.bottom, TEXTURE_TRANSPARENT});
+    piston_vertices.push_back({0, BLOCK_SIZE, piston_head_size, piston_front.left, piston_front.top, TEXTURE_TRANSPARENT});
+    piston_vertices.push_back({BLOCK_SIZE, BLOCK_SIZE, piston_head_size, piston_front.right, piston_front.top, TEXTURE_TRANSPARENT});
+    piston_vertices.push_back({BLOCK_SIZE, 0, piston_head_size, piston_front.right, piston_front.bottom, TEXTURE_TRANSPARENT});
+
+    // Piston Bottom
+    piston_vertices.push_back({0, 0, BLOCK_SIZE, piston_side.left, piston_body_texturemap_bottom, TEXTURE_TRANSPARENT});
+    piston_vertices.push_back({0, 0, piston_head_size, piston_side.left, piston_body_texturemap_top, TEXTURE_TRANSPARENT});
+    piston_vertices.push_back({BLOCK_SIZE, 0, piston_head_size, piston_side.right, piston_body_texturemap_top, TEXTURE_TRANSPARENT});
+    piston_vertices.push_back({BLOCK_SIZE, 0, BLOCK_SIZE, piston_side.right, piston_body_texturemap_bottom, TEXTURE_TRANSPARENT});
+
+    // Piston Top
+    piston_vertices.push_back({0, BLOCK_SIZE, BLOCK_SIZE, piston_side.left, piston_body_texturemap_bottom, TEXTURE_TRANSPARENT});
+    piston_vertices.push_back({BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE, piston_side.right, piston_body_texturemap_bottom, TEXTURE_TRANSPARENT});
+    piston_vertices.push_back({BLOCK_SIZE, BLOCK_SIZE, piston_head_size, piston_side.right, piston_body_texturemap_top, TEXTURE_TRANSPARENT});
+    piston_vertices.push_back({0, BLOCK_SIZE, piston_head_size, piston_side.left, piston_body_texturemap_top, TEXTURE_TRANSPARENT});
+
+    // Piston Left
+    piston_vertices.push_back({0, BLOCK_SIZE, BLOCK_SIZE, piston_side.left, piston_body_texturemap_bottom, TEXTURE_TRANSPARENT});
+    piston_vertices.push_back({0, BLOCK_SIZE, piston_head_size, piston_side.left, piston_body_texturemap_top, TEXTURE_TRANSPARENT});
+    piston_vertices.push_back({0, 0, piston_head_size, piston_side.right, piston_body_texturemap_top, TEXTURE_TRANSPARENT});
+    piston_vertices.push_back({0, 0, BLOCK_SIZE, piston_side.right, piston_body_texturemap_bottom, TEXTURE_TRANSPARENT});
+
+    // Piston Right
+    piston_vertices.push_back({BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE, piston_side.left, piston_body_texturemap_bottom, TEXTURE_TRANSPARENT});
+    piston_vertices.push_back({BLOCK_SIZE, 0, BLOCK_SIZE, piston_side.right, piston_body_texturemap_bottom, TEXTURE_TRANSPARENT});
+    piston_vertices.push_back({BLOCK_SIZE, 0, piston_head_size, piston_side.right, piston_body_texturemap_top, TEXTURE_TRANSPARENT});
+    piston_vertices.push_back({BLOCK_SIZE, BLOCK_SIZE, piston_head_size, piston_side.left, piston_body_texturemap_top, TEXTURE_TRANSPARENT});
+
+    // Piston Back
+    piston_vertices.push_back({0, 0, BLOCK_SIZE, piston_back.left, piston_back.bottom, TEXTURE_TRANSPARENT});
+    piston_vertices.push_back({BLOCK_SIZE, 0, BLOCK_SIZE, piston_back.right, piston_back.bottom, TEXTURE_TRANSPARENT});
+    piston_vertices.push_back({BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE, piston_back.right, piston_back.top, TEXTURE_TRANSPARENT});
+    piston_vertices.push_back({0, BLOCK_SIZE, BLOCK_SIZE, piston_back.left, piston_back.top, TEXTURE_TRANSPARENT});
+
+    return piston_vertices;
+}
+
+std::vector<VERTEX> PistonRenderer::get_piston_head_vertices(const PISTON_TYPE piston_type) {
+    const TextureAtlasEntry piston_side = terrain_atlas[12][6].current;
+
+    TextureAtlasEntry piston_front = terrain_atlas[14][6].current;
+    if (piston_type == STICKY_PISTON) {
+        TextureAtlasEntry piston_front = terrain_atlas[13][6].current;
+    }
+
     const GLFix piston_head_size = BLOCK_SIZE / 4;
 
     std::vector<VERTEX> piston_vertices;
@@ -94,107 +211,7 @@ std::vector<VERTEX> piston_head_vertices() {
     return piston_vertices;
 }
 
-std::vector<VERTEX> piston_body_vertices() {
-    const TextureAtlasEntry piston_side = terrain_atlas[12][6].current;
-    const TextureAtlasEntry piston_back = terrain_atlas[13][6].current;
-    const TextureAtlasEntry piston_front = terrain_atlas[14][6].current;
 
-    const GLFix piston_head_size = BLOCK_SIZE / 4;
-    const GLFix  piston_body_size = GLFix(BLOCK_SIZE) * GLFix(12/16);
-
-    const GLFix piston_body_texturemap_top = piston_side.bottom - ((piston_side.bottom - piston_side.top) * 12 / 16);
-    const GLFix piston_body_texturemap_bottom = piston_side.bottom;//piston_side.top + ((piston_side.bottom - piston_side.top) * 12 / 16);
-
-    std::vector<VERTEX> piston_vertices;
-
-    piston_vertices.reserve(24);
-
-    // Piston Front
-    piston_vertices.push_back({0, 0, piston_head_size, piston_front.left, piston_front.bottom, TEXTURE_TRANSPARENT});
-    piston_vertices.push_back({0, BLOCK_SIZE, piston_head_size, piston_front.left, piston_front.top, TEXTURE_TRANSPARENT});
-    piston_vertices.push_back({BLOCK_SIZE, BLOCK_SIZE, piston_head_size, piston_front.right, piston_front.top, TEXTURE_TRANSPARENT});
-    piston_vertices.push_back({BLOCK_SIZE, 0, piston_head_size, piston_front.right, piston_front.bottom, TEXTURE_TRANSPARENT});
-
-    // Piston Bottom
-    piston_vertices.push_back({0, 0, BLOCK_SIZE, piston_side.left, piston_body_texturemap_bottom, TEXTURE_TRANSPARENT});
-    piston_vertices.push_back({0, 0, piston_head_size, piston_side.left, piston_body_texturemap_top, TEXTURE_TRANSPARENT});
-    piston_vertices.push_back({BLOCK_SIZE, 0, piston_head_size, piston_side.right, piston_body_texturemap_top, TEXTURE_TRANSPARENT});
-    piston_vertices.push_back({BLOCK_SIZE, 0, BLOCK_SIZE, piston_side.right, piston_body_texturemap_bottom, TEXTURE_TRANSPARENT});
-
-    // Piston Top
-    piston_vertices.push_back({0, BLOCK_SIZE, BLOCK_SIZE, piston_side.left, piston_body_texturemap_bottom, TEXTURE_TRANSPARENT});
-    piston_vertices.push_back({BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE, piston_side.right, piston_body_texturemap_bottom, TEXTURE_TRANSPARENT});
-    piston_vertices.push_back({BLOCK_SIZE, BLOCK_SIZE, piston_head_size, piston_side.right, piston_body_texturemap_top, TEXTURE_TRANSPARENT});
-    piston_vertices.push_back({0, BLOCK_SIZE, piston_head_size, piston_side.left, piston_body_texturemap_top, TEXTURE_TRANSPARENT});
-
-    // Piston Left
-    piston_vertices.push_back({0, BLOCK_SIZE, BLOCK_SIZE, piston_side.left, piston_body_texturemap_bottom, TEXTURE_TRANSPARENT});
-    piston_vertices.push_back({0, BLOCK_SIZE, piston_head_size, piston_side.left, piston_body_texturemap_top, TEXTURE_TRANSPARENT});
-    piston_vertices.push_back({0, 0, piston_head_size, piston_side.right, piston_body_texturemap_top, TEXTURE_TRANSPARENT});
-    piston_vertices.push_back({0, 0, BLOCK_SIZE, piston_side.right, piston_body_texturemap_bottom, TEXTURE_TRANSPARENT});
-
-    // Piston Right
-    piston_vertices.push_back({BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE, piston_side.left, piston_body_texturemap_bottom, TEXTURE_TRANSPARENT});
-    piston_vertices.push_back({BLOCK_SIZE, 0, BLOCK_SIZE, piston_side.right, piston_body_texturemap_bottom, TEXTURE_TRANSPARENT});
-    piston_vertices.push_back({BLOCK_SIZE, 0, piston_head_size, piston_side.right, piston_body_texturemap_top, TEXTURE_TRANSPARENT});
-    piston_vertices.push_back({BLOCK_SIZE, BLOCK_SIZE, piston_head_size, piston_side.left, piston_body_texturemap_top, TEXTURE_TRANSPARENT});
-
-    // Piston Back
-    piston_vertices.push_back({0, 0, BLOCK_SIZE, piston_back.left, piston_back.bottom, TEXTURE_TRANSPARENT});
-    piston_vertices.push_back({BLOCK_SIZE, 0, BLOCK_SIZE, piston_back.right, piston_back.bottom, TEXTURE_TRANSPARENT});
-    piston_vertices.push_back({BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE, piston_back.right, piston_back.top, TEXTURE_TRANSPARENT});
-    piston_vertices.push_back({0, BLOCK_SIZE, BLOCK_SIZE, piston_back.left, piston_back.top, TEXTURE_TRANSPARENT});
-
-    return piston_vertices;
-}
-
-std::vector<VERTEX> piston_normal_vertices() {
-    const TextureAtlasEntry piston_side = terrain_atlas[12][6].current;
-    const TextureAtlasEntry piston_back = terrain_atlas[13][6].current;
-    const TextureAtlasEntry piston_front = terrain_atlas[11][6].current;
-
-    std::vector<VERTEX> piston_vertices;
-
-    piston_vertices.reserve(24);
-
-    // Piston Front
-    piston_vertices.push_back({0, 0, 0, piston_front.left, piston_front.bottom, TEXTURE_TRANSPARENT});
-    piston_vertices.push_back({0, BLOCK_SIZE, 0, piston_front.left, piston_front.top, TEXTURE_TRANSPARENT});
-    piston_vertices.push_back({BLOCK_SIZE, BLOCK_SIZE, 0, piston_front.right, piston_front.top, TEXTURE_TRANSPARENT});
-    piston_vertices.push_back({BLOCK_SIZE, 0, 0, piston_front.right, piston_front.bottom, TEXTURE_TRANSPARENT});
-
-    // Piston Bottom
-    piston_vertices.push_back({0, 0, BLOCK_SIZE, piston_side.left, piston_side.bottom, TEXTURE_TRANSPARENT});
-    piston_vertices.push_back({0, 0, 0, piston_side.left, piston_side.top, TEXTURE_TRANSPARENT});
-    piston_vertices.push_back({BLOCK_SIZE, 0, 0, piston_side.right, piston_side.top, TEXTURE_TRANSPARENT});
-    piston_vertices.push_back({BLOCK_SIZE, 0, BLOCK_SIZE, piston_side.right, piston_side.bottom, TEXTURE_TRANSPARENT});
-
-    // Piston Top
-    piston_vertices.push_back({0, BLOCK_SIZE, BLOCK_SIZE, piston_side.left, piston_side.bottom, TEXTURE_TRANSPARENT});
-    piston_vertices.push_back({BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE, piston_side.right, piston_side.bottom, TEXTURE_TRANSPARENT});
-    piston_vertices.push_back({BLOCK_SIZE, BLOCK_SIZE, 0, piston_side.right, piston_side.top, TEXTURE_TRANSPARENT});
-    piston_vertices.push_back({0, BLOCK_SIZE, 0, piston_side.left, piston_side.top, TEXTURE_TRANSPARENT});
-
-    // Piston Left
-    piston_vertices.push_back({0, BLOCK_SIZE, BLOCK_SIZE, piston_side.left, piston_side.bottom, TEXTURE_TRANSPARENT});
-    piston_vertices.push_back({0, BLOCK_SIZE, 0, piston_side.left, piston_side.top, TEXTURE_TRANSPARENT});
-    piston_vertices.push_back({0, 0, 0, piston_side.right, piston_side.top, TEXTURE_TRANSPARENT});
-    piston_vertices.push_back({0, 0, BLOCK_SIZE, piston_side.right, piston_side.bottom, TEXTURE_TRANSPARENT});
-
-    // Piston Right
-    piston_vertices.push_back({BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE, piston_side.left, piston_side.bottom, TEXTURE_TRANSPARENT});
-    piston_vertices.push_back({BLOCK_SIZE, 0, BLOCK_SIZE, piston_side.right, piston_side.bottom, TEXTURE_TRANSPARENT});
-    piston_vertices.push_back({BLOCK_SIZE, 0, 0, piston_side.right, piston_side.top, TEXTURE_TRANSPARENT});
-    piston_vertices.push_back({BLOCK_SIZE, BLOCK_SIZE, 0, piston_side.left, piston_side.top, TEXTURE_TRANSPARENT});
-
-    // Piston Back
-    piston_vertices.push_back({0, 0, BLOCK_SIZE, piston_back.left, piston_back.bottom, TEXTURE_TRANSPARENT});
-    piston_vertices.push_back({BLOCK_SIZE, 0, BLOCK_SIZE, piston_back.right, piston_back.bottom, TEXTURE_TRANSPARENT});
-    piston_vertices.push_back({BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE, piston_back.right, piston_back.top, TEXTURE_TRANSPARENT});
-    piston_vertices.push_back({0, BLOCK_SIZE, BLOCK_SIZE, piston_back.left, piston_back.top, TEXTURE_TRANSPARENT});
-
-    return piston_vertices;
-}
 
 const TerrainAtlasEntry &PistonRenderer::destructionTexture(const BLOCK_WDATA block) {
     return terrain_atlas[4][0];
@@ -212,16 +229,17 @@ void PistonRenderer::renderSpecialBlock(const BLOCK_WDATA block, GLFix x, GLFix 
 
     std::vector<VERTEX> piston_vertices;
 
-    const uint8_t piston_type = static_cast<uint8_t>((getBLOCKDATA(block) & piston_data_bits) >> piston_bit_shift);
-    switch (piston_type) {
+    const PISTON_STATE piston_state = static_cast<PISTON_STATE>((getBLOCKDATA(block) & piston_state_bits) >> piston_state_bit_shift);
+    const PISTON_TYPE piston_type = static_cast<PISTON_TYPE>((getBLOCKDATA(block) & piston_type_bits) >> piston_type_bit_shift);
+    switch (piston_state) {
         case PISTON_NORMAL:
-            piston_vertices = piston_normal_vertices();
+            piston_vertices = get_piston_normal_vertices(piston_type);
             break;
         case PISTON_BODY:
-            piston_vertices = piston_body_vertices();
+            piston_vertices = get_piston_body_vertices();
             break;
         case PISTON_HEAD:
-            piston_vertices = piston_head_vertices();
+            piston_vertices = get_piston_head_vertices(piston_type);
             break;
     }
 
@@ -346,14 +364,14 @@ void PistonRenderer::tick(const BLOCK_WDATA block, int local_x, int local_y, int
     }
 
     // Get the piston's powered-state and its type
-    const uint8_t piston_powered = static_cast<uint8_t>((getBLOCKDATA(block) & piston_powered_bits) >> piston_power_bit_shift);
-    const PISTON_TYPE piston_type = static_cast<PISTON_TYPE>((getBLOCKDATA(block) & piston_data_bits) >> piston_bit_shift);
+    const uint8_t piston_powered = static_cast<uint8_t>((getBLOCKDATA(block) & piston_power_state_bits) >> piston_power_state_bit_shift);
+    const PISTON_STATE piston_state = static_cast<PISTON_STATE>((getBLOCKDATA(block) & piston_state_bits) >> piston_state_bit_shift);
 
     // If the piston's power state has changed and it isn't a piston_head
-    if(piston_powered != poweredProperly && piston_type != PISTON_HEAD) {
+    if(piston_powered != poweredProperly && piston_state != PISTON_HEAD) {
 
         // Get the piston's data and prepare it by resetting its powered state
-        uint8_t piston_data = getBLOCKDATA(block) ^ (piston_powered << piston_power_bit_shift); // Set pre-existing power bit to zero
+        uint8_t piston_data = getBLOCKDATA(block) ^ (piston_powered << piston_power_state_bit_shift); // Set pre-existing power bit to zero
 
         // If it is powered "properly" (not by the face)
         if (poweredProperly) {
@@ -362,10 +380,10 @@ void PistonRenderer::tick(const BLOCK_WDATA block, int local_x, int local_y, int
 
             // If the block to push isn't an unmovable block
             if (std::find(unmovableBlocks.begin(), unmovableBlocks.end(), getBLOCK(blockToPush)) == unmovableBlocks.end() && std::find(unmovableBlocks.begin(), unmovableBlocks.end(), blockToPush) == unmovableBlocks.end()) {
-                piston_data = piston_data ^ (piston_type << piston_bit_shift); // Set pre-existing piston type bits to zero
+                piston_data = piston_data ^ (piston_state << piston_state_bit_shift); // Set pre-existing piston type bits to zero
 
                 // Set the block to the piston body
-                c.setLocalBlock(local_x, local_y, local_z, getBLOCKWDATA(getBLOCK(block), piston_data | poweredProperly << piston_power_bit_shift | PISTON_BODY << piston_bit_shift));
+                c.setLocalBlock(local_x, local_y, local_z, getBLOCKWDATA(getBLOCK(block), piston_data | poweredProperly << piston_power_state_bit_shift | PISTON_BODY << piston_state_bit_shift));
 
                 // If the block isn't air, then "push" the block (pushing air causes bugs)
                 if (blockToPush != BLOCK_AIR) {
@@ -373,18 +391,25 @@ void PistonRenderer::tick(const BLOCK_WDATA block, int local_x, int local_y, int
                 }
 
                 // Set the corresponding block to the piston head
-                c.setGlobalBlockRelative(pistonHeadCoordinates.x, pistonHeadCoordinates.y, pistonHeadCoordinates.z, getBLOCKWDATA(BLOCK_PISTON, side | PISTON_HEAD << piston_bit_shift));
+                c.setGlobalBlockRelative(pistonHeadCoordinates.x, pistonHeadCoordinates.y, pistonHeadCoordinates.z, getBLOCKWDATA(BLOCK_PISTON, side | PISTON_HEAD << piston_state_bit_shift));
             }
         } else {
             // Reset the piston data's piston type
-            piston_data = piston_data ^ (piston_type << piston_bit_shift); // Set pre-existing piston data bits to zero
+            piston_data = piston_data ^ (piston_state << piston_state_bit_shift); // Set pre-existing piston data bits to zero
 
             // Update the piston type
             c.setLocalBlock(local_x, local_y, local_z, getBLOCKWDATA(getBLOCK(block), piston_data));
 
             // Remove the piston head only if it is actually extended
-            if (piston_type == PISTON_BODY) {
-                c.setGlobalBlockRelative(pistonHeadCoordinates.x, pistonHeadCoordinates.y, pistonHeadCoordinates.z, BLOCK_AIR);
+            if (piston_state == PISTON_BODY) {
+                const PISTON_TYPE piston_type = static_cast<PISTON_TYPE>((getBLOCKDATA(block) & piston_type_bits) >> piston_type_bit_shift);
+
+                if (piston_type == STICKY_PISTON) {
+                    BLOCK_WDATA blockToPull = c.getGlobalBlockRelative(blockToPushCoordinates.x, blockToPushCoordinates.y, blockToPushCoordinates.z);
+                    c.setGlobalBlockRelative(pistonHeadCoordinates.x, pistonHeadCoordinates.y, pistonHeadCoordinates.z, blockToPull);
+                } else {
+                    c.setGlobalBlockRelative(pistonHeadCoordinates.x, pistonHeadCoordinates.y, pistonHeadCoordinates.z, BLOCK_AIR);
+                }
             }
         }
     }
@@ -392,10 +417,10 @@ void PistonRenderer::tick(const BLOCK_WDATA block, int local_x, int local_y, int
 
 void PistonRenderer::removedBlock(const BLOCK_WDATA block, int local_x, int local_y, int local_z, Chunk &c) {
     // Check the piston type
-    const PISTON_TYPE piston_type = static_cast<PISTON_TYPE>((getBLOCKDATA(block) & piston_data_bits) >> piston_bit_shift);
+    const PISTON_STATE piston_state = static_cast<PISTON_STATE>((getBLOCKDATA(block) & piston_state_bits) >> piston_state_bit_shift);
 
     // If the piston isn't a "normal" piston
-    if (piston_type != PISTON_NORMAL) {
+    if (piston_state != PISTON_NORMAL) {
         // Get side-dependant variable thingies
         BLOCK_SIDE side = static_cast<BLOCK_SIDE>(getBLOCKDATA(block) & BLOCK_SIDE_BITS);
         // Piston coordinate stuff
@@ -445,7 +470,7 @@ void PistonRenderer::removedBlock(const BLOCK_WDATA block, int local_x, int loca
         }
 
         // Set the piston's head/body to air, thereby removing it depending on which type the destroyed one is
-        switch (piston_type) {
+        switch (piston_state) {
             case PISTON_BODY:
                 c.setLocalBlock(pistonHeadCoordinates.x, pistonHeadCoordinates.y, pistonHeadCoordinates.z, getBLOCK(BLOCK_AIR));
                 break;
@@ -464,16 +489,32 @@ void PistonRenderer::drawPreview(const BLOCK_WDATA /*block*/, TEXTURE &dest, int
 const char *PistonRenderer::getName(const BLOCK_WDATA block)
 {
     // Mainly just for debug as PISTON_BODY and PISTON_HEAD should never end up in the inventory
-    const PISTON_TYPE piston_type = static_cast<PISTON_TYPE>((getBLOCKDATA(block) & piston_data_bits) >> piston_bit_shift);
-    switch (piston_type) {
-        case PISTON_NORMAL:
-            return "Piston";
-            break;
-        case PISTON_BODY:
-            return "Piston Body";
-            break;
-        case PISTON_HEAD:
-            return "Piston Head";
-            break;
+    const PISTON_STATE piston_state = static_cast<PISTON_STATE>((getBLOCKDATA(block) & piston_state_bits) >> piston_state_bit_shift);
+    const PISTON_TYPE piston_type = static_cast<PISTON_TYPE>((getBLOCKDATA(block) & piston_type_bits) >> piston_type_bit_shift);
+
+    if (piston_type == STICKY_PISTON) {
+        switch (piston_state) {
+            case PISTON_NORMAL:
+                return "Sticky Piston";
+                break;
+            case PISTON_BODY:
+                return "Sticky Piston Body";
+                break;
+            case PISTON_HEAD:
+                return "Sticky Piston Head";
+                break;
+        }
+    } else {
+        switch (piston_state) {
+            case PISTON_NORMAL:
+                return "Piston";
+                break;
+            case PISTON_BODY:
+                return "Piston Body";
+                break;
+            case PISTON_HEAD:
+                return "Piston Head";
+                break;
+        }
     }
 }
