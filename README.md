@@ -96,7 +96,8 @@ TODO for next version
 - [x] Make cake edible
 - [x] Add slabs
 - [x] Add carpet
-- [ ] Add pistons
+- [x] Add basic pistons
+- [ ] Add advanced pistons
 - [ ] Add localisation
 - [ ] Add redstone block
 - [ ] Add villager house generation to make world more lively
