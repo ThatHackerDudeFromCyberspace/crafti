@@ -26,7 +26,7 @@ public:
     virtual const char* getName(const BLOCK_WDATA) override;
 
 protected:
-    const TerrainAtlasEntry &getCarpetTexture(const BLOCK_WDATA block);
+    TerrainAtlasEntry getCarpetTexture(const BLOCK_WDATA block);
 
     static constexpr GLFix carpet_height = BLOCK_SIZE / 16 * 1;
     static constexpr GLFix carpet_width = BLOCK_SIZE;

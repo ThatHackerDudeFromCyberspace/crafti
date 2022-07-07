@@ -3,8 +3,8 @@
 constexpr GLFix CarpetRenderer::carpet_height, CarpetRenderer::carpet_width;
 
 // Get carpet texture function
-const TerrainAtlasEntry &CarpetRenderer::getCarpetTexture(const BLOCK_WDATA block) {
-    TerrainAtlasEntry &tae = terrain_atlas[0][4];
+TerrainAtlasEntry CarpetRenderer::getCarpetTexture(const BLOCK_WDATA block) {
+    TerrainAtlasEntry tae = terrain_atlas[0][4];
 
     switch (static_cast<COLOUR>(getBLOCKDATA(block))) {
         case WHITE_CARPET:
@@ -65,7 +65,59 @@ const TerrainAtlasEntry &CarpetRenderer::getCarpetTexture(const BLOCK_WDATA bloc
 
 // Get texture depending on carpet texture
 const TerrainAtlasEntry &CarpetRenderer::destructionTexture(const BLOCK_WDATA block) {
-    return getCarpetTexture(block);
+    switch (static_cast<COLOUR>(getBLOCKDATA(block))) {
+        case WHITE_CARPET:
+            return terrain_atlas[0][4];
+            break;
+        case ORANGE_CARPET:
+            return terrain_atlas[2][13];
+            break;
+        case MAGENTA_CARPET:
+            return terrain_atlas[2][12];
+            break;
+        case LIGHT_BLUE_CARPET:
+            return terrain_atlas[2][11];
+            break;
+        case YELLOW_CARPET:
+            return terrain_atlas[2][10];
+            break;
+        case LIME_CARPET:
+            return terrain_atlas[2][9];
+            break;
+        case PINK_CARPET:
+            return terrain_atlas[2][8];
+            break;
+        case GRAY_CARPET:
+            return terrain_atlas[2][7];
+            break;
+        case LIGHT_GRAY_CARPET:
+            return terrain_atlas[1][14];
+            break;
+        case CYAN_CARPET:
+            return terrain_atlas[1][13];
+            break;
+        case PURPLE_CARPET:
+            return terrain_atlas[1][12];
+            break;
+        case BLUE_CARPET:
+            return terrain_atlas[1][11];
+            break;
+        case BROWN_CARPET:
+            return terrain_atlas[1][10];
+            break;
+        case GREEN_CARPET:
+            return terrain_atlas[1][9];
+            break;
+        case RED_CARPET:
+            return terrain_atlas[1][8];
+            break;
+        case BLACK_CARPET:
+            return terrain_atlas[1][7];
+            break;
+        default:
+            return terrain_atlas[0][4];
+            break;
+    }
 }
 
 void CarpetRenderer::tick(const BLOCK_WDATA /*block*/, int local_x, int local_y, int local_z, Chunk &c) {
@@ -154,8 +206,7 @@ AABB CarpetRenderer::getAABB(const BLOCK_WDATA /*block*/, GLFix x, GLFix y, GLFi
 
 void CarpetRenderer::drawPreview(const BLOCK_WDATA block, TEXTURE &dest, int x, int y)
 {
-    TextureAtlasEntry tex = getCarpetTexture(block).resized;
-    BlockRenderer::drawTextureAtlasEntry(*terrain_resized, tex, dest, x, y);
+    BlockRenderer::drawTextureAtlasEntry(*terrain_resized, getCarpetTexture(block).resized, dest, x, y);
 }
 
 const char *CarpetRenderer::getName(const BLOCK_WDATA block)
