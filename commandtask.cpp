@@ -76,11 +76,11 @@ void CommandTask::render()
     drawString("Commands for Crafti v1.4 [C14DB]", 0xFFFF, *screen, x, y);
 
     drawString( "/help - explodes\n"
-                "/explode - explodes"
-                "/hello"
-                "tp"
-                "/gamemode"
-                "fdsfsd"
+                "/explode - explodes\n"
+                "/hello\n"
+                "tp\n"
+                "/gamemode\n"
+                "fdsfsd\n"
                 "Answer is: " + SCREEN_HEIGHT/fontHeight(), 0xFFFF, *screen, x, y+fontHeight());
 
 
