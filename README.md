@@ -89,7 +89,8 @@ Contributors
     </td></tr>
 </table>
 <!-- readme: contributors -end -->
-Textures from PureBDcraft ResourcePack by https://bdcraft.net
+  
+Textures from PureBDcraft ResourcePack by https://bdcraft.net, more info available in the [wiki](../../wiki/Crafti-textures)
 
 Development
 -----------
