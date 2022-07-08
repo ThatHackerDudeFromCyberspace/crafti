@@ -148,7 +148,7 @@ void terrainInit(const char *texture_path)
 
     //And redstone switches
     drawTexture(*terrain_current, *terrain_current, 0 * field_width, 6 * field_height, field_width, field_height, 10 * field_width, 15 * field_height, field_width, field_height);
-    const RGB red_tint = { 1.0f, 0.8f, 0.8f };
+    const RGB red_tint = { 1.0f, 0.7f, 0.7f };
     makeColor(red_tint, *terrain_current, 10 * field_width, 15 * field_height, field_width, field_height);
 
     if(terrain_current->width == 384 && terrain_current->height == 384)
