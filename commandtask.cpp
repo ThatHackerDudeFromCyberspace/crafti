@@ -78,15 +78,30 @@ void CommandTask::render()
     char number[10];
     snprintf(number, sizeof(number), "%d", background_height/fontHeight());
 
-    std::vector<char*> commandOutput = {
-        "hello",
-        "there",
-        "testing",
-        "stuff"
+    std::vector<std::vector<char*>> commandOutput = {
+        {"hello", "1"},
+        {"there", "2"},
+        {"testing", "3"},
+        {"stuff", "4"},
+        {"there", "5"},
+        {"should", "6"},
+        {"be", "7"},
+        {"a", "8"},
+        {"maximum", "9"},
+        {"number", "10"},
+        {"of", "11"},
+        {"lines1", "12"},
+        {"lines2", "13"},
+        {"lines3", "14"},
+        {"lines4", "15"},
+        {"lines5", "16"},
+        {"lines6", "17"},
+        {"lines7", "18"}
     };
 
     for (int i = 0; i < commandOutput.size(); i++) {
-        drawString(commandOutput[i], 0xFFFF, *screen, x+background_inner_offset, y + background_inner_offset + (fontHeight() * (i+2)));
+        drawString(commandOutput[i][0], 0xFFFF, *screen, x+background_inner_offset, y + background_inner_offset + (fontHeight() * (i+2)));
+        drawString(commandOutput[i][1], 0xFFFF, *screen, x+background_inner_offset+(background_width/2), y + background_inner_offset + (fontHeight() * (i+2)));
     }
 
     drawString(number, 0xFFFF, *screen, x + background_inner_offset + 100, y + background_inner_offset + 100);
