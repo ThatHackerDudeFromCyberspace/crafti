@@ -83,7 +83,7 @@ void CommandTask::logic()
 
     else if (keyPressed(KEY_NSPIRE_ESC) || keyPressed(KEY_NSPIRE_DIVIDE)) {
         world_task.makeCurrent();
-        
+
         key_held_down = true;
     } else if (keyPressed(KEY_NSPIRE_A)) {
         command.push_back('a');
@@ -191,5 +191,7 @@ void CommandTask::logic()
         key_held_down = true;
     } else if (keyPressed(KEY_NSPIRE_DEL) && command.size() > 1) {
         command.pop_back();
+
+        key_held_down = true;
     }
 }
