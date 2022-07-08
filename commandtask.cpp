@@ -1,7 +1,49 @@
 #include "commandtask.h"
 
 #include "font.h"
+#include <map>
 #include "worldtask.h"
+
+std::map<t_key, char> keyToLetter {
+    {KEY_NSPIRE_A, 'A'},
+    {KEY_NSPIRE_B, 'B'},
+    {KEY_NSPIRE_C, 'C'},
+    {KEY_NSPIRE_D, 'D'},
+    {KEY_NSPIRE_E, 'E'},
+    {KEY_NSPIRE_F, 'F'},
+    {KEY_NSPIRE_G, 'G'},
+    {KEY_NSPIRE_H, 'H'},
+    {KEY_NSPIRE_I, 'I'},
+    {KEY_NSPIRE_J, 'J'},
+    {KEY_NSPIRE_K, 'K'},
+    {KEY_NSPIRE_L, 'L'},
+    {KEY_NSPIRE_M, 'M'},
+    {KEY_NSPIRE_N, 'N'},
+    {KEY_NSPIRE_O, 'O'},
+    {KEY_NSPIRE_P, 'P'},
+    {KEY_NSPIRE_Q, 'Q'},
+    {KEY_NSPIRE_R, 'R'},
+    {KEY_NSPIRE_S, 'S'},
+    {KEY_NSPIRE_T, 'T'},
+    {KEY_NSPIRE_U, 'U'},
+    {KEY_NSPIRE_V, 'V'},
+    {KEY_NSPIRE_W, 'W'},
+    {KEY_NSPIRE_Q, 'Q'},
+    {KEY_NSPIRE_Y, 'Y'},
+    {KEY_NSPIRE_Z, 'Z'},
+    {KEY_NSPIRE_1, '1'},
+    {KEY_NSPIRE_2, '2'},
+    {KEY_NSPIRE_3, '3'},
+    {KEY_NSPIRE_4, '4'},
+    {KEY_NSPIRE_5, '5'},
+    {KEY_NSPIRE_6, '6'},
+    {KEY_NSPIRE_7, '7'},
+    {KEY_NSPIRE_8, '8'},
+    {KEY_NSPIRE_9, '9'},
+    {KEY_NSPIRE_0, '0'},
+    {KEY_NSPIRE_MINUS, '_'},
+    {KEY_NSPIRE_TRIG, 'HI'}
+};
 
 CommandTask command_task;
 
@@ -32,6 +74,12 @@ void CommandTask::render()
     drawTextureOverlay(*background, 0, 0, *screen, x, y, background->width, background->height);
 
     drawString("Commands for Crafti v1.4 [C14DB]", 0xFFFF, *screen, x, y);
+
+
+    // Draw Bottom Command-Typing Box
+    const unsigned int bottom_height = fontHeight();
+    const unsigned int bottom_y = SCREEN_HEIGHT - fontHeight();
+    drawTextureOverlay(*background, 0, 0, *screen, 0, bottom_y, background->width, bottom_height);
 }
 
 void CommandTask::logic()
