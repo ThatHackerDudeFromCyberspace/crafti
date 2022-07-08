@@ -78,13 +78,17 @@ void CommandTask::render()
     char number[10];
     snprintf(number, sizeof(number), "%d", background_height/fontHeight());
 
-    drawString( "/help - explodes\n"
-                "/explode - explodes\n"
-                "/hello\n"
-                "tp\n"
-                "/gamemode\n"
-                "fdsfsd\n"
-                "Answer is: ", 0xFFFF, *screen, x + background_inner_offset, y + background_inner_offset + (fontHeight() * 2));
+    std::vector<char*> commandOutput = {
+        "hello",
+        "there",
+        "testing",
+        "stuff"
+    };
+
+    for (int i = 0; i < commandOutput.size(); i++) {
+        drawString(commandOutput[i], 0xFFFF, *screen, x+background_inner_offset, y + background_inner_offset + (fontHeight() * (i+2)));
+    }
+
     drawString(number, 0xFFFF, *screen, x + background_inner_offset + 100, y + background_inner_offset + 100);
 
 
