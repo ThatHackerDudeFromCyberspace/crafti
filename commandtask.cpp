@@ -2,6 +2,7 @@
 
 #include "font.h"
 #include <map>
+#include <string>
 #include "worldtask.h"
 /*
 std::map<t_key, char> keyToLetter {
@@ -81,12 +82,12 @@ void CommandTask::render()
                 "tp\n"
                 "/gamemode\n"
                 "fdsfsd\n"
-                "Answer is: " + SCREEN_HEIGHT/fontHeight(), 0xFFFF, *screen, x, y+fontHeight());
+                "Answer is: " + std::to_string(background_height/fontHeight()), 0xFFFF, *screen, x, y+fontHeight());
 
 
     // Draw Bottom Command-Typing Box
     const unsigned int bottom_height = fontHeight()*2;
-    const unsigned int bottom_y = SCREEN_HEIGHT - fontHeight()*2;
+    const unsigned int bottom_y = background_height - fontHeight()*2;
     drawTextureOverlay(*background, 0, 0, *screen, 0, bottom_y, background->width, bottom_height);
 }
 
