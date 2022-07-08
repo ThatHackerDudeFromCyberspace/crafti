@@ -37,8 +37,8 @@ void CommandTask::render()
 void CommandTask::logic()
 {
     if(key_held_down)
-        key_held_down = keyPressed(KEY_NSPIRE_ESC);
-    else if(keyPressed(KEY_NSPIRE_ESC))
+        key_held_down = keyPressed(KEY_NSPIRE_ESC) || keyPressed(KEY_NSPIRE_DIVIDE);
+    else if(keyPressed(KEY_NSPIRE_ESC) || keyPressed(KEY_NSPIRE_DIVIDE))
     {
         world_task.makeCurrent();
 
