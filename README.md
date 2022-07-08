@@ -109,8 +109,8 @@ TODO for next version
 - [x] Add carpet
 - [x] Add basic pistons
 - [x] Add advanced pistons (push limit of 12)
+- [x] Add redstone block
 - [ ] Add texture pack converter for more blocks
 - [ ] Add localisation
-- [ ] Add redstone block
 - [ ] Add villager house generation to make world more lively
 - [ ] Documentation of functions and whatnot for future devs (mostly me)
