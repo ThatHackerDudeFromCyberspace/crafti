@@ -73,7 +73,7 @@ void CommandTask::render()
     const unsigned int y = ((SCREEN_HEIGHT - background->height) / 2);
     drawTextureOverlay(*background, 0, 0, *screen, x, y, background->width, background->height);
 
-    drawString("Commands for Crafti v1.4 [C14DB]", 0xFFFF, *screen, x, y);
+    drawString("Commands for Crafti v1.4 [C14DB]", 0xFFFF, *screen, x + background_inner_offset, y + background_inner_offset);
 
     char number[10];
     snprintf(number, sizeof(number), "%d", background_height/fontHeight());
@@ -84,14 +84,14 @@ void CommandTask::render()
                 "tp\n"
                 "/gamemode\n"
                 "fdsfsd\n"
-                "Answer is: ", 0xFFFF, *screen, x, y+fontHeight());
-    drawString(number, 0xFFFF, *screen, x+100, y+100);
+                "Answer is: ", 0xFFFF, *screen, x + background_inner_offset, y + background_inner_offset + fontHeight());
+    drawString(number, 0xFFFF, *screen, x + background_inner_offset +100, y + background_inner_offset + 100);
 
 
     // Draw Bottom Command-Typing Box
     const unsigned int bottom_height = fontHeight()*2;
-    const unsigned int bottom_y = background_height - (fontHeight()*2);
-    drawTextureOverlay(*background, 0, 0, *screen, x, bottom_y, background->width, bottom_height);
+    const unsigned int bottom_y = background_height - (fontHeight()*2) - background_inner_offset;
+    drawTextureOverlay(*background, 0, 0, *screen, x + background_inner_offset, bottom_y, background->width, bottom_height);
 }
 
 void CommandTask::logic()
