@@ -79,141 +79,117 @@ void CommandTask::render()
 void CommandTask::logic()
 {
     if(key_held_down)
-        key_held_down = keyPressed(KEY_NSPIRE_ESC) || keyPressed(KEY_NSPIRE_DIVIDE) || keyPressed(KEY_NSPIRE_A) || keyPressed(KEY_NSPIRE_B) || keyPressed(KEY_NSPIRE_C) || keyPressed(KEY_NSPIRE_D) || keyPressed(KEY_NSPIRE_E) || keyPressed(KEY_NSPIRE_F) || keyPressed(KEY_NSPIRE_G) || keyPressed(KEY_NSPIRE_H) || keyPressed(KEY_NSPIRE_I) || keyPressed(KEY_NSPIRE_J) || keyPressed(KEY_NSPIRE_K) || keyPressed(KEY_NSPIRE_L) || keyPressed(KEY_NSPIRE_M) || keyPressed(KEY_NSPIRE_N) || keyPressed(KEY_NSPIRE_O) || keyPressed(KEY_NSPIRE_P) || keyPressed(KEY_NSPIRE_Q) || keyPressed(KEY_NSPIRE_R) || keyPressed(KEY_NSPIRE_S) || keyPressed(KEY_NSPIRE_T) || keyPressed(KEY_NSPIRE_U) || keyPressed(KEY_NSPIRE_V) || keyPressed(KEY_NSPIRE_W) || keyPressed(KEY_NSPIRE_X) || keyPressed(KEY_NSPIRE_Y) || keyPressed(KEY_NSPIRE_Z);
+        key_held_down = keyPressed(KEY_NSPIRE_ESC) || keyPressed(KEY_NSPIRE_DIVIDE) || keyPressed(KEY_NSPIRE_A) || keyPressed(KEY_NSPIRE_B) || keyPressed(KEY_NSPIRE_C) || keyPressed(KEY_NSPIRE_D) || keyPressed(KEY_NSPIRE_E) || keyPressed(KEY_NSPIRE_F) || keyPressed(KEY_NSPIRE_G) || keyPressed(KEY_NSPIRE_H) || keyPressed(KEY_NSPIRE_I) || keyPressed(KEY_NSPIRE_J) || keyPressed(KEY_NSPIRE_K) || keyPressed(KEY_NSPIRE_L) || keyPressed(KEY_NSPIRE_M) || keyPressed(KEY_NSPIRE_N) || keyPressed(KEY_NSPIRE_O) || keyPressed(KEY_NSPIRE_P) || keyPressed(KEY_NSPIRE_Q) || keyPressed(KEY_NSPIRE_R) || keyPressed(KEY_NSPIRE_S) || keyPressed(KEY_NSPIRE_T) || keyPressed(KEY_NSPIRE_U) || keyPressed(KEY_NSPIRE_V) || keyPressed(KEY_NSPIRE_W) || keyPressed(KEY_NSPIRE_X) || keyPressed(KEY_NSPIRE_Y) || keyPressed(KEY_NSPIRE_Z) || keyPressed(KEY_NSPIRE_DEL);
 
-    else if (keyPressed(KEY_NSPIRE_ESC) || keyPressed(KEY_NSPIRE_DIVIDE))
-    {
+    else if (keyPressed(KEY_NSPIRE_ESC) || keyPressed(KEY_NSPIRE_DIVIDE)) {
         world_task.makeCurrent();
-
+        
         key_held_down = true;
     } else if (keyPressed(KEY_NSPIRE_A)) {
         command.push_back('a');
 
         key_held_down = true;
-    }
-    else if (keyPressed(KEY_NSPIRE_B)) {
+    } else if (keyPressed(KEY_NSPIRE_B)) {
         command.push_back('b');
 
         key_held_down = true;
-    }
-    else if (keyPressed(KEY_NSPIRE_C)) {
+    } else if (keyPressed(KEY_NSPIRE_C)) {
         command.push_back('c');
 
         key_held_down = true;
-    }
-    else if (keyPressed(KEY_NSPIRE_D)) {
+    } else if (keyPressed(KEY_NSPIRE_D)) {
         command.push_back('d');
 
         key_held_down = true;
-    }
-    else if (keyPressed(KEY_NSPIRE_E)) {
+    } else if (keyPressed(KEY_NSPIRE_E)) {
         command.push_back('e');
 
         key_held_down = true;
-    }
-    else if (keyPressed(KEY_NSPIRE_F)) {
+    } else if (keyPressed(KEY_NSPIRE_F)) {
         command.push_back('f');
 
         key_held_down = true;
-    }
-    else if (keyPressed(KEY_NSPIRE_G)) {
+    } else if (keyPressed(KEY_NSPIRE_G)) {
         command.push_back('g');
 
         key_held_down = true;
-    }
-    else if (keyPressed(KEY_NSPIRE_H)) {
+    } else if (keyPressed(KEY_NSPIRE_H)) {
         command.push_back('h');
 
         key_held_down = true;
-    }
-    else if (keyPressed(KEY_NSPIRE_I)) {
+    } else if (keyPressed(KEY_NSPIRE_I)) {
         command.push_back('i');
 
         key_held_down = true;
-    }
-    else if (keyPressed(KEY_NSPIRE_J)) {
+    } else if (keyPressed(KEY_NSPIRE_J)) {
         command.push_back('j');
 
         key_held_down = true;
-    }
-    else if (keyPressed(KEY_NSPIRE_K)) {
+    } else if (keyPressed(KEY_NSPIRE_K)) {
         command.push_back('k');
 
         key_held_down = true;
-    }
-    else if (keyPressed(KEY_NSPIRE_L)) {
+    } else if (keyPressed(KEY_NSPIRE_L)) {
         command.push_back('l');
 
         key_held_down = true;
-    }
-    else if (keyPressed(KEY_NSPIRE_M)) {
+    } else if (keyPressed(KEY_NSPIRE_M)) {
         command.push_back('m');
 
         key_held_down = true;
-    }
-    else if (keyPressed(KEY_NSPIRE_N)) {
+    } else if (keyPressed(KEY_NSPIRE_N)) {
         command.push_back('n');
 
         key_held_down = true;
-    }
-    else if (keyPressed(KEY_NSPIRE_O)) {
+    } else if (keyPressed(KEY_NSPIRE_O)) {
         command.push_back('o');
 
         key_held_down = true;
-    }
-    else if (keyPressed(KEY_NSPIRE_P)) {
+    } else if (keyPressed(KEY_NSPIRE_P)) {
         command.push_back('p');
 
         key_held_down = true;
-    }
-    else if (keyPressed(KEY_NSPIRE_Q)) {
+    } else if (keyPressed(KEY_NSPIRE_Q)) {
         command.push_back('q');
 
         key_held_down = true;
-    }
-    else if (keyPressed(KEY_NSPIRE_R)) {
+    } else if (keyPressed(KEY_NSPIRE_R)) {
         command.push_back('r');
 
         key_held_down = true;
-    }
-    else if (keyPressed(KEY_NSPIRE_S)) {
+    } else if (keyPressed(KEY_NSPIRE_S)) {
         command.push_back('s');
 
         key_held_down = true;
-    }
-    else if (keyPressed(KEY_NSPIRE_T)) {
+    } else if (keyPressed(KEY_NSPIRE_T)) {
         command.push_back('t');
 
         key_held_down = true;
-    }
-    else if (keyPressed(KEY_NSPIRE_U)) {
+    } else if (keyPressed(KEY_NSPIRE_U)) {
         command.push_back('u');
 
         key_held_down = true;
-    }
-    else if (keyPressed(KEY_NSPIRE_V)) {
+    } else if (keyPressed(KEY_NSPIRE_V)) {
         command.push_back('v');
 
         key_held_down = true;
-    }
-    else if (keyPressed(KEY_NSPIRE_W)) {
+    } else if (keyPressed(KEY_NSPIRE_W)) {
         command.push_back('w');
 
         key_held_down = true;
-    }
-    else if (keyPressed(KEY_NSPIRE_X)) {
+    } else if (keyPressed(KEY_NSPIRE_X)) {
         command.push_back('x');
 
         key_held_down = true;
-    }
-    else if (keyPressed(KEY_NSPIRE_Y)) {
+    } else if (keyPressed(KEY_NSPIRE_Y)) {
         command.push_back('y');
 
         key_held_down = true;
-    }
-    else if (keyPressed(KEY_NSPIRE_Z)) {
+    } else if (keyPressed(KEY_NSPIRE_Z)) {
         command.push_back('z');
 
         key_held_down = true;
+    } else if (keyPressed(KEY_NSPIRE_DEL) && command.size() > 1) {
+        command.pop_back();
     }
 }
