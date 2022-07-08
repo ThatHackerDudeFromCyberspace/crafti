@@ -2,7 +2,6 @@
 
 #include "font.h"
 #include <map>
-#include <string>
 #include "worldtask.h"
 /*
 std::map<t_key, char> keyToLetter {
@@ -76,13 +75,17 @@ void CommandTask::render()
 
     drawString("Commands for Crafti v1.4 [C14DB]", 0xFFFF, *screen, x, y);
 
+    char number[10];
+    snprintf(number, sizeof(number), "%d", background_height/fontHeight());
+
     drawString( "/help - explodes\n"
                 "/explode - explodes\n"
                 "/hello\n"
                 "tp\n"
                 "/gamemode\n"
                 "fdsfsd\n"
-                "Answer is: " + std::to_string(background_height/fontHeight()), 0xFFFF, *screen, x, y+fontHeight());
+                "Answer is: ", 0xFFFF, *screen, x, y+fontHeight());
+    drawString(number, 0xFFFF, *screen, x+100, y+100);
 
 
     // Draw Bottom Command-Typing Box
