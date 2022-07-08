@@ -67,13 +67,13 @@ void CommandTask::render()
     drawTextureOverlay(*background, 0, 0, *screen, x, bottom_y, background->width, bottom_height);
 
     // Convert the vector to a char array
-    char charConverted[command.size() + 1];
+    char charConverted[command.size()];
 
     for (int i = 0; i < command.size(); i++) {
         charConverted[i] = command[i];
     }
 
-    charConverted[command.size() + 1] = "|";
+    charConverted[command.size()] = "|";
 
     drawString(charConverted, 0xFFFF, *screen, x + background_inner_offset, bottom_y + (fontHeight()/2));
 }
