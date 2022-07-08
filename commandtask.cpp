@@ -77,8 +77,8 @@ void CommandTask::render()
 
 
     // Draw Bottom Command-Typing Box
-    const unsigned int bottom_height = fontHeight();
-    const unsigned int bottom_y = SCREEN_HEIGHT - fontHeight();
+    const unsigned int bottom_height = fontHeight()*2;
+    const unsigned int bottom_y = SCREEN_HEIGHT - fontHeight()*2;
     drawTextureOverlay(*background, 0, 0, *screen, 0, bottom_y, background->width, bottom_height);
 }
 
