@@ -67,11 +67,13 @@ void CommandTask::render()
     drawTextureOverlay(*background, 0, 0, *screen, x, bottom_y, background->width, bottom_height);
 
     // Convert the vector to a char array
-    char charConverted[command.size()];
+    char charConverted[command.size() + 1];
 
     for (int i = 0; i < command.size(); i++) {
         charConverted[i] = command[i];
     }
+
+    charConverted[command.size() + 1] = "|";
 
     drawString(charConverted, 0xFFFF, *screen, x + background_inner_offset, bottom_y + (fontHeight()/2));
 }
@@ -79,7 +81,7 @@ void CommandTask::render()
 void CommandTask::logic()
 {
     if(key_held_down)
-        key_held_down = keyPressed(KEY_NSPIRE_ESC) || keyPressed(KEY_NSPIRE_DIVIDE) || keyPressed(KEY_NSPIRE_A) || keyPressed(KEY_NSPIRE_B) || keyPressed(KEY_NSPIRE_C) || keyPressed(KEY_NSPIRE_D) || keyPressed(KEY_NSPIRE_E) || keyPressed(KEY_NSPIRE_F) || keyPressed(KEY_NSPIRE_G) || keyPressed(KEY_NSPIRE_H) || keyPressed(KEY_NSPIRE_I) || keyPressed(KEY_NSPIRE_J) || keyPressed(KEY_NSPIRE_K) || keyPressed(KEY_NSPIRE_L) || keyPressed(KEY_NSPIRE_M) || keyPressed(KEY_NSPIRE_N) || keyPressed(KEY_NSPIRE_O) || keyPressed(KEY_NSPIRE_P) || keyPressed(KEY_NSPIRE_Q) || keyPressed(KEY_NSPIRE_R) || keyPressed(KEY_NSPIRE_S) || keyPressed(KEY_NSPIRE_T) || keyPressed(KEY_NSPIRE_U) || keyPressed(KEY_NSPIRE_V) || keyPressed(KEY_NSPIRE_W) || keyPressed(KEY_NSPIRE_X) || keyPressed(KEY_NSPIRE_Y) || keyPressed(KEY_NSPIRE_Z) || keyPressed(KEY_NSPIRE_DEL);
+        key_held_down = keyPressed(KEY_NSPIRE_ESC) || keyPressed(KEY_NSPIRE_DIVIDE) || keyPressed(KEY_NSPIRE_A) || keyPressed(KEY_NSPIRE_B) || keyPressed(KEY_NSPIRE_C) || keyPressed(KEY_NSPIRE_D) || keyPressed(KEY_NSPIRE_E) || keyPressed(KEY_NSPIRE_F) || keyPressed(KEY_NSPIRE_G) || keyPressed(KEY_NSPIRE_H) || keyPressed(KEY_NSPIRE_I) || keyPressed(KEY_NSPIRE_J) || keyPressed(KEY_NSPIRE_K) || keyPressed(KEY_NSPIRE_L) || keyPressed(KEY_NSPIRE_M) || keyPressed(KEY_NSPIRE_N) || keyPressed(KEY_NSPIRE_O) || keyPressed(KEY_NSPIRE_P) || keyPressed(KEY_NSPIRE_Q) || keyPressed(KEY_NSPIRE_R) || keyPressed(KEY_NSPIRE_S) || keyPressed(KEY_NSPIRE_T) || keyPressed(KEY_NSPIRE_U) || keyPressed(KEY_NSPIRE_V) || keyPressed(KEY_NSPIRE_W) || keyPressed(KEY_NSPIRE_X) || keyPressed(KEY_NSPIRE_Y) || keyPressed(KEY_NSPIRE_Z) || keyPressed(KEY_NSPIRE_DEL) || keyPressed(KEY_NSPIRE_SPACE);
 
     else if (keyPressed(KEY_NSPIRE_ESC) || keyPressed(KEY_NSPIRE_DIVIDE)) {
         world_task.makeCurrent();
@@ -187,6 +189,10 @@ void CommandTask::logic()
         key_held_down = true;
     } else if (keyPressed(KEY_NSPIRE_Z)) {
         command.push_back('z');
+
+        key_held_down = true;
+    } else if (keyPressed(KEY_NSPIRE_SPACE)) {
+        command.push_back(' ');
 
         key_held_down = true;
     } else if (keyPressed(KEY_NSPIRE_DEL) && command.size() > 1) {
