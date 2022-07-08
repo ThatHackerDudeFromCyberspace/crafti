@@ -73,8 +73,8 @@ void CommandTask::render()
         charConverted[i] = command[i];
     }
 
-    charConverted[command.size()] = "|";
-
+    charConverted[command.size()] = '|';
+    
     drawString(charConverted, 0xFFFF, *screen, x + background_inner_offset, bottom_y + (fontHeight()/2));
 }
 
