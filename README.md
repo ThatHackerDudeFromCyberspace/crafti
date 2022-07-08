@@ -3,7 +3,7 @@
 Crafti
 ======
 
-3D Minecraft for TI Nspire CX calcs running Ndless  
+3D Minecraft for TI Nspire CX calculators running Ndless  
 Thread on omnimaga: http://www.omnimaga.org/ti-nspire-projects/ngl-a-fast-(enough)-3d-engine-for-the-nspire/
 
 Screenshots
@@ -58,7 +58,7 @@ ESC is still a shortcut for "Save & Exit"
 Limitations
 -----------
 
-crafti doesn't use floats, so there will be some graphical inaccuracies.
+Crafti doesn't use floats, so there will be some graphical inaccuracies.
 
 
 Contributors
