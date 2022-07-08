@@ -78,7 +78,7 @@ void CommandTask::render()
     char number[10];
     snprintf(number, sizeof(number), "%d", background_height/fontHeight());
 
-    std::vector<std::vector<char*>> commandOutput = {
+    std::vector<std::vector<char*>> &commandOutput = {
         {"hello", "1"},
         {"there", "2"},
         {"testing", "3"},
@@ -92,7 +92,7 @@ void CommandTask::render()
         {"of", "11"}
     };
 
-    for (int i = 0; i < commandOutput.size(); i++) {
+    for (size_t i = 0; i < commandOutput.size(); i++) {
         drawString(commandOutput[i][0], 0xFFFF, *screen, x+background_inner_offset, y + background_inner_offset + (fontHeight() * (i+2)));
         drawString(commandOutput[i][1], 0xFFFF, *screen, x+background_inner_offset+(background_width/2), y + background_inner_offset + (fontHeight() * (i+2)));
     }
