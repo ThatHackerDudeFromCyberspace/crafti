@@ -3,7 +3,7 @@
 #include "font.h"
 #include <map>
 #include "worldtask.h"
-
+/*
 std::map<t_key, char> keyToLetter {
     {KEY_NSPIRE_A, 'A'},
     {KEY_NSPIRE_B, 'B'},
@@ -43,7 +43,7 @@ std::map<t_key, char> keyToLetter {
     {KEY_NSPIRE_0, '0'},
     {KEY_NSPIRE_MINUS, '_'},
     {KEY_NSPIRE_TRIG, 'I'}
-};
+};*/
 
 CommandTask command_task;
 
