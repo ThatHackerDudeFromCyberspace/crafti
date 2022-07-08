@@ -89,14 +89,7 @@ void CommandTask::render()
         {"a", "8"},
         {"maximum", "9"},
         {"number", "10"},
-        {"of", "11"},
-        {"lines1", "12"},
-        {"lines2", "13"},
-        {"lines3", "14"},
-        {"lines4", "15"},
-        {"lines5", "16"},
-        {"lines6", "17"},
-        {"lines7", "18"}
+        {"of", "11"}
     };
 
     for (int i = 0; i < commandOutput.size(); i++) {
