@@ -9,7 +9,7 @@ void RedstoneBlockRenderer::geometryNormalBlock(const BLOCK_WDATA /*block*/, con
 
 void RedstoneBlockRenderer::drawPreview(const BLOCK_WDATA /*block*/, TEXTURE &dest, int x, int y)
 {
-    BlockRenderer::drawTextureAtlasEntry(*terrain_resized, terrain_atlas[4][13].resized, dest, x, y);
+    BlockRenderer::drawTextureAtlasEntry(*terrain_resized, terrain_atlas[10][1].resized, dest, x, y);
 }
 
 PowerState RedstoneBlockRenderer::powersSide(const BLOCK_WDATA /*block*/, BLOCK_SIDE /*side*/)
