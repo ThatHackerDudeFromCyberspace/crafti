@@ -2,7 +2,7 @@
 
 #include "redstoneblockrenderer.h"
 
-void RedstoneBlockRenderer::geometryNormalBlock(const BLOCK_WDATA block, const int local_x, const int local_y, const int local_z, const BLOCK_SIDE side, Chunk &c)
+void RedstoneBlockRenderer::geometryNormalBlock(const BLOCK_WDATA /*block*/, const int local_x, const int local_y, const int local_z, const BLOCK_SIDE side, Chunk &c)
 {
     BlockRenderer::renderNormalBlockSide(local_x, local_y, local_z, side, terrain_atlas[4][13].current, c);
 }
@@ -17,7 +17,7 @@ PowerState RedstoneBlockRenderer::powersSide(const BLOCK_WDATA /*block*/, BLOCK_
     return PowerState::StronglyPowered;
 }
 
-const TerrainAtlasEntry &RedstoneBlockRenderer::destructionTexture(const BLOCK_WDATA block) {
+const TerrainAtlasEntry &RedstoneBlockRenderer::destructionTexture(const BLOCK_WDATA /*block*/) {
     return terrain_atlas[4][13];
 }
 
