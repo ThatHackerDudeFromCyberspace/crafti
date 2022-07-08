@@ -75,6 +75,14 @@ void CommandTask::render()
 
     drawString("Commands for Crafti v1.4 [C14DB]", 0xFFFF, *screen, x, y);
 
+    drawString( "/help - explodes\n"
+                "/explode - explodes"
+                "/hello"
+                "tp"
+                "/gamemode"
+                "fdsfsd"
+                "Answer is: " + SCREEN_HEIGHT/fontHeight(), 0xFFFF, *screen, x, y+fontHeight());
+
 
     // Draw Bottom Command-Typing Box
     const unsigned int bottom_height = fontHeight()*2;
