@@ -85,12 +85,12 @@ void CommandTask::render()
                 "/gamemode\n"
                 "fdsfsd\n"
                 "Answer is: ", 0xFFFF, *screen, x + background_inner_offset, y + background_inner_offset + fontHeight());
-    drawString(number, 0xFFFF, *screen, x + background_inner_offset +100, y + background_inner_offset + 100);
+    drawString(number, 0xFFFF, *screen, x + background_inner_offset + 100, y + background_inner_offset + 100);
 
 
     // Draw Bottom Command-Typing Box
     const unsigned int bottom_height = fontHeight()*2;
-    const unsigned int bottom_y = background_height - (fontHeight()*2);
+    const unsigned int bottom_y = (background_height + background_offset) - (fontHeight()*2);
     drawTextureOverlay(*background, 0, 0, *screen, x, bottom_y, background->width, bottom_height);
 }
 
