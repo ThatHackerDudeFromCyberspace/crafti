@@ -110,6 +110,7 @@ TODO for next version
 - [x] Add basic pistons
 - [x] Add advanced pistons (push limit of 12)
 - [x] Add redstone block
+- [x] Commands, maybe?
 - [ ] Add texture pack converter for more blocks
 - [ ] Add localisation
 - [ ] Add villager house generation to make world more lively
