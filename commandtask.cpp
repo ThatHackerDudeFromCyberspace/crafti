@@ -40,7 +40,7 @@ void CommandTask::render()
     snprintf(number, sizeof(number), "%d", background_height/fontHeight());
 
     commandOutput = {
-        {"hello", "1"},
+        {command[0], "1"},
         {"there", "2"},
         {"testing", "3"},
         {"stuff", "4"},
@@ -65,19 +65,28 @@ void CommandTask::render()
     const unsigned int bottom_height = fontHeight()*2;
     const unsigned int bottom_y = (background_height + background_offset/2) - (fontHeight()*2);
     drawTextureOverlay(*background, 0, 0, *screen, x, bottom_y, background->width, bottom_height);
-    
-    command += "tp";
 
-    drawString(command, 0xFFFF, *screen, x + background_inner_offset, bottom_y + (fontHeight()/2));
+    // Convert the vector to a char array
+    char charConverted[command.size()];
+
+    for (int i = 0; i < command.size(); i++) {
+        charConverted[i] = command[i];
+    }
+
+    drawString(charConverted, 0xFFFF, *screen, x + background_inner_offset, bottom_y + (fontHeight()/2));
 }
 
 void CommandTask::logic()
 {
     if(key_held_down)
-        key_held_down = keyPressed(KEY_NSPIRE_ESC) || keyPressed(KEY_NSPIRE_DIVIDE);
+        key_held_down = keyPressed(KEY_NSPIRE_ESC) || keyPressed(KEY_NSPIRE_DIVIDE) || keyPressed(KEY_NSPIRE_A);
     else if(keyPressed(KEY_NSPIRE_ESC) || keyPressed(KEY_NSPIRE_DIVIDE))
     {
         world_task.makeCurrent();
+
+        key_held_down = true;
+    } else if(keyPressed(KEY_NSPIRE_A)) {
+        command.push_back('a');
 
         key_held_down = true;
     }
