@@ -1,21 +1,21 @@
-#include "helptask.h"
+#include "commandtask.h"
 
 #include "font.h"
 #include "worldtask.h"
 
-HelpTask help_task;
+CommandTask command_task;
 
-HelpTask::HelpTask()
+CommandTask::CommandTask()
 {
     background = newTexture(background_width, background_height, 0, false);
 }
 
-HelpTask::~HelpTask()
+CommandTask::~CommandTask()
 {
     deleteTexture(background);
 }
 
-void HelpTask::makeCurrent()
+void CommandTask::makeCurrent()
 {
     if(!background_saved)
         saveBackground();
@@ -23,14 +23,14 @@ void HelpTask::makeCurrent()
     Task::makeCurrent();
 }
 
-void HelpTask::render()
+void CommandTask::render()
 {
     drawBackground();
 
     const unsigned int x = (SCREEN_WIDTH - background->width) / 2;
     const unsigned int y = (SCREEN_HEIGHT - background->height) / 2;
     drawTextureOverlay(*background, 0, 0, *screen, x, y, background->width, background->height);
-    drawString("Help for Crafti v1.4 [C14DB]", 0xFFFF, *screen, x, y - fontHeight());
+    drawString("Commands for Crafti v1.4 [C14DB]", 0xFFFF, *screen, x, y - fontHeight());
 
     drawString("8-4-6-2: Walk around\t5: Jump\n"
                "7: Put block down   \t9: Destroy block\n"
@@ -47,7 +47,7 @@ void HelpTask::render()
                "Textures from PureBDcraft by https://bdcraft.net", 0xFFFF, *screen, x + 10, y + 8);
 }
 
-void HelpTask::logic()
+void CommandTask::logic()
 {
     if(key_held_down)
         key_held_down = keyPressed(KEY_NSPIRE_ESC);
