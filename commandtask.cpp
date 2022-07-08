@@ -42,7 +42,7 @@ std::map<t_key, char> keyToLetter {
     {KEY_NSPIRE_9, '9'},
     {KEY_NSPIRE_0, '0'},
     {KEY_NSPIRE_MINUS, '_'},
-    {KEY_NSPIRE_TRIG, 'HI'}
+    {KEY_NSPIRE_TRIG, 'I'}
 };
 
 CommandTask command_task;
