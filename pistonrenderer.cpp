@@ -516,11 +516,11 @@ void PistonRenderer::removedBlock(const BLOCK_WDATA block, int local_x, int loca
                 break; // Stop compiler warnings
             case PISTON_BODY:
                 pistonHeadCoordinates = get_piston_block_relative(local_x, local_y, local_z, side, 1);
-                c.setLocalBlock(pistonHeadCoordinates.x, pistonHeadCoordinates.y, pistonHeadCoordinates.z, getBLOCK(BLOCK_AIR));
+                c.setGlobalBlockRelative(pistonHeadCoordinates.x, pistonHeadCoordinates.y, pistonHeadCoordinates.z, getBLOCK(BLOCK_AIR));
                 break;
             case PISTON_HEAD:
                 pistonBodyCoordinates = get_piston_block_relative(local_x, local_y, local_z, side, -1);
-                c.setLocalBlock(pistonBodyCoordinates.x, pistonBodyCoordinates.y, pistonBodyCoordinates.z, getBLOCK(BLOCK_AIR));
+                c.setGlobalBlockRelative(pistonBodyCoordinates.x, pistonBodyCoordinates.y, pistonBodyCoordinates.z, getBLOCK(BLOCK_AIR));
                 break;
         }
     }
