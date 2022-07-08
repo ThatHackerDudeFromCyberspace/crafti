@@ -69,7 +69,7 @@ void CommandTask::render()
     // Convert the vector to a char array
     char charConverted[command.size()];
 
-    for (int i = 0; i < command.size(); i++) {
+    for (size_t i = 0; i < command.size(); i++) {
         charConverted[i] = command[i];
     }
 
