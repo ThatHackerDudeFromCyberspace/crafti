@@ -18,6 +18,10 @@ public:
 
 private:
     static constexpr int background_offset = 10, background_width = SCREEN_WIDTH - background_offset, background_height = SCREEN_HEIGHT - background_offset, background_inner_offset = 10;
+    
+    char* command = "/";
+    std::vector<std::vector<char*>> commandOutput;
+
     TEXTURE *background;
 };
 
