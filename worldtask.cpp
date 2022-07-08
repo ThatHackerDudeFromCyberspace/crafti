@@ -240,6 +240,8 @@ void WorldTask::logic()
         render();
         draw_inventory = true;
         command_task.makeCurrent();
+
+        key_held_down = true;
     }
     else if(keyPressed(KEY_NSPIRE_ESC) || keyPressed(KEY_NSPIRE_HOME)) //Save & Exit
     {
