@@ -104,6 +104,8 @@ void CommandTask::render()
     const unsigned int bottom_height = fontHeight()*2;
     const unsigned int bottom_y = (background_height + background_offset/2) - (fontHeight()*2);
     drawTextureOverlay(*background, 0, 0, *screen, x, bottom_y, background->width, bottom_height);
+
+    drawString("/tp 4 6 3", 0xFFFF, *screen, x + background_inner_offset, bottom_y + (fontHeight()/2));
 }
 
 void CommandTask::logic()
