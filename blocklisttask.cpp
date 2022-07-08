@@ -103,7 +103,8 @@ static const BLOCK_WDATA user_selectable[] = {
     getBLOCKWDATA(BLOCK_CARPET, 15),
 
     getBLOCKWDATA(BLOCK_PISTON, 0<<3), // Piston
-    getBLOCKWDATA(BLOCK_PISTON, 0<<3|1<<6) // Sticky Piston
+    getBLOCKWDATA(BLOCK_PISTON, 0<<3|1<<6), // Sticky Piston
+    BLOCK_REDSTONE_BLOCK // Redstone block
 };
 
 //The values have to stay somewhere
