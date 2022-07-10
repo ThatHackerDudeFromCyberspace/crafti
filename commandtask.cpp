@@ -9,16 +9,42 @@
 CommandTask command_task;
 
 std::map<char*, std::vector<char*>> commandHelp = {
-    {"tp", {"TP allows you to teleport a player into oblivion"}}
+    {"/tp", {"TP allows you to teleport a player into oblivion"}}
 };
 
 std::map<char*, std::vector<std::vector<char*>>> commandArguments = {
-    {"tp", {{"int", "x coordinate"}, {"int", "y coordinate"}, {"int", "z coordinate"}}}
+    {"/tp", {{"int", "x coordinate"}, {"int", "y coordinate"}, {"int", "z coordinate"}}}
 };
 
 std::map<char*, bool> runnableCommands = {
-    {"tp", true}
+    {"/tp", true}
 };
+
+void CommandTask::logCommandOutput(const char* log) {
+    if (commandOutput.size() == 11) {
+        commandOutput.erase(commandOutput.begin());
+    }
+
+    commandOutput.push_back(log);
+}
+
+
+void CommandTask::executeCommand() {
+    // Convert the vector to a char array
+    char charConverted[command.size()];
+
+    for (size_t i = 0; i < command.size(); i++) {
+        charConverted[i] = command[i];
+    }
+
+    logCommandOutput(charConverted);
+
+    if (runnableCommands.find(charConverted) != runnableCommands.end()) {
+        //
+    } else {
+        logCommandOutput("Error: Command not found");
+    }
+}
 
 CommandTask::CommandTask()
 {
@@ -93,7 +119,7 @@ void CommandTask::render()
 void CommandTask::logic()
 {
     if(key_held_down)
-        key_held_down = keyPressed(KEY_NSPIRE_ESC) || keyPressed(KEY_NSPIRE_DIVIDE) || keyPressed(KEY_NSPIRE_A) || keyPressed(KEY_NSPIRE_B) || keyPressed(KEY_NSPIRE_C) || keyPressed(KEY_NSPIRE_D) || keyPressed(KEY_NSPIRE_E) || keyPressed(KEY_NSPIRE_F) || keyPressed(KEY_NSPIRE_G) || keyPressed(KEY_NSPIRE_H) || keyPressed(KEY_NSPIRE_I) || keyPressed(KEY_NSPIRE_J) || keyPressed(KEY_NSPIRE_K) || keyPressed(KEY_NSPIRE_L) || keyPressed(KEY_NSPIRE_M) || keyPressed(KEY_NSPIRE_N) || keyPressed(KEY_NSPIRE_O) || keyPressed(KEY_NSPIRE_P) || keyPressed(KEY_NSPIRE_Q) || keyPressed(KEY_NSPIRE_R) || keyPressed(KEY_NSPIRE_S) || keyPressed(KEY_NSPIRE_T) || keyPressed(KEY_NSPIRE_U) || keyPressed(KEY_NSPIRE_V) || keyPressed(KEY_NSPIRE_W) || keyPressed(KEY_NSPIRE_X) || keyPressed(KEY_NSPIRE_Y) || keyPressed(KEY_NSPIRE_Z) || keyPressed(KEY_NSPIRE_DEL) || keyPressed(KEY_NSPIRE_SPACE) || keyPressed(KEY_NSPIRE_0) || keyPressed(KEY_NSPIRE_1) || keyPressed(KEY_NSPIRE_2) || keyPressed(KEY_NSPIRE_3) || keyPressed(KEY_NSPIRE_4) || keyPressed(KEY_NSPIRE_5) || keyPressed(KEY_NSPIRE_6) || keyPressed(KEY_NSPIRE_7) || keyPressed(KEY_NSPIRE_8) || keyPressed(KEY_NSPIRE_9) || keyPressed(KEY_NSPIRE_NEGATIVE)|| keyPressed(KEY_NSPIRE_PERIOD);
+        key_held_down = keyPressed(KEY_NSPIRE_ESC) || keyPressed(KEY_NSPIRE_DIVIDE) || keyPressed(KEY_NSPIRE_A) || keyPressed(KEY_NSPIRE_B) || keyPressed(KEY_NSPIRE_C) || keyPressed(KEY_NSPIRE_D) || keyPressed(KEY_NSPIRE_E) || keyPressed(KEY_NSPIRE_F) || keyPressed(KEY_NSPIRE_G) || keyPressed(KEY_NSPIRE_H) || keyPressed(KEY_NSPIRE_I) || keyPressed(KEY_NSPIRE_J) || keyPressed(KEY_NSPIRE_K) || keyPressed(KEY_NSPIRE_L) || keyPressed(KEY_NSPIRE_M) || keyPressed(KEY_NSPIRE_N) || keyPressed(KEY_NSPIRE_O) || keyPressed(KEY_NSPIRE_P) || keyPressed(KEY_NSPIRE_Q) || keyPressed(KEY_NSPIRE_R) || keyPressed(KEY_NSPIRE_S) || keyPressed(KEY_NSPIRE_T) || keyPressed(KEY_NSPIRE_U) || keyPressed(KEY_NSPIRE_V) || keyPressed(KEY_NSPIRE_W) || keyPressed(KEY_NSPIRE_X) || keyPressed(KEY_NSPIRE_Y) || keyPressed(KEY_NSPIRE_Z) || keyPressed(KEY_NSPIRE_DEL) || keyPressed(KEY_NSPIRE_SPACE) || keyPressed(KEY_NSPIRE_0) || keyPressed(KEY_NSPIRE_1) || keyPressed(KEY_NSPIRE_2) || keyPressed(KEY_NSPIRE_3) || keyPressed(KEY_NSPIRE_4) || keyPressed(KEY_NSPIRE_5) || keyPressed(KEY_NSPIRE_6) || keyPressed(KEY_NSPIRE_7) || keyPressed(KEY_NSPIRE_8) || keyPressed(KEY_NSPIRE_9) || keyPressed(KEY_NSPIRE_NEGATIVE)|| keyPressed(KEY_NSPIRE_PERIOD) || keyPressed(KEY_NSPIRE_ENTER);
 
     else if (keyPressed(KEY_NSPIRE_ESC) || keyPressed(KEY_NSPIRE_DIVIDE)) {
         world_task.makeCurrent();
@@ -217,6 +243,9 @@ void CommandTask::logic()
         key_held_down = true;
     } else if (keyPressed(KEY_NSPIRE_DEL) && command.size() > 1) {
         command.pop_back();
+        key_held_down = true;
+    } else if (keyPressed(KEY_NSPIRE_ENTER)) {
+        executeCommand();
         key_held_down = true;
     }
 }
