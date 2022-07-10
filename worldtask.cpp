@@ -6,7 +6,6 @@
 #include "math.h"
 #include "blockrenderer.h"
 #include "blocklisttask.h"
-#include "commandtask.h"
 #include "menutask.h"
 #include "settingstask.h"
 #include "fastmath.h"
@@ -233,16 +232,8 @@ void WorldTask::logic()
     do_test = !do_test;
 
     if(key_held_down)
-    key_held_down = keyPressed(KEY_NSPIRE_ESC) || keyPressed(KEY_NSPIRE_7) || keyPressed(KEY_NSPIRE_9) || keyPressed(KEY_NSPIRE_1) || keyPressed(KEY_NSPIRE_3) || keyPressed(KEY_NSPIRE_PERIOD) || keyPressed(KEY_NSPIRE_MINUS) || keyPressed(KEY_NSPIRE_PLUS) || keyPressed(KEY_NSPIRE_MENU) || keyPressed(KEY_NSPIRE_Q) || keyPressed(KEY_NSPIRE_E) || keyPressed(KEY_NSPIRE_W) || keyPressed(KEY_NSPIRE_A) || keyPressed(KEY_NSPIRE_S) || keyPressed(KEY_NSPIRE_D) || keyPressed(KEY_NSPIRE_Z) || keyPressed(KEY_NSPIRE_R) || keyPressed(KEY_NSPIRE_C) || keyPressed(KEY_NSPIRE_CLICK) || keyPressed(KEY_NSPIRE_HOME) || keyPressed(KEY_NSPIRE_DIVIDE);
+    key_held_down = keyPressed(KEY_NSPIRE_ESC) || keyPressed(KEY_NSPIRE_7) || keyPressed(KEY_NSPIRE_9) || keyPressed(KEY_NSPIRE_1) || keyPressed(KEY_NSPIRE_3) || keyPressed(KEY_NSPIRE_PERIOD) || keyPressed(KEY_NSPIRE_MINUS) || keyPressed(KEY_NSPIRE_PLUS) || keyPressed(KEY_NSPIRE_MENU) || keyPressed(KEY_NSPIRE_Q) || keyPressed(KEY_NSPIRE_E) || keyPressed(KEY_NSPIRE_W) || keyPressed(KEY_NSPIRE_A) || keyPressed(KEY_NSPIRE_S) || keyPressed(KEY_NSPIRE_D) || keyPressed(KEY_NSPIRE_Z) || keyPressed(KEY_NSPIRE_R) || keyPressed(KEY_NSPIRE_C) || keyPressed(KEY_NSPIRE_CLICK) || keyPressed(KEY_NSPIRE_HOME);
 
-    else if (keyPressed(KEY_NSPIRE_DIVIDE)) {
-        draw_inventory = false;
-        render();
-        draw_inventory = true;
-        command_task.makeCurrent();
-
-        key_held_down = true;
-    }
     else if(keyPressed(KEY_NSPIRE_ESC) || keyPressed(KEY_NSPIRE_HOME)) //Save & Exit
     {
         save();
