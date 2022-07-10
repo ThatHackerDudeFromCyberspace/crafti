@@ -8,6 +8,18 @@
 
 CommandTask command_task;
 
+std::map<char*, std::vector<char*>> commandHelp = {
+    {"tp", {"TP allows you to teleport a player into oblivion"}}
+};
+
+std::map<char*, std::vector<std::vector<char*>>> commandArguments = {
+    {"tp", {{"int", "x coordinate"}, {"int", "y coordinate"}, {"int", "z coordinate"}}}
+};
+
+std::map<char*, bool> runnableCommands = {
+    {"tp", true}
+};
+
 CommandTask::CommandTask()
 {
     background = newTexture(background_width, background_height, 0, false);
