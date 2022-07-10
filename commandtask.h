@@ -23,6 +23,8 @@ private:
     std::vector<char> command = {'/'};
 
     TEXTURE *background;
+    void CommandTask::executeCommand();
+    void CommandTask::logCommandOutput(const char* log);
 };
 
 extern CommandTask command_task;
