@@ -78,10 +78,10 @@ Contributors
 <table>
 <tr>
     <td align="center">
-        <a href="https://github.com/Bluebotlabz">
-            <img src="https://avatars.githubusercontent.com/u/69104218?v=4" width="100;" alt="Bluebotlabz"/>
+        <a href="https://github.com/ThatHackerDudeFromCyberspace">
+            <img src="https://avatars.githubusercontent.com/u/69104218?v=4" width="100;" alt="ThatHackerDudeFromCyberspace"/>
             <br />
-            <sub><b>Bluebotlabz</b></sub>
+            <sub><b>HackerDude</b></sub>
         </a>
     </td>
     <td align="center">
